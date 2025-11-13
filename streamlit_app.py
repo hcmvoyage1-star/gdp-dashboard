@@ -96,7 +96,7 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 
 
 # OPTION 2 : Chemin local du logo
-LOGO_PATH = "logo.png"  # Si le logo est dans le même dossier que l'app
+LOGO_PATH = "logo_hcm_circle.png"  # Si le logo est dans le même dossier que l'app
 
 # Initialisation du client Supabase
 @st.cache_resource
