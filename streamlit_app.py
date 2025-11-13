@@ -23,12 +23,22 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 @st.cache_resource
 def init_supabase():
     try:
-        return create_client(SUPABASE_URL, SUPABASE_KEY)
+        supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        return supabase_client
     except Exception as e:
         st.error(f"Erreur de connexion à Supabase: {e}")
         return None
 
 supabase = init_supabase()
+
+# Test de connexion
+if supabase:
+    try:
+        # Test simple pour vérifier la connexion
+        test = supabase.table('destinations').select("id").limit(1).execute()
+        st.success("✅ Connexion à Supabase réussie!")
+    except Exception as e:
+        st.error(f"⚠️ Problème de connexion: {e}")
 
 # ====== CSS PERSONNALISÉ ======
 st.markdown("""
@@ -462,9 +472,9 @@ def main():
         st.markdown("---")
         st.markdown("""
             **HCM Voyages**  
-            📍 Aïn Benian, Alger  
-            📞 +213 XXX XXX XXX  
-            📧 contact@hcmvoyages.dz
+            📍 EL MOHAMMADIA , Alger  
+            📞 +2137 83 80 27 12 
+            📧 hcmvoyage1@gmail.com
         """)
     
     # Affichage de la page sélectionnée
