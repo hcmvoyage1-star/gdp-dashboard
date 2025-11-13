@@ -1,3 +1,77 @@
+"""
+HCM VOYAGES - Application Streamlit
+Agence de voyage complète avec gestion des réservations, destinations et visas
+
+SCHÉMA SQL ADDITIONNEL POUR LES VISAS (à ajouter dans Supabase) :
+
+CREATE TABLE demandes_visa (
+    id BIGSERIAL PRIMARY KEY,
+    reference VARCHAR(20) UNIQUE,
+    nom VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    telephone VARCHAR(50) NOT NULL,
+    date_naissance DATE,
+    lieu_naissance VARCHAR(255),
+    adresse TEXT,
+    profession VARCHAR(255),
+    type_visa VARCHAR(100) NOT NULL,
+    pays_destination VARCHAR(100),
+    motif_voyage TEXT,
+    date_arrivee DATE,
+    date_depart_voyage DATE,
+    duree_sejour INTEGER,
+    statut VARCHAR(50) DEFAULT 'En cours' CHECK (statut IN ('En cours', 'RDV programmé', 'Documents incomplets', 'Approuvé', 'Rejeté', 'En attente')),
+    date_demande TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    date_rdv TIMESTAMP WITH TIME ZONE,
+    notes TEXT,
+    voyage_anterieur BOOLEAN DEFAULT FALSE,
+    service_prioritaire BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Index pour améliorer les performances
+CREATE INDEX idx_demandes_visa_statut ON demandes_visa(statut);
+CREATE INDEX idx_demandes_visa_email ON demandes_visa(email);
+CREATE INDEX idx_demandes_visa_date ON demandes_visa(date_demande DESC);
+CREATE INDEX idx_demandes_visa_type ON demandes_visa(type_visa);
+
+-- Générer automatiquement une référence unique
+CREATE OR REPLACE FUNCTION generate_visa_reference()
+RETURNS TRIGGER AS $
+BEGIN
+    NEW.reference := CONCAT(
+        CASE 
+            WHEN NEW.type_visa LIKE '%USA%' THEN 'VUS'
+            WHEN NEW.type_visa LIKE '%UK%' THEN 'VUK'
+            WHEN NEW.type_visa LIKE '%Schengen%' THEN 'VSC'
+            ELSE 'VIS'
+        END,
+        LPAD(CAST(NEW.id AS TEXT), 4, '0')
+    );
+    RETURN NEW;
+END;
+$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_visa_reference
+    AFTER INSERT ON demandes_visa
+    FOR EACH ROW
+    EXECUTE FUNCTION generate_visa_reference();
+
+-- Trigger pour updated_at
+CREATE TRIGGER update_demandes_visa_modtime
+    BEFORE UPDATE ON demandes_visa
+    FOR EACH ROW
+    EXECUTE FUNCTION update_modified_column();
+
+-- RLS Policies
+ALTER TABLE demandes_visa ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can insert visa requests"
+    ON demandes_visa FOR INSERT
+    WITH CHECK (true);
+"""
+
 import streamlit as st
 from supabase import create_client, Client
 import pandas as pd
@@ -16,12 +90,15 @@ st.set_page_config(
 )
 
 # ====== CONFIGURATION SUPABASE ======
-SUPABASE_URL = "https://oilamfxxqjopuopgskfc.supabase.co"  # ex: https://xxxxx.supabase.co
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbGFtZnh4cWpvcHVvcGdza2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNDY4NTYsImV4cCI6MjA3ODYyMjg1Nn0.PzIJjkIAKQ8dzNcTA4t6PSaCoAWG6kWZQxEibG5gUwE"  # Votre clé API publique
+SUPABASE_URL = "VOTRE_SUPABASE_URL"  # ex: https://xxxxx.supabase.co
+SUPABASE_KEY = "VOTRE_SUPABASE_KEY"  # Votre clé API publique
 
+# ====== CONFIGURATION LOGO ======
+# OPTION 1 : URL directe de votre logo (recommandé)
+LOGO_URL = "https://votre-site.com/logo.png"  # Remplacez par l'URL de votre logo
 
 # OPTION 2 : Chemin local du logo
-LOGO_PATH = "logo_hcm_circle.png"  # Si le logo est dans le même dossier que l'app
+LOGO_PATH = "logo.png"  # Si le logo est dans le même dossier que l'app
 
 # Initialisation du client Supabase
 @st.cache_resource
@@ -423,10 +500,10 @@ st.markdown("""
 # ====== FONCTIONS SUPABASE ======
 
 def get_destinations():
-    """Récupère toutes les destinations depuis Supabase"""
+    """Récupère toutes les destinations actives depuis Supabase"""
     if supabase:
         try:
-            response = supabase.table('destinations').select("*").execute()
+            response = supabase.table('destinations').select("*").eq('actif', True).order('nom').execute()
             return response.data
         except Exception as e:
             st.error(f"Erreur de connexion à Supabase: {e}")
@@ -445,7 +522,6 @@ def add_reservation(nom, email, telephone, destination, date_depart, nb_personne
                 "date_depart": str(date_depart),
                 "nb_personnes": nb_personnes,
                 "message": message,
-                "date_creation": datetime.now().isoformat(),
                 "statut": "en_attente"
             }
             response = supabase.table('reservations').insert(data).execute()
@@ -477,7 +553,7 @@ def add_destination(nom, pays, description, prix, categorie, image_url):
                 "prix": prix,
                 "categorie": categorie,
                 "image_url": image_url,
-                "date_ajout": datetime.now().isoformat()
+                "actif": True
             }
             response = supabase.table('destinations').insert(data).execute()
             return True
@@ -493,6 +569,134 @@ def update_reservation_status(reservation_id, nouveau_statut):
             response = supabase.table('reservations').update(
                 {"statut": nouveau_statut}
             ).eq('id', reservation_id).execute()
+            return True
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return False
+    return False
+
+def delete_destination(destination_id):
+    """Désactive une destination (soft delete)"""
+    if supabase:
+        try:
+            response = supabase.table('destinations').update(
+                {"actif": False}
+            ).eq('id', destination_id).execute()
+            return True
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return False
+    return False
+
+def update_destination(destination_id, data):
+    """Met à jour une destination"""
+    if supabase:
+        try:
+            response = supabase.table('destinations').update(data).eq('id', destination_id).execute()
+            return True
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return False
+    return False
+
+def add_contact(nom, email, sujet, message):
+    """Ajoute un message de contact"""
+    if supabase:
+        try:
+            data = {
+                "nom": nom,
+                "email": email,
+                "sujet": sujet,
+                "message": message,
+                "lu": False
+            }
+            response = supabase.table('contacts').insert(data).execute()
+            return True
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return False
+    return False
+
+def get_contacts(lu=None):
+    """Récupère les messages de contact"""
+    if supabase:
+        try:
+            query = supabase.table('contacts').select("*").order('date_creation', desc=True)
+            if lu is not None:
+                query = query.eq('lu', lu)
+            response = query.execute()
+            return response.data
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return []
+    return []
+
+def mark_contact_as_read(contact_id):
+    """Marque un message de contact comme lu"""
+    if supabase:
+        try:
+            response = supabase.table('contacts').update({"lu": True}).eq('id', contact_id).execute()
+            return True
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return False
+    return False
+
+def get_stats_reservations():
+    """Récupère les statistiques des réservations"""
+    if supabase:
+        try:
+            response = supabase.table('stats_reservations').select("*").execute()
+            return response.data
+        except Exception as e:
+            return []
+    return []
+
+def get_destinations_populaires():
+    """Récupère les destinations populaires"""
+    if supabase:
+        try:
+            response = supabase.table('destinations_populaires').select("*").limit(5).execute()
+            return response.data
+        except Exception as e:
+            return []
+    return []
+
+# ====== FONCTIONS VISA (à ajouter au schéma SQL) ======
+
+def add_demande_visa(data):
+    """Ajoute une demande de visa"""
+    if supabase:
+        try:
+            response = supabase.table('demandes_visa').insert(data).execute()
+            return True, response.data[0].get('id') if response.data else None
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return False, None
+    return False, None
+
+def get_demandes_visa(statut=None):
+    """Récupère les demandes de visa"""
+    if supabase:
+        try:
+            query = supabase.table('demandes_visa').select("*").order('date_demande', desc=True)
+            if statut:
+                query = query.eq('statut', statut)
+            response = query.execute()
+            return response.data
+        except Exception as e:
+            st.error(f"Erreur: {e}")
+            return []
+    return []
+
+def update_visa_status(visa_id, nouveau_statut, notes=None):
+    """Met à jour le statut d'une demande de visa"""
+    if supabase:
+        try:
+            data = {"statut": nouveau_statut}
+            if notes:
+                data["notes"] = notes
+            response = supabase.table('demandes_visa').update(data).eq('id', visa_id).execute()
             return True
         except Exception as e:
             st.error(f"Erreur: {e}")
@@ -1318,9 +1522,10 @@ def page_admin():
         </div>
     """, unsafe_allow_html=True)
     
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "📋 Réservations", 
         "📝 Demandes Visa",
+        "💬 Messages Contact",
         "➕ Ajouter Destination", 
         "📊 Statistiques",
         "🌍 Gérer Destinations"
@@ -1530,6 +1735,78 @@ def page_admin():
             )
     
     with tab3:
+        st.markdown("### 💬 Gestion des Messages de Contact")
+        
+        # Filtres
+        col1, col2 = st.columns(2)
+        with col1:
+            filtre_lu = st.selectbox("Statut", ["Tous", "Non lus", "Lus"])
+        with col2:
+            tri_contact = st.selectbox("Trier par", ["Plus récents", "Plus anciens"])
+        
+        # Récupération des messages
+        if filtre_lu == "Non lus":
+            contacts = get_contacts(lu=False)
+        elif filtre_lu == "Lus":
+            contacts = get_contacts(lu=True)
+        else:
+            contacts = get_contacts()
+        
+        if contacts:
+            st.markdown(f"**{len(contacts)} message(s)** - {len([c for c in contacts if not c.get('lu', False)])} non lu(s)")
+            
+            for contact in contacts:
+                lu = contact.get('lu', False)
+                lu_icon = "✅" if lu else "🔴"
+                lu_style = "opacity: 0.7;" if lu else ""
+                
+                with st.expander(f"{lu_icon} {contact['sujet']} - {contact['nom']}", expanded=not lu):
+                    st.markdown(f"""
+                        <div style="{lu_style}">
+                            <strong>👤 De:</strong> {contact['nom']}<br>
+                            <strong>📧 Email:</strong> {contact['email']}<br>
+                            <strong>📅 Date:</strong> {contact.get('date_creation', 'N/A')[:16]}<br>
+                            <strong>📋 Sujet:</strong> {contact['sujet']}
+                        </div>
+                    """, unsafe_allow_html=True)
+                    
+                    st.markdown("---")
+                    st.markdown(f"**💬 Message:**")
+                    st.markdown(f"<div style='background: #f8f9fa; padding: 15px; border-radius: 10px; {lu_style}'>{contact['message']}</div>", 
+                               unsafe_allow_html=True)
+                    
+                    st.markdown("---")
+                    
+                    col_a, col_b, col_c = st.columns(3)
+                    with col_a:
+                        if not lu:
+                            if st.button("✅ Marquer comme lu", key=f"lu_{contact['id']}", use_container_width=True):
+                                if mark_contact_as_read(contact['id']):
+                                    st.success("Message marqué comme lu!")
+                                    st.rerun()
+                    with col_b:
+                        if st.button(f"📧 Répondre à {contact['email']}", key=f"rep_{contact['id']}", use_container_width=True):
+                            st.info(f"Ouvrir votre client email pour répondre à {contact['email']}")
+                    with col_c:
+                        if st.button("🗑️ Archiver", key=f"arch_{contact['id']}", use_container_width=True):
+                            st.warning("Fonction d'archivage à implémenter")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Export
+            if st.button("⬇️ Exporter les messages (CSV)", use_container_width=True):
+                df_contacts = pd.DataFrame(contacts)
+                csv = df_contacts.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    "📥 Télécharger",
+                    csv,
+                    f"messages_contact_{datetime.now().strftime('%Y%m%d')}.csv",
+                    "text/csv"
+                )
+        else:
+            st.info("📭 Aucun message de contact")
+    
+    with tab4:
         st.markdown("### ➕ Ajouter une Nouvelle Destination")
         
         with st.form("add_destination_form"):
@@ -1563,7 +1840,7 @@ def page_admin():
                 else:
                     st.error("❌ Veuillez remplir tous les champs obligatoires (*)")
     
-    with tab4:
+    with tab5:
         st.markdown("### 📊 Statistiques et Analyses")
         
         reservations = get_reservations()
@@ -1658,7 +1935,7 @@ def page_admin():
         else:
             st.info("📭 Pas encore de données statistiques disponibles")
     
-    with tab5:
+    with tab6:
         st.markdown("### 🌍 Gérer les Destinations")
         
         destinations = get_destinations()
