@@ -16,16 +16,16 @@ st.set_page_config(
 )
 
 # ====== CONFIGURATION SUPABASE ======
-# À remplacer par vos vraies credentials Supabase
-SUPABASE_URL = "VOTRE_SUPABASE_URL"  # ex: https://xxxxx.supabase.co
-SUPABASE_KEY = "VOTRE_SUPABASE_KEY"  # Votre clé API publique
+SUPABASE_URL = "https://oilamfxxqjopuopgskfc.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbGFtZnh4cWpvcHVvcGdza2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNDY4NTYsImV4cCI6MjA3ODYyMjg1Nn0.PzIJjkIAKQ8dzNcTA4t6PSaCoAWG6kWZQxEibG5gUwE"
 
 # Initialisation du client Supabase
 @st.cache_resource
 def init_supabase():
     try:
         return create_client(SUPABASE_URL, SUPABASE_KEY)
-    except:
+    except Exception as e:
+        st.error(f"Erreur de connexion à Supabase: {e}")
         return None
 
 supabase = init_supabase()
@@ -252,16 +252,8 @@ def page_destinations():
     destinations = get_destinations()
     
     if not destinations:
-        st.info("📌 Connectez votre base de données Supabase pour afficher les destinations")
-        # Destinations exemple
-        destinations = [
-            {"nom": "Paris", "pays": "France", "description": "La ville lumière", "prix": 799, "categorie": "Europe"},
-            {"nom": "Istanbul", "pays": "Turquie", "description": "Entre Orient et Occident", "prix": 599, "categorie": "Europe"},
-            {"nom": "Maldives", "pays": "Maldives", "description": "Paradis tropical", "prix": 1499, "categorie": "Asie"},
-            {"nom": "Tokyo", "pays": "Japon", "description": "Tradition et modernité", "prix": 1299, "categorie": "Asie"},
-            {"nom": "Dubaï", "pays": "EAU", "description": "Luxe et désert", "prix": 899, "categorie": "Asie"},
-            {"nom": "Rome", "pays": "Italie", "description": "Histoire antique", "prix": 699, "categorie": "Europe"},
-        ]
+        st.warning("⚠️ Aucune destination trouvée. Vérifiez votre connexion Supabase.")
+        return
     
     # Filtrage
     if search:
@@ -315,7 +307,7 @@ def page_reservation():
                     st.success("✅ Votre demande a été envoyée avec succès! Nous vous contacterons rapidement.")
                     st.balloons()
                 else:
-                    st.warning("⚠️ Demande enregistrée localement. Connectez Supabase pour la sauvegarde permanente.")
+                    st.error("❌ Erreur lors de l'envoi de la réservation.")
             else:
                 st.error("❌ Veuillez remplir tous les champs obligatoires (*)")
 
@@ -421,7 +413,7 @@ def page_admin():
                 if add_destination(nom, pays, description, prix, categorie, image_url):
                     st.success("✅ Destination ajoutée!")
                 else:
-                    st.warning("⚠️ Connectez Supabase pour ajouter des destinations")
+                    st.error("❌ Erreur lors de l'ajout")
     
     with tab3:
         st.subheader("📊 Statistiques")
