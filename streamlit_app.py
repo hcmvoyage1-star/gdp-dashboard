@@ -202,8 +202,9 @@ def page_accueil():
     """Page d'accueil"""
     # Logo - Option 1: Afficher votre image uploadée
     # Remplacez 'logo_hcm.png' par le nom de votre fichier image
-    try:
-        st.image("logo_hcm.png", use_container_width=True)
+  circle_logo = load_image("/mnt/data/logo_hcm_circle.png")
+if circle_logo:
+    st.image(circle_logo, width=180)
     except:
         # Si l'image n'est pas trouvée, afficher le header par défaut
         st.markdown("""
