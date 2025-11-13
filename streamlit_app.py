@@ -31,15 +31,6 @@ def init_supabase():
 
 supabase = init_supabase()
 
-# Test de connexion
-if supabase:
-    try:
-        # Test simple pour vérifier la connexion
-        test = supabase.table('destinations').select("id").limit(1).execute()
-        st.success("✅ Connexion à Supabase réussie!")
-    except Exception as e:
-        st.error(f"⚠️ Problème de connexion: {e}")
-
 # ====== CSS PERSONNALISÉ ======
 st.markdown("""
     <style>
@@ -118,19 +109,6 @@ st.markdown("""
     </a>
 """, unsafe_allow_html=True)
 
-# ====== AFFICHAGE DU LOGO ======
-def display_logo():
-    st.markdown("""
-        <div class="logo-container">
-            <img src="data:image/png;base64,{}" width="300">
-        </div>
-    """.format(get_logo_base64()), unsafe_allow_html=True)
-
-def get_logo_base64():
-    # Vous devrez encoder votre logo en base64
-    # Pour l'instant, un placeholder
-    return ""
-
 # ====== FONCTIONS SUPABASE ======
 
 def get_destinations():
@@ -200,11 +178,9 @@ def add_destination(nom, pays, description, prix, categorie, image_url):
 
 def page_accueil():
     """Page d'accueil"""
-    # Logo - Option 1: Afficher votre image uploadée
-    # Remplacez 'logo_hcm.png' par le nom de votre fichier image
-  circle_logo = load_image("/mnt/data/logo_hcm_circle.png")
-if circle_logo:
-    st.image(circle_logo, width=180)
+    # Logo - Afficher l'image si disponible
+    try:
+        st.image("logo_hcm.png", use_container_width=True)
     except:
         # Si l'image n'est pas trouvée, afficher le header par défaut
         st.markdown("""
@@ -311,6 +287,13 @@ def page_destinations():
     cols = st.columns(3)
     for idx, dest in enumerate(destinations):
         with cols[idx % 3]:
+            # Afficher l'image si disponible
+            if dest.get('image_url'):
+                try:
+                    st.image(dest['image_url'], use_container_width=True)
+                except:
+                    pass
+            
             st.markdown(f"""
                 <div class='destination-card'>
                     <h3>📍 {dest['nom']}, {dest['pays']}</h3>
