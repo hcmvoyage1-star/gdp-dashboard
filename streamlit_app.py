@@ -85,7 +85,37 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
     }
+    
+    /* Bouton WhatsApp flottant */
+    .whatsapp-float {
+        position: fixed;
+        width: 60px;
+        height: 60px;
+        bottom: 40px;
+        right: 40px;
+        background-color: #25d366;
+        color: #FFF;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 3px #999;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    .whatsapp-float:hover {
+        background-color: #128C7E;
+        transform: scale(1.1);
+    }
     </style>
+    
+    <!-- Bouton WhatsApp flottant -->
+    <a href="https://wa.me/213783802712" class="whatsapp-float" target="_blank" title="Contactez-nous sur WhatsApp">
+        <span style="margin-top: 10px;">💬</span>
+    </a>
 """, unsafe_allow_html=True)
 
 # ====== AFFICHAGE DU LOGO ======
@@ -336,19 +366,33 @@ def page_contact():
         st.markdown("""
             <div class='destination-card'>
                 <h3>📍 Notre Agence</h3>
-                <p><strong>Adresse:</strong><br>Aïn Benian, Alger<br>Algérie</p>
-                <p><strong>📞 Téléphone:</strong><br>+213 XXX XXX XXX</p>
-                <p><strong>📧 Email:</strong><br>contact@hcmvoyages.dz</p>
+                <p><strong>Adresse:</strong><br>EL MOHAMMADIA, Alger<br>Algérie</p>
+                <p><strong>📞 Téléphone:</strong><br>
+                <a href="tel:+213783802712" style="color: #667eea; text-decoration: none;">+213 7 83 80 27 12</a></p>
+                <p><strong>📧 Email:</strong><br>
+                <a href="mailto:hcmvoyage1@gmail.com" style="color: #667eea; text-decoration: none;">hcmvoyage1@gmail.com</a></p>
                 <p><strong>🕐 Horaires:</strong><br>Dim - Jeu: 9h - 18h<br>Sam: 9h - 13h</p>
             </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
             <div class='destination-card'>
-                <h3>🌐 Réseaux Sociaux</h3>
-                <p>📘 Facebook: @HCMVoyages</p>
-                <p>📷 Instagram: @hcm_voyages</p>
-                <p>💬 WhatsApp: +213 XXX XXX XXX</p>
+                <h3>🌐 Contactez-nous directement</h3>
+                <p>
+                <a href="https://wa.me/213783802712" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #25d366; color: white; text-decoration: none; border-radius: 25px; margin: 5px;">
+                💬 WhatsApp
+                </a>
+                </p>
+                <p>
+                <a href="mailto:hcmvoyage1@gmail.com" style="display: inline-block; padding: 10px 20px; background-color: #667eea; color: white; text-decoration: none; border-radius: 25px; margin: 5px;">
+                📧 Email
+                </a>
+                </p>
+                <p>
+                <a href="tel:+213783802712" style="display: inline-block; padding: 10px 20px; background-color: #764ba2; color: white; text-decoration: none; border-radius: 25px; margin: 5px;">
+                📞 Appeler
+                </a>
+                </p>
             </div>
         """, unsafe_allow_html=True)
     
@@ -357,12 +401,34 @@ def page_contact():
         with st.form("contact_form"):
             nom = st.text_input("Nom *")
             email = st.text_input("Email *")
+            telephone = st.text_input("Téléphone")
             sujet = st.text_input("Sujet")
             message = st.text_area("Message *", height=200)
             
             if st.form_submit_button("📨 Envoyer"):
                 if nom and email and message:
-                    st.success("✅ Message envoyé avec succès!")
+                    # Sauvegarder dans Supabase
+                    if supabase:
+                        try:
+                            data = {
+                                "nom": nom,
+                                "email": email,
+                                "sujet": sujet or "Contact général",
+                                "message": message,
+                                "date_creation": datetime.now().isoformat(),
+                                "lu": False
+                            }
+                            response = supabase.table('contacts').insert(data).execute()
+                            st.success("✅ Message envoyé avec succès! Nous vous répondrons rapidement.")
+                            
+                            # Suggestion d'utiliser WhatsApp pour une réponse rapide
+                            st.info("💡 Pour une réponse immédiate, contactez-nous sur WhatsApp!")
+                            whatsapp_link = f"https://wa.me/213783802712?text=Bonjour, je suis {nom}. {message}"
+                            st.markdown(f"[💬 Ouvrir WhatsApp]({whatsapp_link})")
+                        except:
+                            st.warning("⚠️ Impossible d'envoyer le message. Veuillez nous contacter directement.")
+                    else:
+                        st.warning("⚠️ Veuillez nous contacter directement par téléphone ou WhatsApp.")
                 else:
                     st.error("❌ Veuillez remplir tous les champs obligatoires")
 
@@ -455,11 +521,21 @@ def page_admin():
 def main():
     # Sidebar
     with st.sidebar:
-        # Afficher le logo dans la sidebar
+        # Afficher le logo circulaire dans la sidebar
         try:
-            st.image("logo_hcm.png", use_container_width=True)
+            st.image("logo_hcm_circle.png", use_container_width=True)
         except:
-            st.image("https://via.placeholder.com/200x200/667eea/ffffff?text=HCM", width=200)
+            # Fallback avec le logo HCM stylisé
+            st.markdown("""
+                <div style='text-align: center; padding: 20px;'>
+                    <div style='width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; 
+                         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                         display: flex; align-items: center; justify-content: center;'>
+                        <h1 style='color: white; font-size: 3em; margin: 0;'>H</h1>
+                    </div>
+                    <h3 style='color: #667eea; margin-top: 10px;'>HCM VOYAGES</h3>
+                </div>
+            """, unsafe_allow_html=True)
         
         st.title("Navigation")
         
@@ -482,8 +558,8 @@ def main():
         st.markdown("---")
         st.markdown("""
             **HCM Voyages**  
-            📍El Mohammadia , Alger  
-            📞 +213 783 80 27 12
+            📍 EL MOHAMMADIA, Alger  
+            📞 +213 7 83 80 27 12  
             📧 hcmvoyage1@gmail.com
         """)
     
