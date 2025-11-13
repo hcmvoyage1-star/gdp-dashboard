@@ -19,6 +19,13 @@ st.set_page_config(
 SUPABASE_URL = "VOTRE_SUPABASE_URL"  # ex: https://xxxxx.supabase.co
 SUPABASE_KEY = "VOTRE_SUPABASE_KEY"  # Votre clé API publique
 
+# ====== CONFIGURATION LOGO ======
+# OPTION 1 : URL directe de votre logo (recommandé)
+LOGO_URL = "https://votre-site.com/logo.png"  # Remplacez par l'URL de votre logo
+
+# OPTION 2 : Chemin local du logo
+LOGO_PATH = "logo.png"  # Si le logo est dans le même dossier que l'app
+
 # Initialisation du client Supabase
 @st.cache_resource
 def init_supabase():
@@ -28,6 +35,42 @@ def init_supabase():
         return None
 
 supabase = init_supabase()
+
+# ====== FONCTION POUR CHARGER LE LOGO ======
+@st.cache_data
+def get_logo_base64(image_path):
+    """Convertit une image locale en base64"""
+    try:
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except:
+        return None
+
+def display_logo(size="150px"):
+    """Affiche le logo (URL ou local)"""
+    try:
+        # Essayer d'abord l'URL
+        st.markdown(f"""
+            <div style="text-align: center; margin: 20px 0;">
+                <img src="{LOGO_URL}" width="{size}" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            </div>
+        """, unsafe_allow_html=True)
+    except:
+        # Si l'URL ne fonctionne pas, essayer le fichier local
+        logo_base64 = get_logo_base64(LOGO_PATH)
+        if logo_base64:
+            st.markdown(f"""
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="data:image/png;base64,{logo_base64}" width="{size}" style="border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                </div>
+            """, unsafe_allow_html=True)
+        else:
+            # Afficher emoji par défaut si aucun logo n'est trouvé
+            st.markdown(f"""
+                <div style="text-align: center; margin: 20px 0; font-size: 5em;">
+                    ✈️
+                </div>
+            """, unsafe_allow_html=True)
 
 # ====== CSS PERSONNALISÉ AMÉLIORÉ ======
 st.markdown("""
@@ -464,14 +507,19 @@ def update_reservation_status(reservation_id, nouveau_statut):
 def page_accueil():
     """Page d'accueil avec hero section"""
     
-    # Hero Section avec l'image de couverture
+    # Hero Section avec l'image de couverture et logo
     st.markdown("""
         <div class="hero-section">
-            <img src="https://i.imgur.com/placeholder.png" alt="HCM Voyages" class="hero-image" 
-                 onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=600&fit=crop'"/>
+            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=600&fit=crop" 
+                 alt="HCM Voyages" class="hero-image"/>
             <div class="hero-overlay">
                 <div style="text-align: center;">
-                    <div style="font-size: 5em; margin-bottom: 20px;">✈️</div>
+    """, unsafe_allow_html=True)
+    
+    # Afficher le logo
+    display_logo(size="200px")
+    
+    st.markdown("""
                     <h1 class="hero-title">HCM VOYAGES</h1>
                     <p class="hero-subtitle">L'évasion sur mesure, explorez, rêvez, partez</p>
                 </div>
@@ -1657,11 +1705,12 @@ def main():
     
     # Sidebar améliorée
     with st.sidebar:
-        # Logo
+        # Logo dans la sidebar
+        display_logo(size="120px")
+        
         st.markdown("""
-            <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 4em; margin-bottom: 10px;">✈️</div>
-                <h2 style="margin: 0; color: white;">HCM VOYAGES</h2>
+            <div style="text-align: center; padding: 10px;">
+                <h2 style="margin: 10px 0; color: white;">HCM VOYAGES</h2>
                 <p style="margin: 5px 0 0 0; font-size: 0.9em; opacity: 0.9;">L'évasion sur mesure</p>
             </div>
         """, unsafe_allow_html=True)
