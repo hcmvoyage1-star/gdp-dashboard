@@ -810,6 +810,107 @@ def page_accueil():
         if st.button("🌍 Découvrir nos destinations", key="cta_destinations", use_container_width=True):
             st.session_state.page = "destinations"
             st.rerun()
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Galerie de destinations populaires avec images
+    st.markdown("### 🌟 Destinations Populaires")
+    
+    destinations_vedettes = [
+        {
+            "nom": "Paris",
+            "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop&q=80",
+            "description": "Tour Eiffel & Champs-Élysées",
+            "prix": "799€"
+        },
+        {
+            "nom": "Dubaï",
+            "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&q=80",
+            "description": "Burj Khalifa & Marina",
+            "prix": "899€"
+        },
+        {
+            "nom": "Maldives",
+            "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&h=300&fit=crop&q=80",
+            "description": "Îles paradisiaques",
+            "prix": "1499€"
+        },
+        {
+            "nom": "Tokyo",
+            "image": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=300&fit=crop&q=80",
+            "description": "Temples & Technologie",
+            "prix": "1299€"
+        }
+    ]
+    
+    cols = st.columns(4)
+    for idx, dest in enumerate(destinations_vedettes):
+        with cols[idx]:
+            st.image(dest["image"], use_container_width=True)
+            st.markdown(f"""
+                <div style="text-align: center; padding: 10px;">
+                    <h4 style="margin: 10px 0; color: #667eea;">{dest["nom"]}</h4>
+                    <p style="margin: 5px 0; color: #666; font-size: 0.9em;">{dest["description"]}</p>
+                    <p style="margin: 10px 0; color: #ff6b6b; font-weight: bold; font-size: 1.2em;">{dest["prix"]}</p>
+                </div>
+            """, unsafe_allow_html=True)
+            if st.button(f"Voir {dest['nom']}", key=f"vedette_{idx}", use_container_width=True):
+                st.session_state.page = "destinations"
+                st.rerun()
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Section témoignages avec images
+    st.markdown("### 💬 Nos Clients Témoignent")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.image("https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=300&h=300&fit=crop&q=80", 
+                 use_container_width=True)
+        st.markdown("""
+            <div style="background: white; padding: 20px; border-radius: 15px; margin-top: -20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <p style="font-style: italic; color: #666;">"Un voyage inoubliable à Paris ! L'équipe HCM a tout organisé parfaitement."</p>
+                <p style="text-align: right; color: #667eea; font-weight: bold;">- Amina B.</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.image("https://images.unsplash.com/photo-1542909168-82c3e7fdca44?w=300&h=300&fit=crop&q=80", 
+                 use_container_width=True)
+        st.markdown("""
+            <div style="background: white; padding: 20px; border-radius: 15px; margin-top: -20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <p style="font-style: italic; color: #666;">"Service impeccable pour mon visa Schengen. Obtenu en 15 jours !"</p>
+                <p style="text-align: right; color: #667eea; font-weight: bold;">- Karim M.</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.image("https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&q=80", 
+                 use_container_width=True)
+        st.markdown("""
+            <div style="background: white; padding: 20px; border-radius: 15px; margin-top: -20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                <p style="font-style: italic; color: #666;">"Les Maldives en famille, un rêve devenu réalité grâce à HCM Voyages !"</p>
+                <p style="text-align: right; color: #667eea; font-weight: bold;">- Sarah L.</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Section partenaires avec logos
+    st.markdown("### 🤝 Nos Partenaires de Confiance")
+    
+    st.markdown("""
+        <div style="background: white; padding: 30px; border-radius: 20px; text-align: center;">
+            <p style="color: #666; margin-bottom: 20px;">Nous travaillons avec les meilleurs partenaires pour vous garantir un service de qualité</p>
+            <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div style="font-size: 2em; opacity: 0.6;">✈️ Airlines</div>
+                <div style="font-size: 2em; opacity: 0.6;">🏨 Hotels</div>
+                <div style="font-size: 2em; opacity: 0.6;">🚗 Car Rental</div>
+                <div style="font-size: 2em; opacity: 0.6;">🛡️ Insurance</div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 def page_destinations():
     """Page des destinations améliorée"""
@@ -836,15 +937,114 @@ def page_destinations():
         st.info("📌 Connectez votre base de données Supabase pour afficher les destinations réelles")
         # Destinations exemple avec plus de détails
         destinations = [
-            {"nom": "Paris", "pays": "France", "description": "La ville lumière vous accueille avec ses monuments iconiques", "prix": 799, "categorie": "Europe", "duree": "5 jours"},
-            {"nom": "Istanbul", "pays": "Turquie", "description": "Entre Orient et Occident, découvrez une ville fascinante", "prix": 599, "categorie": "Europe", "duree": "4 jours"},
-            {"nom": "Maldives", "pays": "Maldives", "description": "Paradis tropical aux eaux cristallines", "prix": 1499, "categorie": "Asie", "duree": "7 jours"},
-            {"nom": "Tokyo", "pays": "Japon", "description": "Tradition et modernité dans la capitale nippone", "prix": 1299, "categorie": "Asie", "duree": "6 jours"},
-            {"nom": "Dubaï", "pays": "EAU", "description": "Luxe et désert dans la cité futuriste", "prix": 899, "categorie": "Asie", "duree": "5 jours"},
-            {"nom": "Rome", "pays": "Italie", "description": "Histoire antique et dolce vita", "prix": 699, "categorie": "Europe", "duree": "4 jours"},
-            {"nom": "Barcelone", "pays": "Espagne", "description": "Art, plages et gastronomie catalane", "prix": 649, "categorie": "Europe", "duree": "4 jours"},
-            {"nom": "New York", "pays": "USA", "description": "La ville qui ne dort jamais", "prix": 1099, "categorie": "Amérique", "duree": "6 jours"},
-            {"nom": "Bali", "pays": "Indonésie", "description": "Îles des dieux, temples et rizières", "prix": 1199, "categorie": "Asie", "duree": "8 jours"},
+            {
+                "nom": "Paris", 
+                "pays": "France", 
+                "description": "La ville lumière vous accueille avec ses monuments iconiques", 
+                "prix": 799, 
+                "categorie": "Europe", 
+                "duree": "5 jours",
+                "image_url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Istanbul", 
+                "pays": "Turquie", 
+                "description": "Entre Orient et Occident, découvrez une ville fascinante", 
+                "prix": 599, 
+                "categorie": "Europe", 
+                "duree": "4 jours",
+                "image_url": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Maldives", 
+                "pays": "Maldives", 
+                "description": "Paradis tropical aux eaux cristallines", 
+                "prix": 1499, 
+                "categorie": "Asie", 
+                "duree": "7 jours",
+                "image_url": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Tokyo", 
+                "pays": "Japon", 
+                "description": "Tradition et modernité dans la capitale nippone", 
+                "prix": 1299, 
+                "categorie": "Asie", 
+                "duree": "6 jours",
+                "image_url": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Dubaï", 
+                "pays": "EAU", 
+                "description": "Luxe et désert dans la cité futuriste", 
+                "prix": 899, 
+                "categorie": "Asie", 
+                "duree": "5 jours",
+                "image_url": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Rome", 
+                "pays": "Italie", 
+                "description": "Histoire antique et dolce vita", 
+                "prix": 699, 
+                "categorie": "Europe", 
+                "duree": "4 jours",
+                "image_url": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Barcelone", 
+                "pays": "Espagne", 
+                "description": "Art, plages et gastronomie catalane", 
+                "prix": 649, 
+                "categorie": "Europe", 
+                "duree": "4 jours",
+                "image_url": "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "New York", 
+                "pays": "USA", 
+                "description": "La ville qui ne dort jamais", 
+                "prix": 1099, 
+                "categorie": "Amérique", 
+                "duree": "6 jours",
+                "image_url": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Bali", 
+                "pays": "Indonésie", 
+                "description": "Îles des dieux, temples et rizières", 
+                "prix": 1199, 
+                "categorie": "Asie", 
+                "duree": "8 jours",
+                "image_url": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Marrakech", 
+                "pays": "Maroc", 
+                "description": "Cité impériale aux souks colorés", 
+                "prix": 399, 
+                "categorie": "Afrique", 
+                "duree": "5 jours",
+                "image_url": "https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Le Caire", 
+                "pays": "Égypte", 
+                "description": "Pyramides et civilisation antique", 
+                "prix": 699, 
+                "categorie": "Afrique", 
+                "duree": "6 jours",
+                "image_url": "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?w=400&h=300&fit=crop&q=80"
+            },
+            {
+                "nom": "Londres", 
+                "pays": "Royaume-Uni", 
+                "description": "Royauté britannique et culture", 
+                "prix": 749, 
+                "categorie": "Europe", 
+                "duree": "5 jours",
+                "image_url": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&h=300&fit=crop&q=80"
+            },
         ]
     
     # Filtrage
@@ -872,8 +1072,13 @@ def page_destinations():
         for idx, dest in enumerate(destinations):
             with cols[idx % 3]:
                 duree = dest.get('duree', '5 jours')
+                image_url = dest.get('image_url', 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop&q=80')
+                
+                # Afficher l'image
+                st.image(image_url, use_container_width=True)
+                
                 st.markdown(f"""
-                    <div class="destination-card">
+                    <div class="destination-card" style="margin-top: -10px;">
                         <h3>📍 {dest['nom']}, {dest['pays']}</h3>
                         <p style="color: #666; margin: 10px 0;">{dest['description']}</p>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
@@ -892,6 +1097,11 @@ def page_destinations():
 
 def page_reservation():
     """Page de réservation améliorée"""
+    
+    # Image hero réservation
+    st.image("https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1200&h=250&fit=crop&q=80", 
+             use_container_width=True)
+    
     st.markdown("# 📝 Réserver Votre Voyage de Rêve")
     st.markdown("Remplissez le formulaire ci-dessous et notre équipe vous contactera rapidement")
     
@@ -946,6 +1156,10 @@ def page_visas():
     st.markdown("# 📋 Rendez-vous & Traitement de Visas")
     st.markdown("Nous vous accompagnons dans toutes vos démarches de visa")
     
+    # Image hero pour la section visa
+    st.image("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&h=300&fit=crop&q=80", 
+             use_container_width=True)
+    
     st.markdown("<br>", unsafe_allow_html=True)
     
     # Section informative
@@ -985,6 +1199,13 @@ def page_visas():
 
 def visa_usa_section():
     """Section visa USA"""
+    
+    # Image USA
+    st.image("https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1200&h=200&fit=crop&q=80", 
+             use_container_width=True, caption="États-Unis d'Amérique")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     col1, col2 = st.columns([1, 1])
     
     with col1:
@@ -1090,6 +1311,13 @@ def visa_usa_section():
 
 def visa_uk_section():
     """Section visa UK"""
+    
+    # Image UK
+    st.image("https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200&h=200&fit=crop&q=80", 
+             use_container_width=True, caption="Royaume-Uni")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     col1, col2 = st.columns([1, 1])
     
     with col1:
@@ -1192,6 +1420,13 @@ def visa_uk_section():
 
 def visa_schengen_section():
     """Section visa Schengen"""
+    
+    # Image Europe
+    st.image("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200&h=200&fit=crop&q=80", 
+             use_container_width=True, caption="Espace Schengen - Europe")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     col1, col2 = st.columns([1, 1])
     
     with col1:
