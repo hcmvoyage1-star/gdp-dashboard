@@ -90,13 +90,15 @@ st.set_page_config(
 )
 
 # ====== CONFIGURATION SUPABASE ======
-SUPABASE_URL = "https://oilamfxxqjopuopgskfc.supabase.co"  # ex: https://xxxxx.supabase.co
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbGFtZnh4cWpvcHVvcGdza2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNDY4NTYsImV4cCI6MjA3ODYyMjg1Nn0.PzIJjkIAKQ8dzNcTA4t6PSaCoAWG6kWZQxEibG5gUwE"  # Votre clé API publique
+SUPABASE_URL = "VOTRE_SUPABASE_URL"  # ex: https://xxxxx.supabase.co
+SUPABASE_KEY = "VOTRE_SUPABASE_KEY"  # Votre clé API publique
 
-
+# ====== CONFIGURATION LOGO ======
+# OPTION 1 : URL directe de votre logo (recommandé)
+LOGO_URL = "https://votre-site.com/logo.png"  # Remplacez par l'URL de votre logo
 
 # OPTION 2 : Chemin local du logo
-LOGO_PATH = "Bluelogo.png"  # Si le logo est dans le même dossier que l'app
+LOGO_PATH = "logo.png"  # Si le logo est dans le même dossier que l'app
 
 # Initialisation du client Supabase
 @st.cache_resource
@@ -706,10 +708,10 @@ def update_visa_status(visa_id, nouveau_statut, notes=None):
 def page_accueil():
     """Page d'accueil avec hero section"""
     
-    # Hero Section avec l'image de couverture et logo
+    # Hero Section avec l'image de couverture et logo - Image de voyage épique
     st.markdown("""
         <div class="hero-section">
-            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1920&h=600&fit=crop" 
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&h=600&fit=crop&q=80" 
                  alt="HCM Voyages" class="hero-image"/>
             <div class="hero-overlay">
                 <div style="text-align: center;">
