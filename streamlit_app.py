@@ -170,13 +170,18 @@ def add_destination(nom, pays, description, prix, categorie, image_url):
 
 def page_accueil():
     """Page d'accueil"""
-    # Logo
-    st.markdown("""
-        <div style='text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; margin-bottom: 30px;'>
-            <h1 style='color: white; font-size: 3em; margin: 0;'>✈️ HCM VOYAGES</h1>
-            <p style='color: white; font-size: 1.5em; margin: 10px 0;'>L'évasion sur mesure, explorez, rêvez, partez</p>
-        </div>
-    """, unsafe_allow_html=True)
+    # Logo - Option 1: Afficher votre image uploadée
+    # Remplacez 'logo_hcm.png' par le nom de votre fichier image
+    try:
+        st.image("logo_hcm.png", use_container_width=True)
+    except:
+        # Si l'image n'est pas trouvée, afficher le header par défaut
+        st.markdown("""
+            <div style='text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; margin-bottom: 30px;'>
+                <h1 style='color: white; font-size: 3em; margin: 0;'>✈️ HCM VOYAGES</h1>
+                <p style='color: white; font-size: 1.5em; margin: 10px 0;'>L'évasion sur mesure, explorez, rêvez, partez</p>
+            </div>
+        """, unsafe_allow_html=True)
     
     # Statistiques
     col1, col2, col3, col4 = st.columns(4)
@@ -450,7 +455,12 @@ def page_admin():
 def main():
     # Sidebar
     with st.sidebar:
-        st.image("https://via.placeholder.com/200x200/667eea/ffffff?text=HCM", width=200)
+        # Afficher le logo dans la sidebar
+        try:
+            st.image("logo_hcm.png", use_container_width=True)
+        except:
+            st.image("https://via.placeholder.com/200x200/667eea/ffffff?text=HCM", width=200)
+        
         st.title("Navigation")
         
         if 'page' not in st.session_state:
@@ -472,8 +482,8 @@ def main():
         st.markdown("---")
         st.markdown("""
             **HCM Voyages**  
-            📍 EL MOHAMMADIA , Alger  
-            📞 +2137 83 80 27 12 
+            📍El Mohammadia , Alger  
+            📞 +213 783 80 27 12
             📧 hcmvoyage1@gmail.com
         """)
     
