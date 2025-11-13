@@ -98,7 +98,7 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 LOGO_URL = "https://votre-site.com/logo.png"  # Remplacez par l'URL de votre logo
 
 # OPTION 2 : Chemin local du logo
-LOGO_PATH = "logok.png"  # Si le logo est dans le même dossier que l'app
+LOGO_PATH = "logok.jpeg"  # Si le logo est dans le même dossier que l'app
 
 # Initialisation du client Supabase
 @st.cache_resource
