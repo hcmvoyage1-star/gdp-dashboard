@@ -34,10 +34,10 @@ supabase = init_supabase()
 # ====== LOGO ======
 LOGO_PATH = "log.png"
 
-def display_logo(size="25000px"):
+def display_logo(size="300px"):
     """Affiche le logo depuis le fichier PNG"""
     try:
-        st.markdown(f'<div style="text-align: center; margin: 10px 0;">', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
         st.image(LOGO_PATH, width=int(size.replace("px", "")))
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
@@ -192,9 +192,9 @@ def page_accueil():
     
     # Afficher l'image hero depuis un fichier local
     try:
-        st.image("heros.png", use_container_width=True)
+        st.image("hero.png", use_container_width=True)
     except:
-        st.warning("⚠️ Image 'heros.png' introuvable. Placez-la dans le dossier de l'application.")
+        st.warning("⚠️ Image 'hero.png' introuvable. Placez-la dans le dossier de l'application.")
     
     st.markdown("""
         <div class="hero-overlay">
@@ -439,104 +439,6 @@ def page_visas():
                 </div>
             """, unsafe_allow_html=True)
 
-def page_admin():
-    if 'admin_logged' not in st.session_state:
-        st.session_state.admin_logged = False
-    
-    if not st.session_state.admin_logged:
-        st.markdown('<div class="admin-header"><h1>🔐 Administration</h1></div>', unsafe_allow_html=True)
-        
-        with st.form("login_form"):
-            username = st.text_input("Utilisateur")
-            password = st.text_input("Mot de passe", type="password")
-            
-            if st.form_submit_button("🔓 Connexion"):
-                if username == "admin" and password == "admin123":
-                    st.session_state.admin_logged = True
-                    st.rerun()
-                else:
-                    st.error("❌ Identifiants incorrects")
-        return
-    
-    st.markdown('<div class="admin-header"><h1>⚙️ Dashboard Admin</h1></div>', unsafe_allow_html=True)
-    
-    tab1, tab2 = st.tabs(["📋 Réservations", "💬 Messages"])
-    
-    with tab1:
-        reservations = get_reservations()
-        if reservations:
-            df = pd.DataFrame(reservations)
-            st.dataframe(df, use_container_width=True)
-        else:
-            st.info("📭 Aucune réservation")
-    
-    with tab2:
-        contacts = get_contacts()
-        if contacts:
-            for contact in contacts:
-                with st.expander(f"{contact['sujet']} - {contact['nom']}"):
-                    st.write(f"**Email:** {contact['email']}")
-                    st.write(f"**Message:** {contact['message']}")
-        else:
-            st.info("📭 Aucun message")
-    
-    if st.button("🚪 Déconnexion"):
-        st.session_state.admin_logged = False
-        st.rerun()
-
-# ====== NAVIGATION ======
-def main():
-    if 'page' not in st.session_state:
-        st.session_state.page = "accueil"
-    
-    with st.sidebar:
-        display_logo(size="120px")
-        st.markdown('<div style="text-align: center;"><h2>HCM VOYAGES</h2></div>', unsafe_allow_html=True)
-        st.markdown("---")
-        
-        pages = [
-            ("🏠", "Accueil", "accueil"),
-            ("🌍", "Destinations", "destinations"),
-            ("📝", "Réservation", "reservation"),
-            ("📋", "Visas", "visas"),
-            ("🇩🇿", "Discover Algeria", "discover-algeria"),
-            ("📞", "Contact", "contact"),
-            ("⚙️", "Administration", "admin"),
-        ]
-        
-        for icon, label, page_id in pages:
-            if st.button(f"{icon} {label}", use_container_width=True):
-                st.session_state.page = page_id
-                st.rerun()
-        
-        st.markdown("---")
-        st.markdown("""
-            <div style="text-align: center; font-size: 0.8em;">
-                © 2024 HCM Voyages<br>Tous droits réservés
-            </div>
-        """, unsafe_allow_html=True)
-    
-    if st.session_state.page == "accueil":
-        page_accueil()
-    elif st.session_state.page == "destinations":
-        page_destinations()
-    elif st.session_state.page == "reservation":
-        page_reservation()
-    elif st.session_state.page == "visas":
-        page_visas()
-    elif st.session_state.page == "discover-algeria":
-        page_discover_algeria()
-    elif st.session_state.page == "contact":
-        page_contact()
-    elif st.session_state.page == "admin":
-        page_admin()
-
-if __name__ == "__main__":
-    main()
-    PAGE DEMANDE DE VISA - À intégrer dans HCM Voyages
-Copiez cette fonction et ajoutez-la dans votre fichier principal
-"""
-
 def page_demande_visa():
     """Page dédiée uniquement à la demande de visa"""
     
@@ -630,55 +532,30 @@ def page_demande_visa():
         
         with col3:
             pays_destination = st.selectbox("Pays de destination *", [
-                "États-Unis (USA)",
-                "Royaume-Uni",
-                "France (Schengen)",
-                "Allemagne (Schengen)",
-                "Espagne (Schengen)",
-                "Italie (Schengen)",
-                "Canada",
-                "Australie",
-                "Émirats Arabes Unis",
-                "Turquie",
-                "Chine",
-                "Japon",
-                "Autre (préciser dans le message)"
+                "États-Unis (USA)", "Royaume-Uni", "France (Schengen)", "Allemagne (Schengen)",
+                "Espagne (Schengen)", "Italie (Schengen)", "Canada", "Australie",
+                "Émirats Arabes Unis", "Turquie", "Chine", "Japon", "Autre (préciser dans le message)"
             ])
             
             type_visa = st.selectbox("Type de visa *", [
-                "Tourisme",
-                "Affaires",
-                "Visite familiale",
-                "Études",
-                "Travail",
-                "Transit",
-                "Autre"
+                "Tourisme", "Affaires", "Visite familiale", "Études", "Travail", "Transit", "Autre"
             ])
             
-            date_depart_prevue = st.date_input("Date de départ prévue *", 
-                                              min_value=datetime.now().date())
+            date_depart_prevue = st.date_input("Date de départ prévue *", min_value=datetime.now().date())
         
         with col4:
-            duree_sejour = st.number_input("Durée du séjour (jours) *", 
-                                          min_value=1, max_value=365, value=15)
-            
+            duree_sejour = st.number_input("Durée du séjour (jours) *", min_value=1, max_value=365, value=15)
             entrees = st.selectbox("Nombre d'entrées souhaitées *", [
-                "Simple entrée",
-                "Double entrée",
-                "Entrées multiples"
+                "Simple entrée", "Double entrée", "Entrées multiples"
             ])
-            
             urgence = st.selectbox("Traitement *", [
-                "Normal (15-30 jours)",
-                "Urgent (7-15 jours)",
-                "Express (3-7 jours)"
+                "Normal (15-30 jours)", "Urgent (7-15 jours)", "Express (3-7 jours)"
             ])
         
         st.markdown("<br>", unsafe_allow_html=True)
         
         # Section 3: Informations complémentaires
         st.markdown("#### 📄 Informations Complémentaires")
-        
         col5, col6 = st.columns(2)
         
         with col5:
@@ -687,22 +564,14 @@ def page_demande_visa():
         
         with col6:
             situation_familiale = st.selectbox("Situation familiale", [
-                "Célibataire",
-                "Marié(e)",
-                "Divorcé(e)",
-                "Veuf(ve)"
+                "Célibataire", "Marié(e)", "Divorcé(e)", "Veuf(ve)"
             ])
-            
             voyages_anterieurs = st.selectbox("Voyages antérieurs dans ce pays", [
-                "Non, première visite",
-                "Oui, 1 fois",
-                "Oui, 2-3 fois",
-                "Oui, plus de 3 fois"
+                "Non, première visite", "Oui, 1 fois", "Oui, 2-3 fois", "Oui, plus de 3 fois"
             ])
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Message additionnel
         message_complementaire = st.text_area(
             "Message ou informations complémentaires",
             placeholder="Ajoutez toute information utile pour votre demande de visa...",
@@ -711,38 +580,21 @@ def page_demande_visa():
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Checkbox confirmation
-        col7, col8 = st.columns([3, 1])
-        with col7:
-            accepte_conditions = st.checkbox(
-                "J'accepte que mes données soient utilisées dans le cadre de ma demande de visa *",
-                value=False
-            )
-            st.markdown("""
-                <p style="font-size: 0.85em; color: #666; margin-top: 10px;">
-                * Champs obligatoires
-                </p>
-            """, unsafe_allow_html=True)
+        accepte_conditions = st.checkbox(
+            "J'accepte que mes données soient utilisées dans le cadre de ma demande de visa *",
+            value=False
+        )
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Bouton de soumission
-        col_center1, col_center2, col_center3 = st.columns([1, 2, 1])
-        with col_center2:
-            submitted = st.form_submit_button(
-                "📨 Envoyer ma demande de visa",
-                use_container_width=True
-            )
+        submitted = st.form_submit_button("📨 Envoyer ma demande de visa", use_container_width=True)
         
-        # Traitement du formulaire
         if submitted:
-            # Validation des champs obligatoires
             if not all([nom_complet, date_naissance, lieu_naissance, nationalite, 
                        numero_passeport, date_expiration_passeport, email, 
                        telephone, pays_destination, type_visa, date_depart_prevue, accepte_conditions]):
                 st.error("❌ Veuillez remplir tous les champs obligatoires (*)")
             else:
-                # Créer les données de la demande
                 demande_data = {
                     "nom_complet": nom_complet,
                     "date_naissance": str(date_naissance),
@@ -765,75 +617,25 @@ def page_demande_visa():
                     "message_complementaire": message_complementaire
                 }
                 
-                # Fonction pour ajouter la demande dans Supabase
                 if supabase:
                     try:
                         response = supabase.table('demandes_visa').insert(demande_data).execute()
-                        
                         st.success("✅ Votre demande de visa a été envoyée avec succès!")
-                        
-                        st.markdown(f"""
-                            <div class="info-box" style="background: #d4edda; border-left-color: #28a745;">
-                                <h4 style="color: #155724;">📧 Confirmation de votre demande</h4>
-                                <p style="color: #155724;">
-                                Un email de confirmation a été envoyé à <strong>{email}</strong>
-                                </p>
-                                <hr style="border-color: #c3e6cb;">
-                                <h5 style="color: #155724;">📋 Prochaines étapes:</h5>
-                                <ol style="color: #155724; margin-left: 20px;">
-                                    <li>Vérifiez votre boîte email (y compris les spams)</li>
-                                    <li>Notre équipe examinera votre demande sous 24h</li>
-                                    <li>Vous recevrez la liste des documents à fournir</li>
-                                    <li>Prise de rendez-vous si nécessaire</li>
-                                    <li>Suivi personnalisé jusqu'à l'obtention du visa</li>
-                                </ol>
-                                <p style="color: #155724; margin-top: 15px;">
-                                <strong>📞 Questions?</strong> Contactez-nous au +213 XXX XXX XXX
-                                </p>
-                            </div>
-                        """, unsafe_allow_html=True)
-                        
                         st.balloons()
-                        
                     except Exception as e:
                         st.error(f"❌ Erreur lors de l'envoi: {e}")
-                        st.warning("⚠️ Votre demande a été enregistrée localement. Connectez Supabase pour la sauvegarde permanente.")
+                        st.warning("⚠️ Votre demande a été enregistrée localement.")
                 else:
-                    st.warning("⚠️ Base de données non connectée. Votre demande a été enregistrée localement.")
-                    st.info("💡 Astuce: Configurez Supabase pour sauvegarder les demandes de visa.")
+                    st.warning("⚠️ Base de données non connectée.")
     
     st.markdown("<br><br>", unsafe_allow_html=True)
     
-    # Section avantages
-    st.markdown("### 🌟 Pourquoi choisir HCM Voyages pour votre visa ?")
-    
-    col1, col2, col3, col4 = st.columns(4)
-    
-    avantages = [
-        ("⚡", "Traitement Rapide", "Délais optimisés pour chaque type de visa"),
-        ("🎯", "Taux de Réussite Élevé", "Plus de 95% de demandes acceptées"),
-        ("🤝", "Accompagnement", "Suivi personnalisé de A à Z"),
-        ("📄", "Documents", "Aide à la constitution de votre dossier")
-    ]
-    
-    for col, (icon, titre, desc) in zip([col1, col2, col3, col4], avantages):
-        with col:
-            st.markdown(f"""
-                <div class="service-card" style="min-height: 200px;">
-                    <div style="font-size: 3.5em; margin-bottom: 15px;">{icon}</div>
-                    <h4 style="color: #667eea; margin: 15px 0;">{titre}</h4>
-                    <p style="color: #666; font-size: 0.9em;">{desc}</p>
-                </div>
-            """, unsafe_allow_html=True)
-    
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    
-    # FAQ Visa
+    # FAQ
     st.markdown("### ❓ Questions Fréquentes sur les Visas")
     
     with st.expander("📋 Quels documents sont généralement nécessaires ?"):
         st.markdown("""
-        **Documents standard pour la plupart des visas:**
+        **Documents standard:**
         - Passeport valide (minimum 6 mois)
         - Photos d'identité récentes
         - Formulaire de demande complété
@@ -841,68 +643,111 @@ def page_demande_visa():
         - Réservation d'hôtel ou lettre d'invitation
         - Billet d'avion aller-retour
         - Assurance voyage
+        """)
+    
+    with st.expander("⏱️ Combien de temps prend le traitement ?"):
+        st.markdown("""
+        **Délais moyens:**
+        - 🇪🇺 Schengen: 15-30 jours
+        - 🇺🇸 USA: 3-6 semaines
+        - 🇬🇧 UK: 3-4 semaines
+        - 🇨🇦 Canada: 2-4 semaines
+        """)
+
+def page_admin():
+    if 'admin_logged' not in st.session_state:
+        st.session_state.admin_logged = False
+    
+    if not st.session_state.admin_logged:
+        st.markdown('<div class="admin-header"><h1>🔐 Administration</h1></div>', unsafe_allow_html=True)
         
-        *Note: Les documents spécifiques varient selon le pays et le type de visa.*
-        """)
+        with st.form("login_form"):
+            username = st.text_input("Utilisateur")
+            password = st.text_input("Mot de passe", type="password")
+            
+            if st.form_submit_button("🔓 Connexion"):
+                if username == "admin" and password == "admin123":
+                    st.session_state.admin_logged = True
+                    st.rerun()
+                else:
+                    st.error("❌ Identifiants incorrects")
+        return
     
-    with st.expander("⏱️ Combien de temps prend le traitement d'un visa ?"):
-        st.markdown("""
-        **Délais moyens par région:**
-        - 🇪🇺 **Schengen:** 15-30 jours
-        - 🇺🇸 **USA:** 3-6 semaines
-        - 🇬🇧 **UK:** 3-4 semaines
-        - 🇨🇦 **Canada:** 2-4 semaines
-        - 🇦🇺 **Australie:** 15-30 jours
+    st.markdown('<div class="admin-header"><h1>⚙️ Dashboard Admin</h1></div>', unsafe_allow_html=True)
+    
+    tab1, tab2 = st.tabs(["📋 Réservations", "💬 Messages"])
+    
+    with tab1:
+        reservations = get_reservations()
+        if reservations:
+            df = pd.DataFrame(reservations)
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("📭 Aucune réservation")
+    
+    with tab2:
+        contacts = get_contacts()
+        if contacts:
+            for contact in contacts:
+                with st.expander(f"{contact['sujet']} - {contact['nom']}"):
+                    st.write(f"**Email:** {contact['email']}")
+                    st.write(f"**Message:** {contact['message']}")
+        else:
+            st.info("📭 Aucun message")
+    
+    if st.button("🚪 Déconnexion"):
+        st.session_state.admin_logged = False
+        st.rerun()
+
+# ====== NAVIGATION ======
+def main():
+    if 'page' not in st.session_state:
+        st.session_state.page = "accueil"
+    
+    with st.sidebar:
+        display_logo(size="120px")
+        st.markdown('<div style="text-align: center;"><h2>HCM VOYAGES</h2></div>', unsafe_allow_html=True)
+        st.markdown("---")
         
-        *Des options de traitement express sont disponibles pour la plupart des destinations.*
-        """)
-    
-    with st.expander("💰 Quels sont les frais de visa ?"):
-        st.markdown("""
-        **Les frais comprennent généralement:**
-        - Frais consulaires (variables selon le pays)
-        - Frais de service HCM Voyages
-        - Frais d'assurance (si nécessaire)
+        pages = [
+            ("🏠", "Accueil", "accueil"),
+            ("🌍", "Destinations", "destinations"),
+            ("📝", "Réservation", "reservation"),
+            ("📋", "Visas", "visas"),
+            ("📋", "Demande de Visa", "demande-visa"),
+            ("🇩🇿", "Discover Algeria", "discover-algeria"),
+            ("📞", "Contact", "contact"),
+            ("⚙️", "Administration", "admin"),
+        ]
         
-        *Les prix exacts vous seront communiqués après analyse de votre demande.*
-        """)
-    
-    with st.expander("🔄 Que faire si mon visa est refusé ?"):
-        st.markdown("""
-        **En cas de refus:**
-        1. Analyse gratuite des raisons du refus
-        2. Conseils pour améliorer votre dossier
-        3. Assistance pour la nouvelle demande
-        4. Possibilité d'appel selon les procédures du pays
+        for icon, label, page_id in pages:
+            if st.button(f"{icon} {label}", use_container_width=True):
+                st.session_state.page = page_id
+                st.rerun()
         
-        *HCM Voyages vous accompagne jusqu'à l'obtention de votre visa.*
-        """)
-    
-    with st.expander("📞 Comment suivre l'avancement de ma demande ?"):
+        st.markdown("---")
         st.markdown("""
-        **Suivi en temps réel:**
-        - Email de confirmation immédiat
-        - Notifications à chaque étape
-        - Espace client en ligne (bientôt disponible)
-        - Contact direct avec votre conseiller
-        - Mise à jour par SMS
-        """)
-    
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    
-    # Call to action final
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown("""
-            <div class="info-box" style="text-align: center; border-left: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <h3 style="color: white; margin-bottom: 15px;">📞 Besoin d'aide ?</h3>
-                <p style="color: white; font-size: 1.1em;">
-                Notre équipe est disponible du Dimanche au Jeudi<br>
-                de 9h00 à 18h00
-                </p>
-                <p style="color: white; font-size: 1.2em; font-weight: bold; margin-top: 15px;">
-                ☎️ +213 XXX XXX XXX<br>
-                📧 visa@hcmvoyages.dz
-                </p>
+            <div style="text-align: center; font-size: 0.8em;">
+                © 2024 HCM Voyages<br>Tous droits réservés
             </div>
         """, unsafe_allow_html=True)
+    
+    if st.session_state.page == "accueil":
+        page_accueil()
+    elif st.session_state.page == "destinations":
+        page_destinations()
+    elif st.session_state.page == "reservation":
+        page_reservation()
+    elif st.session_state.page == "visas":
+        page_visas()
+    elif st.session_state.page == "demande-visa":
+        page_demande_visa()
+    elif st.session_state.page == "discover-algeria":
+        page_discover_algeria()
+    elif st.session_state.page == "contact":
+        page_contact()
+    elif st.session_state.page == "admin":
+        page_admin()
+
+if __name__ == "__main__":
+    main()
