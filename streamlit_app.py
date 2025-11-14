@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 import re
 from typing import Optional, Dict, List, Tuple
 import hashlib
-import time
 
 # Configuration de la page
 st.set_page_config(
@@ -318,7 +317,7 @@ def load_css():
             color: white !important;
         }
         
-        .accueil-page p, .accueil-page label, .accueil-page span {
+        .accueil-page p:not(.card p), .accueil-page label, .accueil-page span:not(.card span) {
             color: white !important;
         }
         
@@ -327,7 +326,7 @@ def load_css():
             color: #1e40af !important;
         }
         
-        .other-page p, .other-page label, .other-page span {
+        .other-page > p, .other-page > label, .other-page > span {
             color: #374151 !important;
         }
         
@@ -380,14 +379,6 @@ def load_css():
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.3);
             background: white;
-        }
-        
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: white;
-            font-size: 1.2em;
         }
         
         /* Date Input */
@@ -467,7 +458,7 @@ def update_reservation_status(reservation_id: int, new_status: str) -> bool:
     if supabase:
         try:
             supabase.table('reservations').update({"statut": new_status}).eq('id', reservation_id).execute()
-            get_statistics.clear()  # Invalider le cache
+            get_statistics.clear()
             return True
         except:
             return False
@@ -550,22 +541,6 @@ def display_stat_card(icon: str, number: str, label: str):
             <p style="margin: 5px 0 0 0; color: #374151;">{label}</p>
         </div>
     """, unsafe_allow_html=True)
-
-def display_destination_card(dest: Dict, idx: int):
-    """Affiche une carte de destination"""
-    st.markdown(f"""
-        <div class="card">
-            <h3>📍 {dest['nom']}, {dest['pays']}</h3>
-            <p style="color: #666; margin: 10px 0; min-height: 50px;">{dest['description']}</p>
-            <span style="color: #888;">⏱️ {dest.get('duree', '5 jours')}</span>
-            <div class="price-tag">À partir de {format_currency(dest['prix'])}</div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button(f"✈️ Réserver {dest['nom']}", key=f"btn_{idx}", use_container_width=True):
-        st.session_state.destination_selectionnee = dest['nom']
-        st.session_state.page = "reservation"
-        st.rerun()
 
 # ====== CAROUSEL ======
 def display_carousel():
@@ -929,7 +904,6 @@ def page_reservation():
                     for error in errors:
                         st.error(f"❌ {error}")
                 else:
-                    # Calcul de la durée du séjour
                     duree_sejour = (date_retour - date_depart).days
                     
                     data = {
@@ -1062,10 +1036,10 @@ def page_contact():
         st.markdown("""
             <div class="card">
                 <h3 style="color: #1e40af;">📍 Notre Agence</h3>
-                <p style="color: #374151;"><strong>🏢 Adresse:</strong><br>Aïn Benian, Alger 16061, Algérie</p>
-                <p style="color: #374151;"><strong>📞 Téléphone:</strong><br>+213 XXX XXX XXX</p>
-                <p style="color: #374151;"><strong>📧 Email:</strong><br>contact@hcmvoyages.dz</p>
-                <p style="color: #374151;"><strong>🕐 Horaires:</strong><br>Dim-Jeu: 9h-18h</p>
+                <p style="color: #374151;"><strong>🏢 Adresse:</strong><br>Cité 632 logements BT 28<br>El Mohammadia, Alger, Algérie</p>
+                <p style="color: #374151;"><strong>📞 Téléphone:</strong><br>+213 783 80 27 12</p>
+                <p style="color: #374151;"><strong>📧 Email:</strong><br>hcmvoyage1@gmail.com</p>
+                <p style="color: #374151;"><strong>🕐 Horaires:</strong><br>Dim-Jeu: 9h-18h<br>Sam: 9h-13h</p>
             </div>
         """, unsafe_allow_html=True)
     
@@ -1093,7 +1067,6 @@ def page_admin():
     """Dashboard administrateur sécurisé"""
     st.markdown('<div class="other-page">', unsafe_allow_html=True)
     
-    # Authentification
     if 'admin_logged' not in st.session_state:
         st.session_state.admin_logged = False
     
@@ -1122,7 +1095,6 @@ def page_admin():
         st.markdown('</div>', unsafe_allow_html=True)
         return
     
-    # Dashboard
     st.markdown("# ⚙️ Dashboard Administrateur")
     
     stats = get_statistics()
@@ -1139,7 +1111,6 @@ def page_admin():
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Tabs pour les sections
     tab1, tab2, tab3 = st.tabs(["📋 Réservations", "💬 Messages", "🌍 Destinations"])
     
     with tab1:
@@ -1149,7 +1120,6 @@ def page_admin():
         if reservations:
             df = pd.DataFrame(reservations)
             
-            # Affichage avec badges de statut
             for _, res in df.iterrows():
                 status_badge = ""
                 if res.get('statut') == 'en_attente':
@@ -1175,4 +1145,426 @@ def page_admin():
                         st.markdown(f"**👥 Personnes:** {res.get('nb_personnes')}")
                     
                     with col3:
-                        st.markdown(f"**📝 Message:**
+                        st.markdown("**📝 Message:**")
+                        st.info(res.get('message', 'Aucun message'))
+                    
+                    st.markdown("---")
+                    col_act1, col_act2, col_act3 = st.columns(3)
+                    
+                    with col_act1:
+                        if st.button("✅ Confirmer", key=f"conf_{res.get('id')}", use_container_width=True):
+                            if update_reservation_status(res.get('id'), 'confirme'):
+                                st.success("Réservation confirmée")
+                                st.rerun()
+                    
+                    with col_act2:
+                        if st.button("⏳ En attente", key=f"pend_{res.get('id')}", use_container_width=True):
+                            if update_reservation_status(res.get('id'), 'en_attente'):
+                                st.success("Statut mis à jour")
+                                st.rerun()
+                    
+                    with col_act3:
+                        if st.button("❌ Annuler", key=f"canc_{res.get('id')}", use_container_width=True):
+                            if update_reservation_status(res.get('id'), 'annule'):
+                                st.success("Réservation annulée")
+                                st.rerun()
+        else:
+            st.info("📭 Aucune réservation")
+    
+    with tab2:
+        st.markdown("### Messages de Contact")
+        contacts = get_contacts()
+        
+        if contacts:
+            for contact in contacts:
+                is_read = contact.get('lu', False)
+                icon = "📧" if is_read else "✉️"
+                
+                with st.expander(f"{icon} {contact.get('sujet', 'Sans sujet')} - {contact.get('nom', 'Anonyme')}", expanded=not is_read):
+                    col1, col2 = st.columns([2, 1])
+                    
+                    with col1:
+                        st.markdown(f"**📧 Email:** {contact.get('email')}")
+                        st.markdown(f"**📅 Date:** {format_date(contact.get('date_creation', ''))}")
+                        st.markdown("**💬 Message:**")
+                        st.info(contact.get('message', 'Pas de message'))
+                    
+                    with col2:
+                        if not is_read:
+                            if st.button("✅ Marquer comme lu", key=f"read_{contact.get('id')}", use_container_width=True):
+                                if mark_contact_as_read(contact.get('id')):
+                                    st.success("Marqué comme lu")
+                                    st.rerun()
+        else:
+            st.info("📭 Aucun message")
+    
+    with tab3:
+        st.markdown("### Destinations Actives")
+        destinations = get_destinations()
+        
+        if destinations:
+            df_dest = pd.DataFrame(destinations)
+            columns_to_show = ['nom', 'pays', 'prix', 'categorie', 'duree']
+            available_cols = [col for col in columns_to_show if col in df_dest.columns]
+            
+            if available_cols:
+                st.dataframe(df_dest[available_cols], use_container_width=True, hide_index=True)
+            else:
+                st.dataframe(df_dest, use_container_width=True, hide_index=True)
+            
+            st.success(f"✅ {len(destinations)} destination(s) active(s)")
+        else:
+            st.info("🌍 Aucune destination configurée")
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    if st.button("🚪 Déconnexion", use_container_width=True):
+        st.session_state.admin_logged = False
+        st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+def page_visas():
+    """Page d'informations sur les visas"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
+    st.markdown("# 📋 Services Visa & Rendez-vous")
+    
+    st.markdown("""
+        <div class="info-box">
+            <h3>🌍 Obtenez votre visa facilement</h3>
+            <p style="font-size: 1.1em;">
+            HCM Voyages vous accompagne dans toutes vos démarches de visa. 
+            Prenez rendez-vous selon votre besoin : Normal, Express ou à Domicile.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("### 🌍 Nos Services Visa par Pays")
+    
+    visas_info = [
+        {
+            "flag": "🇺🇸",
+            "pays": "USA",
+            "types": ["📅 Normal", "⚡ Express"],
+            "description": "B1/B2, ESTA - Délai Normal: 4-8 semaines / Express: 1-2 semaines"
+        },
+        {
+            "flag": "🇫🇷",
+            "pays": "France",
+            "types": ["📅 Normal", "🏠 À Domicile"],
+            "description": "Court séjour Schengen - Délai: 15-45 jours / Service à domicile disponible"
+        },
+        {
+            "flag": "🇪🇸",
+            "pays": "Espagne",
+            "types": ["📅 Normal", "🏠 À Domicile"],
+            "description": "Schengen touristique - Délai: 15-30 jours / Prise RDV à votre domicile"
+        }
+    ]
+    
+    for visa in visas_info:
+        st.markdown(f"""
+            <div class="card" style="margin: 20px 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 3em; margin-right: 20px;">{visa['flag']}</div>
+                    <div>
+                        <h2 style="color: #1e40af; margin: 0;">Visa {visa['pays']}</h2>
+                        <p style="color: #4b5563; margin: 5px 0 0 0;">{visa['description']}</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    {"".join([f'<span class="badge badge-info">{t}</span>' for t in visa['types']])}
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("📅 Prendre un rendez-vous", use_container_width=True, type="primary"):
+            st.session_state.page = "demande-visa"
+            st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+def page_demande_visa():
+    """Page de demande de rendez-vous visa"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
+    st.markdown("# 📅 Demande de Rendez-vous Visa")
+    
+    st.markdown("""
+        <div class="hero-section" style="height: 250px;">
+            <div class="hero-overlay">
+                <div style="font-size: 3em; margin-bottom: 10px;">📅</div>
+                <h1 class="hero-title" style="font-size: 2.5em;">Prenez Rendez-vous</h1>
+                <p class="hero-subtitle">Choisissez le service adapté à vos besoins</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    with st.form("rdv_visa_form", clear_on_submit=True):
+        st.markdown("### 👤 Informations Personnelles")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            nom = st.text_input("Nom complet *", placeholder="Votre nom")
+            email = st.text_input("Email *", placeholder="votre@email.com")
+            telephone = st.text_input("Téléphone *", placeholder="+213 XXX XXX XXX")
+        
+        with col2:
+            numero_passeport = st.text_input("Numéro de passeport *", placeholder="Ex: 123456789")
+            date_naissance = st.date_input("Date de naissance *", min_value=datetime(1920, 1, 1).date(), max_value=datetime.now().date())
+            profession = st.text_input("Profession", placeholder="Votre profession")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("### 📋 Détails du Rendez-vous")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            pays_destination = st.selectbox("Pays de destination *", [
+                "-- Sélectionnez --", 
+                "🇺🇸 États-Unis (USA)", 
+                "🇫🇷 France", 
+                "🇪🇸 Espagne"
+            ])
+            
+            type_visa = st.selectbox("Type de visa *", [
+                "Tourisme", "Affaires", "Visite familiale", "Études", "Travail"
+            ])
+        
+        with col2:
+            if "USA" in pays_destination:
+                type_service = st.selectbox("Type de service *", [
+                    "📅 Normal (4-8 semaines)",
+                    "⚡ Express (1-2 semaines)"
+                ])
+            elif "France" in pays_destination or "Espagne" in pays_destination:
+                type_service = st.selectbox("Type de service *", [
+                    "📅 Normal (15-45 jours)",
+                    "🏠 À Domicile (rendez-vous chez vous)"
+                ])
+            else:
+                type_service = st.selectbox("Type de service *", [
+                    "📅 Normal"
+                ])
+            
+            date_rdv_souhaitee = st.date_input(
+                "Date de rendez-vous souhaitée *",
+                value=datetime.now().date() + timedelta(days=7),
+                min_value=datetime.now().date() + timedelta(days=3)
+            )
+        
+        if "🏠" in type_service:
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("### 🏠 Adresse pour rendez-vous à domicile")
+            adresse = st.text_area("Adresse complète *", height=100, placeholder="Rue, ville, code postal...")
+        else:
+            adresse = ""
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        message = st.text_area("Informations complémentaires", height=100, placeholder="Précisez vos besoins particuliers...")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        submitted = st.form_submit_button("📅 Confirmer mon rendez-vous", use_container_width=True)
+        
+        if submitted:
+            errors = []
+            
+            if not all([nom, email, telephone, numero_passeport]):
+                errors.append("Veuillez remplir tous les champs obligatoires")
+            elif not validate_email(email):
+                errors.append("Email invalide")
+            elif not validate_phone(telephone):
+                errors.append("Téléphone invalide")
+            elif pays_destination == "-- Sélectionnez --":
+                errors.append("Veuillez sélectionner un pays")
+            elif "🏠" in type_service and not adresse:
+                errors.append("L'adresse est obligatoire pour le service à domicile")
+            
+            if errors:
+                for error in errors:
+                    st.error(f"❌ {error}")
+            else:
+                service_type = "Express" if "⚡" in type_service else ("À Domicile" if "🏠" in type_service else "Normal")
+                pays_clean = pays_destination.split(" ")[1] if " " in pays_destination else pays_destination
+                
+                st.success("✅ Demande de rendez-vous envoyée avec succès!")
+                st.markdown(f"""
+                    <div class="info-box success-box">
+                        <h4>🎉 Rendez-vous enregistré !</h4>
+                        <p><strong>Pays:</strong> {pays_clean}</p>
+                        <p><strong>Type de visa:</strong> {type_visa}</p>
+                        <p><strong>Service:</strong> {service_type}</p>
+                        <p><strong>Date souhaitée:</strong> {date_rdv_souhaitee.strftime('%d/%m/%Y')}</p>
+                        {"<p><strong>Adresse:</strong> " + adresse + "</p>" if adresse else ""}
+                        <hr>
+                        <p>📧 Une confirmation vous sera envoyée à <strong>{email}</strong></p>
+                        <p>📞 Notre équipe vous contactera sous 48h pour confirmer votre rendez-vous</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                st.balloons()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+def page_discover_algeria():
+    """Page Discover Algeria"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
+    st.markdown("""
+        <div class="hero-section" style="height: 300px;">
+            <div class="hero-overlay">
+                <div style="font-size: 3em; margin-bottom: 10px;">🇩🇿</div>
+                <h1 class="hero-title">Discover Algeria</h1>
+                <p class="hero-subtitle">Explorez la beauté du Maghreb</p>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    tab1, tab2 = st.tabs(["🏠 Présentation", "🗺️ Destinations"])
+    
+    with tab1:
+        st.markdown("""
+            <div class="info-box">
+                <h3>🇩🇿 Bienvenue en Algérie</h3>
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                L'Algérie, perle du Maghreb, vous invite à découvrir ses trésors. 
+                Du Sahara majestueux aux plages méditerranéennes, en passant par les villes historiques,
+                l'Algérie offre une diversité exceptionnelle.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("### ✨ Pourquoi visiter l'Algérie ?")
+        
+        col1, col2 = st.columns(2)
+        
+        highlights = [
+            ("🏜️", "Le Sahara", "Le plus grand désert du monde"),
+            ("🏛️", "Patrimoine UNESCO", "Sites historiques exceptionnels"),
+            ("🏖️", "Côtes méditerranéennes", "Plages magnifiques"),
+            ("🍲", "Gastronomie riche", "Saveurs authentiques"),
+            ("🎭", "Culture vivante", "Traditions millénaires"),
+            ("🤝", "Hospitalité", "Accueil chaleureux"),
+        ]
+        
+        for i, (icon, titre, desc) in enumerate(highlights):
+            col = col1 if i < 3 else col2
+            with col:
+                st.markdown(f"""
+                    <div class="card" style="margin: 10px 0;">
+                        <div style="font-size: 2em; float: left; margin-right: 15px;">{icon}</div>
+                        <div>
+                            <strong style="color: #1e40af;">{titre}</strong><br>
+                            <span style="color: #4b5563; font-size: 0.9em;">{desc}</span>
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
+    
+    with tab2:
+        st.markdown("### 🗺️ Destinations Phares")
+        
+        destinations_dz = [
+            {"nom": "Alger", "description": "La capitale avec sa Casbah UNESCO", "prix": 450},
+            {"nom": "Sahara", "description": "Le plus grand désert du monde", "prix": 890},
+            {"nom": "Constantine", "description": "Ville des ponts suspendus", "prix": 520},
+            {"nom": "Oran", "description": "Perle de la Méditerranée", "prix": 480},
+            {"nom": "Tlemcen", "description": "Ville d'art et d'histoire", "prix": 510},
+            {"nom": "Annaba", "description": "Hippone l'antique", "prix": 470},
+        ]
+        
+        col1, col2, col3 = st.columns(3)
+        for idx, dest in enumerate(destinations_dz):
+            col = [col1, col2, col3][idx % 3]
+            with col:
+                st.markdown(f"""
+                    <div class="card">
+                        <h3>🇩🇿 {dest['nom']}</h3>
+                        <p style="min-height: 50px; color: #4b5563;">{dest['description']}</p>
+                        <div class="price-tag">{format_currency(dest['prix'])}</div>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                if st.button(f"✈️ Réserver {dest['nom']}", key=f"dz_{idx}", use_container_width=True):
+                    st.session_state.destination_selectionnee = dest['nom']
+                    st.session_state.page = "reservation"
+                    st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ====== NAVIGATION PRINCIPALE ======
+def main():
+    """Fonction principale avec navigation optimisée"""
+    
+    load_css()
+    
+    if 'page' not in st.session_state:
+        st.session_state.page = "accueil"
+    
+    with st.sidebar:
+        display_logo(size="120px")
+        st.markdown('<div style="text-align: center;"><h2>HCM VOYAGES</h2></div>', unsafe_allow_html=True)
+        st.markdown("---")
+        
+        pages = [
+            ("🏠", "Accueil", "accueil"),
+            ("🌍", "Voyages Organisés", "destinations"),
+            ("📝", "Réservation", "reservation"),
+            ("📋", "Visa & RDV", "visas"),
+            ("📅", "Prendre RDV", "demande-visa"),
+            ("🇩🇿", "Discover Algeria", "discover-algeria"),
+            ("📞", "Contact", "contact"),
+            ("⚙️", "Admin", "admin"),
+        ]
+        
+        for icon, label, page_id in pages:
+            button_type = "primary" if st.session_state.page == page_id else "secondary"
+            if st.button(f"{icon} {label}", use_container_width=True, key=f"nav_{page_id}"):
+                st.session_state.page = page_id
+                st.rerun()
+        
+        st.markdown("---")
+        
+        if st.session_state.get('admin_logged', False):
+            stats = get_statistics()
+            st.markdown(f"""
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin: 10px 0;">
+                    <p style="margin: 5px 0; font-size: 0.9em;">📋 Réservations: <strong>{stats['total_reservations']}</strong></p>
+                    <p style="margin: 5px 0; font-size: 0.9em;">⏳ En attente: <strong>{stats['reservations_en_attente']}</strong></p>
+                    <p style="margin: 5px 0; font-size: 0.9em;">📧 Messages: <strong>{stats['messages_non_lus']}</strong></p>
+                </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        st.markdown("""
+            <div style="text-align: center; font-size: 0.8em; color: #1e40af;">
+                © 2024 HCM Voyages<br>
+                Tous droits réservés
+            </div>
+        """, unsafe_allow_html=True)
+    
+    routes = {
+        "accueil": page_accueil,
+        "destinations": page_destinations,
+        "reservation": page_reservation,
+        "visas": page_visas,
+        "demande-visa": page_demande_visa,
+        "discover-algeria": page_discover_algeria,
+        "contact": page_contact,
+        "admin": page_admin,
+    }
+    
+    current_page = st.session_state.page
+    if current_page in routes:
+        routes[current_page]()
+    else:
+        st.error("❌ Page introuvable")
+        st.session_state.page = "accueil"
+        st.rerun()
+
+if __name__ == "__main__":
+    main()
