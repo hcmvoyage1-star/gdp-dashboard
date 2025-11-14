@@ -192,9 +192,9 @@ def page_accueil():
     
     # Afficher l'image hero depuis un fichier local
     try:
-        st.image("hero.png", use_container_width=True)
+        st.image("hero.jpeg", use_container_width=True)
     except:
-        st.warning("⚠️ Image 'hero.png' introuvable. Placez-la dans le dossier de l'application.")
+        st.warning("⚠️ Image 'hero.jpeg' introuvable. Placez-la dans le dossier de l'application.")
     
     st.markdown("""
         <div class="hero-overlay">
