@@ -503,6 +503,11 @@ def page_reservation():
                     "Date de départ *", 
                     min_value=datetime.now().date()
                 )
+                )
+                date_retour = st.date_input(
+                    "Date de Retour *", 
+                    min_value=datetime.now().date()
+                )
                 nb_personnes = st.number_input("Nombre de personnes *", min_value=1, max_value=20, value=1)
             
             st.markdown("<br>", unsafe_allow_html=True)
