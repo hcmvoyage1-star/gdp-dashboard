@@ -93,7 +93,7 @@ def load_css():
         }
         
         .stApp { 
-            background: white;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         }
         
         /* Hero Section */
@@ -104,8 +104,8 @@ def load_css():
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.2);
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            background: white;
         }
         
         .hero-overlay {
@@ -122,20 +122,20 @@ def load_css():
         }
         
         .hero-title {
-            color: white;
+            color: #1e40af;
             font-size: 3.5em;
             font-weight: 700;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             animation: fadeInDown 0.8s ease-out;
         }
         
         .hero-subtitle {
-            color: white;
+            color: #2563eb;
             font-size: 1.5em;
             font-weight: 300;
             margin: 20px 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
         }
         
@@ -154,16 +154,16 @@ def load_css():
             background: white;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             margin: 15px 0;
             transition: all 0.3s ease;
-            border: 2px solid #e5e7eb;
+            border: 2px solid rgba(255, 255, 255, 0.1);
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.2);
-            border-color: #2563eb;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: white;
         }
         
         .price-tag {
@@ -179,38 +179,44 @@ def load_css():
         
         /* Buttons */
         .stButton>button {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            color: white;
+            background: white;
+            color: #1e40af;
             border-radius: 25px;
             padding: 12px 30px;
-            border: none;
+            border: 2px solid white;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
         .stButton>button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #f8fafc;
         }
         
         /* Sidebar */
         [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
+            background: white;
+            border-right: 2px solid #e5e7eb;
         }
         
         [data-testid="stSidebar"] * {
-            color: white !important;
+            color: #1e40af !important;
+        }
+        
+        [data-testid="stSidebar"] h2 {
+            color: #1e40af !important;
         }
         
         /* Info boxes */
         .info-box {
-            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            background: white;
             padding: 20px;
             border-radius: 12px;
-            border-left: 4px solid #2563eb;
+            border-left: 4px solid white;
             margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
         
         .success-box {
@@ -242,19 +248,26 @@ def load_css():
         
         /* Headers */
         h1, h2, h3 {
-            color: #1e40af;
+            color: white;
+        }
+        
+        /* Text */
+        p, label, span {
+            color: white;
         }
         
         /* Inputs */
-        .stTextInput input, .stTextArea textarea, .stSelectbox select {
+        .stTextInput input, .stTextArea textarea, .stSelectbox select, .stNumberInput input {
             border-radius: 10px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e40af;
             transition: all 0.3s ease;
         }
         
-        .stTextInput input:focus, .stTextArea textarea:focus, .stSelectbox select:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        .stTextInput input:focus, .stTextArea textarea:focus, .stSelectbox select:focus, .stNumberInput input:focus {
+            border-color: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
         }
         
         /* Tabs */
@@ -263,41 +276,71 @@ def load_css():
         }
         
         .stTabs [data-baseweb="tab"] {
-            background-color: #f3f4f6;
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px 10px 0 0;
-            color: #6b7280;
+            color: white;
             font-weight: 500;
         }
         
         .stTabs [aria-selected="true"] {
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-            color: white;
+            background: white;
+            color: #1e40af !important;
         }
         
         /* Expander */
         .streamlit-expanderHeader {
-            background-color: #f3f4f6;
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #1e40af !important;
         }
         
         .streamlit-expanderHeader:hover {
-            border-color: #2563eb;
+            border-color: white;
         }
         
         /* DataFrames */
         .dataframe {
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #e5e7eb;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: white;
         }
         
         /* Loading */
         .loading {
             text-align: center;
             padding: 40px;
-            color: #2563eb;
+            color: white;
             font-size: 1.2em;
+        }
+        
+        /* Date Input */
+        .stDateInput input {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e40af;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Success/Error messages */
+        .stSuccess {
+            background: white;
+            color: #065f46;
+        }
+        
+        .stError {
+            background: white;
+            color: #991b1b;
+        }
+        
+        .stInfo {
+            background: white;
+            color: #1e40af;
+        }
+        
+        .stWarning {
+            background: white;
+            color: #92400e;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -428,8 +471,8 @@ def display_stat_card(icon: str, number: str, label: str):
     st.markdown(f"""
         <div class="card" style="text-align: center;">
             <div style="font-size: 2.5em; margin-bottom: 10px;">{icon}</div>
-            <h2 style="color: #2563eb; margin: 5px 0;">{number}</h2>
-            <p style="margin: 5px 0 0 0; color: #6b7280;">{label}</p>
+            <h2 style="color: #1e40af; margin: 5px 0;">{number}</h2>
+            <p style="margin: 5px 0 0 0; color: #374151;">{label}</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -497,8 +540,8 @@ def page_accueil():
             st.markdown(f"""
                 <div class="card" style="min-height: 180px;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">{icon}</div>
-                    <h3 style="color: #2563eb; margin: 10px 0;">{titre}</h3>
-                    <p style="color: #6b7280; font-size: 0.9em;">{desc}</p>
+                    <h3 style="color: #1e40af; margin: 10px 0;">{titre}</h3>
+                    <p style="color: #4b5563; font-size: 0.9em;">{desc}</p>
                 </div>
             """, unsafe_allow_html=True)
     
@@ -758,11 +801,11 @@ def page_contact():
     with col1:
         st.markdown("""
             <div class="card">
-                <h3 style="color: #2563eb;">📍 Notre Agence</h3>
-                <p><strong>🏢 Adresse:</strong><br>Aïn Benian, Alger 16061, Algérie</p>
-                <p><strong>📞 Téléphone:</strong><br>+213 XXX XXX XXX</p>
-                <p><strong>📧 Email:</strong><br>contact@hcmvoyages.dz</p>
-                <p><strong>🕐 Horaires:</strong><br>Dim-Jeu: 9h-18h</p>
+                <h3 style="color: #1e40af;">📍 Notre Agence</h3>
+                <p style="color: #374151;"><strong>🏢 Adresse:</strong><br>Aïn Benian, Alger 16061, Algérie</p>
+                <p style="color: #374151;"><strong>📞 Téléphone:</strong><br>+213 XXX XXX XXX</p>
+                <p style="color: #374151;"><strong>📧 Email:</strong><br>contact@hcmvoyages.dz</p>
+                <p style="color: #374151;"><strong>🕐 Horaires:</strong><br>Dim-Jeu: 9h-18h</p>
             </div>
         """, unsafe_allow_html=True)
     
@@ -951,8 +994,8 @@ def page_visas():
     
     st.markdown("""
         <div class="info-box">
-            <h3 style="color: #2563eb;">🌍 Obtenez votre visa facilement</h3>
-            <p style="font-size: 1.1em;">
+            <h3 style="color: #1e40af;">🌍 Obtenez votre visa facilement</h3>
+            <p style="font-size: 1.1em; color: #374151;">
             HCM Voyages vous accompagne dans toutes vos démarches de visa. 
             Notre équipe d'experts prend en charge votre dossier de A à Z.
             </p>
@@ -978,9 +1021,9 @@ def page_visas():
             st.markdown(f"""
                 <div class="card" style="min-height: 200px;">
                     <div style="font-size: 3em; margin-bottom: 10px;">{flag}</div>
-                    <h3 style="color: #2563eb; margin: 10px 0;">Visa {pays}</h3>
-                    <p style="margin: 5px 0; font-size: 0.9em;"><strong>Types:</strong> {types}</p>
-                    <p style="margin: 5px 0; font-size: 0.9em;"><strong>Délai:</strong> {delai}</p>
+                    <h3 style="color: #1e40af; margin: 10px 0;">Visa {pays}</h3>
+                    <p style="margin: 5px 0; font-size: 0.9em; color: #374151;"><strong>Types:</strong> {types}</p>
+                    <p style="margin: 5px 0; font-size: 0.9em; color: #374151;"><strong>Délai:</strong> {delai}</p>
                     <p style="margin: 10px 0 0 0; color: #dc2626; font-weight: bold; font-size: 1.2em;">{tarif}</p>
                 </div>
             """, unsafe_allow_html=True)
@@ -1070,8 +1113,8 @@ def page_discover_algeria():
     with tab1:
         st.markdown("""
             <div class="info-box">
-                <h3 style="color: #067d45;">🇩🇿 Bienvenue en Algérie</h3>
-                <p style="font-size: 1.1em; line-height: 1.8;">
+                <h3 style="color: #1e40af;">🇩🇿 Bienvenue en Algérie</h3>
+                <p style="font-size: 1.1em; line-height: 1.8; color: #374151;">
                 L'Algérie, perle du Maghreb, vous invite à découvrir ses trésors. 
                 Du Sahara majestueux aux plages méditerranéennes, en passant par les villes historiques,
                 l'Algérie offre une diversité exceptionnelle.
@@ -1099,8 +1142,8 @@ def page_discover_algeria():
                     <div class="card" style="margin: 10px 0;">
                         <div style="font-size: 2em; float: left; margin-right: 15px;">{icon}</div>
                         <div>
-                            <strong style="color: #2563eb;">{titre}</strong><br>
-                            <span style="color: #6b7280; font-size: 0.9em;">{desc}</span>
+                            <strong style="color: #1e40af;">{titre}</strong><br>
+                            <span style="color: #4b5563; font-size: 0.9em;">{desc}</span>
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
@@ -1124,7 +1167,7 @@ def page_discover_algeria():
                 st.markdown(f"""
                     <div class="card">
                         <h3>🇩🇿 {dest['nom']}</h3>
-                        <p style="min-height: 50px; color: #666;">{dest['description']}</p>
+                        <p style="min-height: 50px; color: #4b5563;">{dest['description']}</p>
                         <div class="price-tag">{format_currency(dest['prix'])}</div>
                     </div>
                 """, unsafe_allow_html=True)
