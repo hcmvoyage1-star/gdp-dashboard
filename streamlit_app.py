@@ -34,7 +34,7 @@ supabase = init_supabase()
 # ====== LOGO ======
 LOGO_PATH = "log.png"
 
-def display_logo(size="50px"):
+def display_logo(size="1000px"):
     """Affiche le logo depuis le fichier PNG"""
     try:
         st.markdown(f'<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
