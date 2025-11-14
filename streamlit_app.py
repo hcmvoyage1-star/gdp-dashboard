@@ -528,9 +528,9 @@ def page_accueil():
         ("🎫", "Billets d'Avion", "Les meilleurs tarifs pour toutes destinations"),
         ("🏨", "Réservation Hôtels", "Hébergements de qualité sélectionnés"),
         ("🎒", "Circuits Organisés", "Voyages tout compris clés en main"),
-        ("🚗", "Location de Voitures", "Mobilité à destination garantie"),
         ("📋", "Assistance Visa", "Aide complète pour vos démarches"),
-        ("💼", "Voyages Affaires", "Solutions professionnelles sur mesure")
+        ("💼", "Voyages Affaires", "Solutions professionnelles sur mesure"),
+        ("🎯", "Séjours sur Mesure", "Créez votre voyage personnalisé")
     ]
     
     col1, col2, col3 = st.columns(3)
@@ -542,6 +542,56 @@ def page_accueil():
                     <div style="font-size: 2.5em; margin-bottom: 10px;">{icon}</div>
                     <h3 style="color: #1e40af; margin: 10px 0;">{titre}</h3>
                     <p style="color: #4b5563; font-size: 0.9em;">{desc}</p>
+                </div>
+            """, unsafe_allow_html=True)
+    
+    # Section Photos Nature
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("### 🌿 Découvrez des Destinations Sublimes")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    nature_images = [
+        {
+            "emoji": "🏔️",
+            "title": "Montagnes Majestueuses",
+            "description": "Des sommets enneigés aux panoramas à couper le souffle"
+        },
+        {
+            "emoji": "🏖️",
+            "title": "Plages Paradisiaques",
+            "description": "Eaux turquoise et sable blanc pour une détente absolue"
+        },
+        {
+            "emoji": "🌲",
+            "title": "Forêts Enchantées",
+            "description": "Nature verdoyante et sentiers paisibles"
+        },
+        {
+            "emoji": "🌅",
+            "title": "Couchers de Soleil",
+            "description": "Des moments magiques dans des lieux exceptionnels"
+        },
+        {
+            "emoji": "🏝️",
+            "title": "Îles Tropicales",
+            "description": "Évasion garantie dans des cadres idylliques"
+        },
+        {
+            "emoji": "🗻",
+            "title": "Volcans & Geysers",
+            "description": "Découvrez les merveilles géologiques du monde"
+        }
+    ]
+    
+    for i, img in enumerate(nature_images):
+        col = [col1, col2, col3][i % 3]
+        with col:
+            st.markdown(f"""
+                <div class="card" style="min-height: 220px; position: relative; overflow: hidden;">
+                    <div style="font-size: 4em; margin-bottom: 15px; text-align: center;">{img['emoji']}</div>
+                    <h3 style="color: #1e40af; text-align: center; margin: 10px 0;">{img['title']}</h3>
+                    <p style="color: #4b5563; text-align: center; font-size: 0.9em;">{img['description']}</p>
                 </div>
             """, unsafe_allow_html=True)
     
