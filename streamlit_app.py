@@ -1660,7 +1660,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-⚡ Express"],
+    Express"],
             "description": "B1/B2, ESTA - Délai Normal: 4-8 semaines / Express: 1-2 semaines"
         },
         {
