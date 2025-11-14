@@ -502,7 +502,7 @@ def page_reservation():
                 date_depart = st.date_input(
                     "Date de départ *", 
                     min_value=datetime.now().date()
-                )
+                
                 )
                 date_retour = st.date_input(
                     "Date de Retour *", 
