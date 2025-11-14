@@ -1,4 +1,748 @@
-"""
+def page_discover_algeria():
+    """Page Discover Algeria intégrée"""
+    
+    # Hero Section Algérie
+    st.markdown("""
+        <div class="hero-section" style="height: 400px;">
+            <img src="https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1920&h=600&fit=crop&q=80" 
+                 alt="Découvrir l'Algérie" class="hero-image"/>
+            <div class="hero-overlay">
+                <div style="text-align: center;">
+                    <div style="font-size: 4em; margin-bottom: 20px;">🇩🇿</div>
+                    <h1 class="hero-title">Discover Algeria</h1>
+                    <p class="hero-subtitle">Explorez la beauté du Maghreb - من الصحراء إلى البحر</p>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Tabs pour organiser le contenu
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "🏠 Présentation",
+        "🗺️ Destinations", 
+        "📋 Visa Algérie",
+        "🎫 Circuits & Réservations",
+        "🇩🇿 Culture & Gastronomie"
+    ])
+    
+    with tab1:
+        presentation_algerie()
+    
+    with tab2:
+        destinations_algerie()
+    
+    with tab3:
+        visa_algerie()
+    
+    with tab4:
+        circuits_algerie()
+    
+    with tab5:
+        culture_algerie()
+
+def presentation_algerie():
+    """Section présentation de l'Algérie"""
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("""
+            <div class="info-box">
+                <h3 style="color: #067d45; margin-bottom: 15px;">🇩🇿 Bienvenue en Algérie</h3>
+                <p style="font-size: 1.1em; line-height: 1.8;">
+                L'Algérie, perle du Maghreb, vous invite à découvrir ses trésors cachés. 
+                Du <strong>Sahara majestueux</strong> aux plages méditerranéennes, des villes historiques 
+                aux oasis verdoyantes, chaque coin du pays raconte une histoire millénaire.
+                </p>
+                <p style="font-size: 1.1em; line-height: 1.8; margin-top: 15px;">
+                Plus grand pays d'Afrique avec ses <strong>2,4 millions km²</strong>, 
+                l'Algérie offre une diversité géographique et culturelle incomparable.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+            <div class="stat-card">
+                <h4 style="color: #067d45; margin-bottom: 20px;">📊 Chiffres Clés</h4>
+                <div style="text-align: left;">
+                    <p><strong>🏜️ Sahara:</strong> 80% du territoire</p>
+                    <p><strong>🌊 Côtes:</strong> 1200 km</p>
+                    <p><strong>🏛️ Sites UNESCO:</strong> 7 sites</p>
+                    <p><strong>👥 Population:</strong> 44 millions</p>
+                    <p><strong>🗣️ Langues:</strong> Arabe, Tamazight, Français</p>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Pourquoi visiter l'Algérie
+    st.markdown("### 🌟 Pourquoi choisir l'Algérie ?")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+            <div class="service-card">
+                <div style="font-size: 3em; margin-bottom: 10px;">🏜️</div>
+                <h4 style="color: #067d45;">Sahara Unique</h4>
+                <p style="font-size: 0.9em;">Le plus grand désert chaud du monde avec ses dunes majestueuses</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+            <div class="service-card">
+                <div style="font-size: 3em; margin-bottom: 10px;">🏛️</div>
+                <h4 style="color: #067d45;">Patrimoine Riche</h4>
+                <p style="font-size: 0.9em;">7 sites UNESCO dont Timgad, Djemila, Casbah d'Alger</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+            <div class="service-card">
+                <div style="font-size: 3em; margin-bottom: 10px;">🍲</div>
+                <h4 style="color: #067d45;">Gastronomie</h4>
+                <p style="font-size: 0.9em;">Couscous, tajines, pâtisseries orientales authentiques</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+            <div class="service-card">
+                <div style="font-size: 3em; margin-bottom: 10px;">💚</div>
+                <h4 style="color: #067d45;">Hospitalité</h4>
+                <p style="font-size: 0.9em;">Accueil chaleureux et traditions d'hospitalité légendaires</p>
+            </div>
+        """, unsafe_allow_html=True)
+
+def destinations_algerie():
+    """Section destinations algériennes"""
+    
+    st.markdown("### 🗺️ Destinations Incontournables")
+    
+    destinations_dz = [
+        {
+            "nom": "Alger - La Blanche",
+            "region": "Nord",
+            "image": "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=600&h=400&fit=crop&q=80",
+            "description": "La capitale avec sa célèbre Casbah classée UNESCO, Notre-Dame d'Afrique et le Jardin d'Essai",
+            "prix": 450,
+            "duree": "4 jours",
+            "highlights": ["Casbah UNESCO", "Front de mer", "Musée du Bardo", "Jardin d'Essai"]
+        },
+        {
+            "nom": "Sahara Algérien",
+            "region": "Sud",
+            "image": "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&h=400&fit=crop&q=80",
+            "description": "Aventure dans le plus grand désert du monde : Tamanrasset, Djanet, Tassili N'Ajjer",
+            "prix": 890,
+            "duree": "7 jours",
+            "highlights": ["Hoggar", "Tassili N'Ajjer", "Dunes de l'Erg", "Peintures rupestres"]
+        },
+        {
+            "nom": "Constantine - Ville des Ponts",
+            "region": "Est",
+            "image": "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=400&fit=crop&q=80",
+            "description": "Ville spectaculaire perchée sur des gorges avec ses ponts suspendus légendaires",
+            "prix": 520,
+            "duree": "3 jours",
+            "highlights": ["Pont Sidi M'Cid", "Palais Ahmed Bey", "Gorges du Rhumel", "Monument aux Morts"]
+        },
+        {
+            "nom": "Oran - Capitale du Raï",
+            "region": "Ouest",
+            "image": "https://images.unsplash.com/photo-1564221710304-0b37c8b9d729?w=600&h=400&fit=crop&q=80",
+            "description": "Ville côtière dynamique, berceau du Raï, avec ses plages et son fort Santa Cruz",
+            "prix": 480,
+            "duree": "4 jours",
+            "highlights": ["Fort Santa Cruz", "Théâtre", "Plages", "Front de mer"]
+        },
+        {
+            "nom": "Tlemcen - Perle du Maghreb",
+            "region": "Ouest",
+            "image": "https://images.unsplash.com/photo-1583221123604-c8f3e6e6f0f6?w=600&h=400&fit=crop&q=80",
+            "description": "Cité historique aux influences andalouses avec mosquées, palais et grottes",
+            "prix": 495,
+            "duree": "3 jours",
+            "highlights": ["Grande Mosquée", "Mansourah", "Grottes de Beni Add", "Lalla Setti"]
+        },
+        {
+            "nom": "Ghardaïa - Vallée du M'Zab",
+            "region": "Sud",
+            "image": "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&h=400&fit=crop&q=80",
+            "description": "Architecture mozabite unique classée UNESCO, ville oasis au cœur du désert",
+            "prix": 580,
+            "duree": "4 jours",
+            "highlights": ["Vallée du M'Zab", "Architecture mozabite", "Marchés", "Ksour"]
+        },
+        {
+            "nom": "Annaba - Hippone Antique",
+            "region": "Est",
+            "image": "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&h=400&fit=crop&q=80",
+            "description": "Ville côtière avec plages magnifiques et ruines romaines de Hippo Regius",
+            "prix": 465,
+            "duree": "3 jours",
+            "highlights": ["Basilique Saint Augustin", "Ruines romaines", "Plages", "Cap de Garde"]
+        },
+        {
+            "nom": "Tipaza - Site Romain",
+            "region": "Nord",
+            "image": "https://images.unsplash.com/photo-1513342791620-b106dc487c94?w=600&h=400&fit=crop&q=80",
+            "description": "Ruines romaines spectaculaires au bord de la Méditerranée, site UNESCO",
+            "prix": 380,
+            "duree": "2 jours",
+            "highlights": ["Ruines romaines UNESCO", "Mausolée royal", "Plages", "Musée"]
+        },
+        {
+            "nom": "Béjaïa - Perle de la Kabylie",
+            "region": "Nord",
+            "image": "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&h=400&fit=crop&q=80",
+            "description": "Ville côtière berbère avec montagnes, plages et patrimoine historique",
+            "prix": 470,
+            "duree": "4 jours",
+            "highlights": ["Cap Carbon", "Gouraya", "Plages", "Casbah"]
+        }
+    ]
+    
+    # Filtres
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        search_dz = st.text_input("🔍 Rechercher une destination algérienne", "", 
+                                  placeholder="Alger, Sahara, Constantine...")
+    with col2:
+        region_filter = st.selectbox("📍 Région", ["Toutes", "Nord", "Sud", "Est", "Ouest"])
+    
+    # Filtrer les destinations
+    filtered_dest = destinations_dz
+    if search_dz:
+        filtered_dest = [d for d in filtered_dest if 
+                        search_dz.lower() in d['nom'].lower()]
+    if region_filter != "Toutes":
+        filtered_dest = [d for d in filtered_dest if d['region'] == region_filter]
+    
+    st.markdown(f"**{len(filtered_dest)} destination(s) trouvée(s)**")
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Affichage en grille
+    cols = st.columns(3)
+    for idx, dest in enumerate(filtered_dest):
+        with cols[idx % 3]:
+            # Afficher l'image avec gestion d'erreur
+            try:
+                st.image(dest["image"], use_container_width=True)
+            except:
+                st.markdown("""
+                    <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #067d45 0%, #d63031 100%); 
+                         border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em;">
+                        🇩🇿
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
+                <div class="destination-card" style="margin-top: -10px;">
+                    <h3>🇩🇿 {dest['nom']}</h3>
+                    <p style="color: #888; font-size: 0.9em; margin: 5px 0;">
+                        {dest['region']} • {dest['duree']}
+                    </p>
+                    <p style="color: #666; margin: 10px 0; font-size: 0.95em;">
+                        {dest['description']}
+                    </p>
+                    <div style="margin: 15px 0;">
+                        <strong style="color: #067d45;">Points forts:</strong>
+                        <div style="margin-top: 8px;">
+            """, unsafe_allow_html=True)
+            
+            for highlight in dest['highlights'][:3]:
+                st.markdown(f"""
+                    <div style="display: flex; align-items: center; gap: 8px; margin: 5px 0;">
+                        <div style="width: 6px; height: 6px; background: #067d45; border-radius: 50%;"></div>
+                        <span style="font-size: 0.9em;">{highlight}</span>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
+                        </div>
+                    </div>
+                    <div class="price-tag" style="font-size: 1.3em;">
+                        À partir de {dest['prix']}€
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button(f"✈️ Réserver {dest['nom']}", key=f"dz_{idx}", use_container_width=True):
+                st.session_state.destination_selectionnee = dest['nom']
+                st.session_state.page = "reservation"
+                st.success(f"🎉 {dest['nom']} sélectionné ! Passez à la réservation.")
+
+def visa_algerie():
+    """Section visa pour l'Algérie"""
+    
+    st.markdown("### 📋 Visa pour l'Algérie")
+    
+    # Image bannière avec gestion d'erreur
+    try:
+        st.image("https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1200&h=250&fit=crop&q=80",
+                 use_container_width=True)
+    except:
+        pass
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Informations générales
+    st.markdown("""
+        <div class="info-box">
+            <h4 style="color: #067d45; margin-bottom: 15px;">🇩🇿 Informations Visa Algérie</h4>
+            <p style="line-height: 1.8;">
+            HCM Voyages vous accompagne dans toutes vos démarches de visa pour l'Algérie.
+            Que ce soit pour le <strong>tourisme</strong>, les <strong>affaires</strong> ou 
+            la <strong>visite familiale</strong>, notre équipe vous guide pas à pas.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Types de visa
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+            <div class="service-card" style="text-align: left;">
+                <h4 style="color: #067d45;">🎫 Visa Tourisme</h4>
+                <div style="margin: 15px 0;">
+                    <p><strong>⏱️ Durée:</strong> 30 à 90 jours</p>
+                    <p><strong>💰 Prix:</strong> 85€</p>
+                    <p><strong>📅 Délai:</strong> 15-30 jours</p>
+                </div>
+                <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                    <strong style="color: #067d45;">Documents requis:</strong>
+                    <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+                        <li>Passeport (valide 6 mois)</li>
+                        <li>2 photos d'identité</li>
+                        <li>Attestation d'hébergement</li>
+                        <li>Billet d'avion A/R</li>
+                        <li>Justificatifs financiers</li>
+                    </ul>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+            <div class="service-card" style="text-align: left;">
+                <h4 style="color: #067d45;">💼 Visa Affaires</h4>
+                <div style="margin: 15px 0;">
+                    <p><strong>⏱️ Durée:</strong> 30 à 90 jours</p>
+                    <p><strong>💰 Prix:</strong> 85€</p>
+                    <p><strong>📅 Délai:</strong> 10-20 jours</p>
+                </div>
+                <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                    <strong style="color: #067d45;">Documents requis:</strong>
+                    <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+                        <li>Passeport (valide 6 mois)</li>
+                        <li>2 photos d'identité</li>
+                        <li>Invitation entreprise algérienne</li>
+                        <li>Attestation employeur</li>
+                        <li>Registre de commerce</li>
+                    </ul>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    col3, col4 = st.columns(2)
+    
+    with col3:
+        st.markdown("""
+            <div class="service-card" style="text-align: left;">
+                <h4 style="color: #067d45;">👨‍👩‍👧 Visa Familial</h4>
+                <div style="margin: 15px 0;">
+                    <p><strong>⏱️ Durée:</strong> 90 jours renouvelable</p>
+                    <p><strong>💰 Prix:</strong> 85€</p>
+                    <p><strong>📅 Délai:</strong> 20-30 jours</p>
+                </div>
+                <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                    <strong style="color: #067d45;">Documents requis:</strong>
+                    <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+                        <li>Passeport (valide 6 mois)</li>
+                        <li>Acte de naissance</li>
+                        <li>Certificat d'hébergement</li>
+                        <li>Lien de parenté</li>
+                        <li>Copie CNI de l'hôte</li>
+                    </ul>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown("""
+            <div class="service-card" style="text-align: left;">
+                <h4 style="color: #067d45;">✈️ Visa Transit</h4>
+                <div style="margin: 15px 0;">
+                    <p><strong>⏱️ Durée:</strong> 48 heures</p>
+                    <p><strong>💰 Prix:</strong> 30€</p>
+                    <p><strong>📅 Délai:</strong> 5-10 jours</p>
+                </div>
+                <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                    <strong style="color: #067d45;">Documents requis:</strong>
+                    <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+                        <li>Passeport (valide 6 mois)</li>
+                        <li>1 photo d'identité</li>
+                        <li>Billet continuation voyage</li>
+                        <li>Visa pays destination</li>
+                    </ul>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    
+    # Formulaire de demande
+    st.markdown("### 📝 Demande de Visa Algérie")
+    
+    with st.form("visa_algerie_form"):
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            nom = st.text_input("Nom complet *")
+            email = st.text_input("Email *")
+            telephone = st.text_input("Téléphone *")
+            nationalite = st.text_input("Nationalité *")
+        
+        with col2:
+            type_visa = st.selectbox("Type de visa *", [
+                "Tourisme",
+                "Affaires",
+                "Familial",
+                "Transit"
+            ])
+            date_depart = st.date_input("Date de départ souhaitée *")
+            duree_sejour = st.number_input("Durée du séjour (jours)", min_value=1, max_value=90, value=15)
+            ville_destination = st.selectbox("Ville principale", [
+                "Alger",
+                "Oran",
+                "Constantine",
+                "Annaba",
+                "Tlemcen",
+                "Béjaïa",
+                "Autre"
+            ])
+        
+        message = st.text_area("Informations complémentaires", 
+                              placeholder="Précisez votre demande...")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        if st.form_submit_button("📨 Envoyer la demande de visa", use_container_width=True):
+            if nom and email and telephone:
+                st.success("✅ Votre demande de visa Algérie a été envoyée!")
+                st.markdown("""
+                    <div class="info-box">
+                        <h4>📧 Prochaines étapes</h4>
+                        <ol>
+                            <li>Vous recevrez un email de confirmation sous 24h</li>
+                            <li>Liste complète des documents à fournir</li>
+                            <li>Prise de rendez-vous au consulat si nécessaire</li>
+                            <li>Suivi personnalisé jusqu'à l'obtention du visa</li>
+                        </ol>
+                    </div>
+                """, unsafe_allow_html=True)
+                st.balloons()
+            else:
+                st.error("❌ Veuillez remplir tous les champs obligatoires")
+
+def circuits_algerie():
+    """Section circuits organisés en Algérie"""
+    
+    st.markdown("### 🎫 Circuits Organisés en Algérie")
+    
+    circuits = [
+        {
+            "nom": "Grand Tour d'Algérie",
+            "duree": "14 jours",
+            "prix": 1890,
+            "image": "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600&h=300&fit=crop&q=80",
+            "description": "Circuit complet : Alger, Constantine, Sahara, Tlemcen",
+            "inclus": ["Hôtels 4*", "Tous les repas", "Guide francophone", "4x4 au Sahara", "Vols internes"]
+        },
+        {
+            "nom": "Aventure Sahara",
+            "duree": "7 jours",
+            "prix": 1290,
+            "image": "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&h=300&fit=crop&q=80",
+            "description": "Immersion totale dans le désert : Tamanrasset, Djanet, Tassili",
+            "inclus": ["Campement berbère", "4x4 + chauffeur", "Guide touareg", "Pens. complète", "Randonnées"]
+        },
+        {
+            "nom": "Côte Méditerranéenne",
+            "duree": "8 jours",
+            "prix": 890,
+            "image": "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&h=300&fit=crop&q=80",
+            "description": "Alger, Tipaza, Oran, Annaba : villes côtières et plages",
+            "inclus": ["Hôtels bord de mer", "Demi-pension", "Transports", "Visites guidées", "Excursions"]
+        },
+        {
+            "nom": "Route des Ksour",
+            "duree": "10 jours",
+            "prix": 1150,
+            "image": "https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=600&h=300&fit=crop&q=80",
+            "description": "Ghardaïa, Béni Isguen, Taghit : architecture du sud",
+            "inclus": ["Maisons d'hôtes", "Pension complète", "Guide local", "Visites ksour", "Artisanat"]
+        }
+    ]
+    
+    for circuit in circuits:
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            try:
+                st.image(circuit["image"], use_container_width=True)
+            except:
+                st.markdown("""
+                    <div style="width: 100%; height: 150px; background: linear-gradient(135deg, #067d45 0%, #d63031 100%); 
+                         border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+                        🎫
+                    </div>
+                """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown(f"""
+                <div class="destination-card">
+                    <h3 style="color: #067d45;">{circuit['nom']}</h3>
+                    <p style="color: #666; margin: 10px 0;">{circuit['description']}</p>
+                    <div style="display: flex; gap: 20px; margin: 15px 0; font-size: 0.95em;">
+                        <span><strong>⏱️</strong> {circuit['duree']}</span>
+                        <span><strong style="color: #d63031;">💰</strong> {circuit['prix']}€/pers</span>
+                    </div>
+                    <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin: 10px 0;">
+                        <strong style="color: #067d45;">✓ Inclus:</strong>
+                        <div style="margin-top: 8px;">
+            """, unsafe_allow_html=True)
+            
+            for item in circuit['inclus']:
+                st.markdown(f"""
+                    <span style="display: inline-block; background: white; padding: 4px 10px; 
+                          border-radius: 12px; margin: 3px; font-size: 0.85em;">
+                        {item}
+                    </span>
+                """, unsafe_allow_html=True)
+            
+            st.markdown("</div></div></div>", unsafe_allow_html=True)
+            
+            if st.button(f"📅 Réserver {circuit['nom']}", key=f"circuit_{circuit['nom']}", 
+                        use_container_width=True):
+                st.success(f"Circuit '{circuit['nom']}' ajouté ! Passez à la réservation.")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+
+def culture_algerie():
+    """Section culture et gastronomie algérienne"""
+    
+    st.markdown("### 🇩🇿 Culture & Gastronomie Algérienne")
+    
+    tab1, tab2, tab3 = st.tabs(["🍲 Gastronomie", "🎭 Culture & Traditions", "🎪 Festivals & Événements"])
+    
+    with tab1:
+        st.markdown("#### 🍲 Spécialités Culinaires")
+        
+        col1, col2, col3 = st.columns(3)
+        
+        plats = [
+            ("🥘", "Couscous", "Plat national, servi le vendredi"),
+            ("🍲", "Chakhchoukha", "Spécialité berbère du Sud"),
+            ("🥖", "Tajine", "Ragoût aux légumes et viande"),
+            ("🥟", "Brik", "Feuille farcie croustillante"),
+            ("🍢", "Merguez", "Saucisse épicée grillée"),
+            ("🍰", "Makroud", "Pâtisserie aux dattes"),
+            ("☕", "Café turc", "Tradition du café fort"),
+            ("🍵", "Thé à la menthe", "Symbole d'hospitalité algérienne"),
+            ("🥐", "Zlabiya", "Pâtisserie au miel du Ramadan")
+        ]
+        
+        for i, (emoji, nom, desc) in enumerate(plats):
+            col = [col1, col2, col3][i % 3]
+            with col:
+                st.markdown(f"""
+                    <div style="background: white; padding: 15px; border-radius: 12px; 
+                          box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 15px; text-align: center;">
+                        <div style="font-size: 2.5em; margin-bottom: 8px;">{emoji}</div>
+                        <h4 style="color: #067d45; margin: 8px 0;">{nom}</h4>
+                        <p style="font-size: 0.85em; color: #666; margin: 0;">{desc}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        st.markdown("""
+            <div class="info-box">
+                <h4 style="color: #067d45;">🍽️ Restaurants Recommandés</h4>
+                <p><strong>Alger:</strong> Le Tantra, Restaurant El Djenina, Le Bosphore</p>
+                <p><strong>Oran:</strong> Le Petit Poucet, Le Méridien, Restaurant Ibn Khaldoun</p>
+                <p><strong>Constantine:</strong> Le Zénith, Restaurant Cirta, Le Rocher</p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with tab2:
+        st.markdown("#### 🎭 Traditions & Coutumes")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+                <div class="service-card" style="text-align: left;">
+                    <h4 style="color: #067d45;">🤝 Hospitalité</h4>
+                    <p style="line-height: 1.8;">
+                    L'hospitalité algérienne est légendaire. Le visiteur est toujours accueilli 
+                    avec thé à la menthe et pâtisseries. La générosité et le respect de l'invité 
+                    sont des valeurs fondamentales.
+                    </p>
+                    <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                        <strong>À savoir:</strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>Enlever les chaussures à l'entrée</li>
+                            <li>Accepter le thé offert</li>
+                            <li>Saluer tout le monde</li>
+                        </ul>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+                <div class="service-card" style="text-align: left;">
+                    <h4 style="color: #067d45;">🎨 Artisanat</h4>
+                    <p style="line-height: 1.8;">
+                    Tapis berbères, poterie kabyle, bijoux touaregs, cuivre ciselé... 
+                    L'artisanat algérien reflète la richesse culturelle du pays.
+                    </p>
+                    <div style="background: #f0f9f4; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                        <strong>À rapporter:</strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>Tapis de Ghardaïa</li>
+                            <li>Bijoux kabyles</li>
+                            <li>Poterie de Kabylie</li>
+                        </ul>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        st.markdown("""
+            <div class="info-box">
+                <h4 style="color: #067d45;">🎵 Musique Algérienne</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; margin-bottom: 8px;">🎤</div>
+                        <strong>Raï</strong>
+                        <p style="font-size: 0.85em; color: #666; margin: 5px 0;">Oran - Musique populaire moderne</p>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; margin-bottom: 8px;">🎻</div>
+                        <strong>Chaâbi</strong>
+                        <p style="font-size: 0.85em; color: #666; margin: 5px 0;">Alger - Musique traditionnelle</p>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2em; margin-bottom: 8px;">🥁</div>
+                        <strong>Gnawa</strong>
+                        <p style="font-size: 0.85em; color: #666; margin: 5px 0;">Sud - Musique spirituelle</p>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with tab3:
+        st.markdown("#### 🎪 Festivals & Événements")
+        
+        festivals = [
+            {
+                "nom": "Festival du Raï",
+                "lieu": "Oran",
+                "periode": "Juillet-Août",
+                "description": "Célébration de la musique raï avec des artistes internationaux",
+                "icon": "🎤"
+            },
+            {
+                "nom": "Festival de Timgad",
+                "lieu": "Batna",
+                "periode": "Juillet",
+                "description": "Festival de musique dans les ruines romaines classées UNESCO",
+                "icon": "🏛️"
+            },
+            {
+                "nom": "Festival International du Film",
+                "lieu": "Alger",
+                "periode": "Novembre",
+                "description": "Projection de films algériens et internationaux",
+                "icon": "🎬"
+            },
+            {
+                "nom": "Festival de la Musique Andalouse",
+                "lieu": "Tlemcen",
+                "periode": "Octobre",
+                "description": "Célébration de la musique andalouse et hawzi",
+                "icon": "🎵"
+            },
+            {
+                "nom": "Moussem du Mouloud",
+                "lieu": "Tout le pays",
+                "periode": "Variable (calendrier lunaire)",
+                "description": "Célébration de la naissance du Prophète",
+                "icon": "🕌"
+            },
+            {
+                "nom": "Yennayer (Nouvel An Berbère)",
+                "lieu": "Kabylie et Aurès",
+                "periode": "12 Janvier",
+                "description": "Célébration du nouvel an amazigh avec traditions ancestrales",
+                "icon": "🎊"
+            }
+        ]
+        
+        for festival in festivals:
+            st.markdown(f"""
+                <div class="destination-card">
+                    <div style="display: flex; align-items: start; gap: 15px;">
+                        <div style="font-size: 3em;">{festival['icon']}</div>
+                        <div style="flex: 1;">
+                            <h4 style="color: #067d45; margin: 0 0 8px 0;">{festival['nom']}</h4>
+                            <p style="margin: 5px 0; color: #666;">
+                                <strong>📍 {festival['lieu']}</strong> • 
+                                <strong>📅 {festival['periode']}</strong>
+                            </p>
+                            <p style="margin: 10px 0 0 0; line-height: 1.6;">{festival['description']}</p>
+                        </div>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
+        
+        st.markdown("""
+            <div class="info-box">
+                <h4 style="color: #067d45;">📅 Jours Fériés Algériens</h4>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px;">
+                    <div>• 1er Janvier - Nouvel An</div>
+                    <div>• 12 Janvier - Yennayer (Nouvel An Berbère)</div>
+                    <div>• 1er Mai - Fête du Travail</div>
+                    <div>• 5 Juillet - Fête de l'Indépendance</div>
+                    <div>• 1er Novembre - Révolution</div>
+                    <div>• Aid el-Fitr et Aid el-Adha (dates variables)</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+def page_contact():
+    """Page de contact améliorée"""
+    st.markdown("# 📞 Contactez-Nous")
+    st.markdown("Notre équipe est à votre écoute pour répondre à toutes vos questions")
+    
+    st.markdown("<br>", unsafe_allow_html=True)"""
 HCM VOYAGES - Application Streamlit
 Agence de voyage complète avec gestion des réservations, destinations et visas
 """
@@ -21,8 +765,8 @@ st.set_page_config(
 )
 
 # ====== CONFIGURATION SUPABASE ======
-SUPABASE_URL = "https://oilamfxxqjopuopgskfc.supabase.co"  # ex: https://xxxxx.supabase.co
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbGFtZnh4cWpvcHVvcGdza2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNDY4NTYsImV4cCI6MjA3ODYyMjg1Nn0.PzIJjkIAKQ8dzNcTA4t6PSaCoAWG6kWZQxEibG5gUwE"  # Votre clé API publique
+SUPABASE_URL = "VOTRE_SUPABASE_URL"  # ex: https://xxxxx.supabase.co
+SUPABASE_KEY = "VOTRE_SUPABASE_KEY"  # Votre clé API publique
 
 # ====== CONFIGURATION LOGO ======
 # OPTION 1 : URL directe de votre logo (recommandé)
@@ -602,7 +1346,16 @@ def page_accueil():
     cols = st.columns(4)
     for idx, dest in enumerate(destinations_vedettes):
         with cols[idx]:
-            st.image(dest["image"], use_container_width=True)
+            try:
+                st.image(dest["image"], use_container_width=True)
+            except:
+                st.markdown(f"""
+                    <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                         border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em;">
+                        ✈️
+                    </div>
+                """, unsafe_allow_html=True)
+            
             st.markdown(f"""
                 <div style="text-align: center; padding: 10px;">
                     <h4 style="margin: 10px 0; color: #667eea;">{dest["nom"]}</h4>
@@ -622,8 +1375,12 @@ def page_accueil():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.image("https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=300&h=300&fit=crop&q=80", 
-                 use_container_width=True)
+        try:
+            st.image("https://images.unsplash.com/photo-1527631746610-bca00a040d60?w=300&h=300&fit=crop&q=80", 
+                     use_container_width=True)
+        except:
+            st.markdown('<div style="width: 100%; height: 200px; background: #667eea; border-radius: 10px;"></div>', 
+                       unsafe_allow_html=True)
         st.markdown("""
             <div style="background: white; padding: 20px; border-radius: 15px; margin-top: -20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
                 <p style="font-style: italic; color: #666;">"Un voyage inoubliable à Paris ! L'équipe HCM a tout organisé parfaitement."</p>
@@ -632,8 +1389,12 @@ def page_accueil():
         """, unsafe_allow_html=True)
     
     with col2:
-        st.image("https://images.unsplash.com/photo-1542909168-82c3e7fdca44?w=300&h=300&fit=crop&q=80", 
-                 use_container_width=True)
+        try:
+            st.image("https://images.unsplash.com/photo-1542909168-82c3e7fdca44?w=300&h=300&fit=crop&q=80", 
+                     use_container_width=True)
+        except:
+            st.markdown('<div style="width: 100%; height: 200px; background: #667eea; border-radius: 10px;"></div>', 
+                       unsafe_allow_html=True)
         st.markdown("""
             <div style="background: white; padding: 20px; border-radius: 15px; margin-top: -20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
                 <p style="font-style: italic; color: #666;">"Service impeccable pour mon visa Schengen. Obtenu en 15 jours !"</p>
@@ -642,8 +1403,12 @@ def page_accueil():
         """, unsafe_allow_html=True)
     
     with col3:
-        st.image("https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&q=80", 
-                 use_container_width=True)
+        try:
+            st.image("https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&q=80", 
+                     use_container_width=True)
+        except:
+            st.markdown('<div style="width: 100%; height: 200px; background: #667eea; border-radius: 10px;"></div>', 
+                       unsafe_allow_html=True)
         st.markdown("""
             <div style="background: white; padding: 20px; border-radius: 15px; margin-top: -20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
                 <p style="font-style: italic; color: #666;">"Les Maldives en famille, un rêve devenu réalité grâce à HCM Voyages !"</p>
@@ -830,8 +1595,16 @@ def page_destinations():
                 duree = dest.get('duree', '5 jours')
                 image_url = dest.get('image_url', 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop&q=80')
                 
-                # Afficher l'image
-                st.image(image_url, use_container_width=True)
+                # Afficher l'image avec gestion d'erreur
+                try:
+                    st.image(image_url, use_container_width=True)
+                except:
+                    st.markdown("""
+                        <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                             border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em;">
+                            🌍
+                        </div>
+                    """, unsafe_allow_html=True)
                 
                 st.markdown(f"""
                     <div class="destination-card" style="margin-top: -10px;">
@@ -854,9 +1627,12 @@ def page_destinations():
 def page_reservation():
     """Page de réservation améliorée"""
     
-    # Image hero réservation
-    st.image("https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1200&h=250&fit=crop&q=80", 
-             use_container_width=True)
+    # Image hero réservation avec gestion d'erreur
+    try:
+        st.image("https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1200&h=250&fit=crop&q=80", 
+                 use_container_width=True)
+    except:
+        pass
     
     st.markdown("# 📝 Réserver Votre Voyage de Rêve")
     st.markdown("Remplissez le formulaire ci-dessous et notre équipe vous contactera rapidement")
@@ -1294,6 +2070,10 @@ def main():
             st.session_state.page = "visas"
             st.rerun()
         
+        if st.button("🇩🇿 Discover Algeria", use_container_width=True):
+            st.session_state.page = "discover-algeria"
+            st.rerun()
+        
         if st.button("📞 Contact", use_container_width=True):
             st.session_state.page = "contact"
             st.rerun()
@@ -1335,6 +2115,8 @@ def main():
         page_reservation()
     elif st.session_state.page == "visas":
         page_visas()
+    elif st.session_state.page == "discover-algeria":
+        page_discover_algeria()
     elif st.session_state.page == "contact":
         page_contact()
     elif st.session_state.page == "admin":
