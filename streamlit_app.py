@@ -573,7 +573,10 @@ def load_css():
         </style>
     """, unsafe_allow_html=True)
         
-        /* Hero Section */
+        
+    
+    
+    /* Hero Section */
         .hero-section {
             position: relative;
             width: 100%;
