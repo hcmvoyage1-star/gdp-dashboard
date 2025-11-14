@@ -83,7 +83,7 @@ def display_logo(size: str = "300px"):
 
 # ====== CSS OPTIMISÉ ======
 def load_css():
-    """Charge le CSS avec animations optimisées"""
+    """Charge le CSS avec animations optimisées et responsive mobile"""
     st.markdown("""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
@@ -95,6 +95,483 @@ def load_css():
         .stApp { 
             background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         }
+        
+        /* Responsive - Mobile First */
+        @media only screen and (max-width: 768px) {
+            /* Ajustement des titres pour mobile */
+            h1 { font-size: 1.8em !important; }
+            h2 { font-size: 1.5em !important; }
+            h3 { font-size: 1.2em !important; }
+            
+            /* Hero Section responsive */
+            .hero-section {
+                height: 300px !important;
+            }
+            
+            .hero-title {
+                font-size: 2em !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 1em !important;
+            }
+            
+            /* Carousel responsive */
+            .carousel-container {
+                height: 350px !important;
+            }
+            
+            .carousel-title {
+                font-size: 0.3em !important;
+            }
+            
+            .carousel-description {
+                font-size: 0.15em !important;
+            }
+            
+            /* Cards responsive */
+            .card {
+                padding: 15px !important;
+                margin: 10px 0 !important;
+            }
+            
+            .price-tag {
+                font-size: 18px !important;
+                padding: 8px 15px !important;
+            }
+            
+            /* Boutons plus grands pour mobile */
+            .stButton>button {
+                padding: 15px 25px !important;
+                font-size: 16px !important;
+                min-height: 50px !important;
+            }
+            
+            /* Inputs plus grands */
+            .stTextInput input, 
+            .stTextArea textarea, 
+            .stSelectbox select, 
+            .stNumberInput input,
+            .stDateInput input {
+                font-size: 16px !important;
+                padding: 12px !important;
+                min-height: 50px !important;
+            }
+            
+            /* Sidebar mobile */
+            [data-testid="stSidebar"] {
+                min-width: 250px !important;
+            }
+            
+            /* Colonnes en mode mobile - stack vertical */
+            [data-testid="column"] {
+                width: 100% !important;
+                flex: 100% !important;
+                max-width: 100% !important;
+            }
+            
+            /* Espacement mobile */
+            .element-container {
+                margin-bottom: 15px !important;
+            }
+            
+            /* Form labels plus lisibles */
+            label {
+                font-size: 16px !important;
+            }
+        }
+        
+        /* Tablettes */
+        @media only screen and (min-width: 769px) and (max-width: 1024px) {
+            .hero-title {
+                font-size: 2.8em !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2em !important;
+            }
+            
+            .carousel-container {
+                height: 400px !important;
+            }
+        }
+        
+        /* Amélioration du touch sur mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .stButton>button {
+                -webkit-tap-highlight-color: rgba(30, 64, 175, 0.3);
+                touch-action: manipulation;
+            }
+            
+            .card {
+                touch-action: manipulation;
+            }
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .hero-title {
+            color: #1e40af;
+            font-size: 3.5em;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: fadeInDown 0.8s ease-out;
+            text-align: center;
+        }
+        
+        .hero-subtitle {
+            color: #2563eb;
+            font-size: 1.5em;
+            font-weight: 300;
+            margin: 20px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+            text-align: center;
+        }
+        
+        /* Carousel */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8em;
+            animation: slideIn 0.5s ease-out;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.9), rgba(37, 99, 235, 0.9));
+        }
+        
+        .carousel-content {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+        
+        .carousel-title {
+            font-size: 0.4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .carousel-description {
+            font-size: 0.2em;
+            font-weight: 300;
+            margin-top: 15px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card h2, .card h3, .card h4 {
+            color: #1e3a8a !important;
+        }
+        
+        .card p, .card span:not(.badge), .card strong {
+            color: #1e3a8a !important;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: #1e3a8a;
+        }
+        
+        .price-tag {
+            color: #dc2626;
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 15px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-radius: 12px;
+        }
+        
+        /* Buttons */
+        .stButton>button {
+            background: white;
+            color: #1e40af;
+            border-radius: 25px;
+            padding: 12px 30px;
+            border: 2px solid white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+        }
+        
+        .stButton>button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #f8fafc;
+        }
+        
+        .stButton>button:active {
+            transform: translateY(0);
+        }
+        
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            background: white;
+            border-right: 2px solid #e5e7eb;
+        }
+        
+        [data-testid="stSidebar"] * {
+            color: #1e40af !important;
+        }
+        
+        [data-testid="stSidebar"] h2 {
+            color: #1e40af !important;
+        }
+        
+        /* Info boxes */
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid white;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-box h3, .info-box h4, .info-box p, .info-box strong {
+            color: #1e3a8a !important;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left-color: #10b981;
+        }
+        
+        .success-box h3, .success-box h4, .success-box p, .success-box strong {
+            color: #065f46 !important;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left-color: #f59e0b;
+        }
+        
+        .warning-box h3, .warning-box h4, .warning-box p, .warning-box strong {
+            color: #92400e !important;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+        
+        .badge-success { background: #10b981; color: white; }
+        .badge-warning { background: #f59e0b; color: white; }
+        .badge-danger { background: #dc2626; color: white; }
+        .badge-info { background: #3b82f6; color: white; }
+        
+        /* Headers - Blanc sur accueil (fond bleu) */
+        .accueil-page h1, .accueil-page h2, .accueil-page h3 {
+            color: white !important;
+        }
+        
+        .accueil-page p:not(.card p):not(.info-box p), 
+        .accueil-page label:not(.card label), 
+        .accueil-page span:not(.card span):not(.badge) {
+            color: white !important;
+        }
+        
+        /* Headers - Blanc sur autres pages (fond bleu) */
+        .other-page h1, .other-page h2, .other-page h3 {
+            color: white !important;
+        }
+        
+        .other-page > p:not(.card p):not(.info-box p), 
+        .other-page > label:not(.card label), 
+        .other-page > span:not(.card span):not(.badge),
+        .other-page [data-testid="stMarkdownContainer"] > p {
+            color: white !important;
+        }
+        
+        /* Inputs */
+        .stTextInput input, .stTextArea textarea, .stSelectbox select, .stNumberInput input {
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e40af;
+            transition: all 0.3s ease;
+        }
+        
+        .stTextInput input:focus, .stTextArea textarea:focus, .stSelectbox select:focus, .stNumberInput input:focus {
+            border-color: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Tabs */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px 10px 0 0;
+            color: white !important;
+            font-weight: 500;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background: white;
+            color: #1e3a8a !important;
+        }
+        
+        .stTabs [data-baseweb="tab-panel"] {
+            color: white !important;
+        }
+        
+        .stTabs [data-baseweb="tab-panel"] h3,
+        .stTabs [data-baseweb="tab-panel"] h4 {
+            color: white !important;
+        }
+        
+        /* Expander */
+        .streamlit-expanderHeader {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #1e3a8a !important;
+        }
+        
+        .streamlit-expanderHeader:hover {
+            border-color: #1e3a8a;
+        }
+        
+        .streamlit-expanderContent {
+            background-color: white;
+        }
+        
+        .streamlit-expanderContent p, 
+        .streamlit-expanderContent span,
+        .streamlit-expanderContent strong {
+            color: #1e3a8a !important;
+        }
+        
+        /* DataFrames */
+        .dataframe {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: white;
+        }
+        
+        /* Date Input */
+        .stDateInput input {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e40af;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Success/Error messages */
+        .stSuccess {
+            background: white;
+            color: #065f46;
+        }
+        
+        .stError {
+            background: white;
+            color: #991b1b;
+        }
+        
+        .stInfo {
+            background: white;
+            color: #1e40af;
+        }
+        
+        .stWarning {
+            background: white;
+            color: #92400e;
+        }
+        
+        /* Amélioration de la lisibilité sur petits écrans */
+        @media only screen and (max-width: 480px) {
+            .hero-title {
+                font-size: 1.5em !important;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9em !important;
+            }
+            
+            .carousel-container {
+                height: 300px !important;
+            }
+            
+            .card {
+                padding: 12px !important;
+            }
+        }
+        </style>
+    """, unsafe_allow_html=True)
         
         /* Hero Section */
         .hero-section {
@@ -312,22 +789,49 @@ def load_css():
         .badge-danger { background: #dc2626; color: white; }
         .badge-info { background: #3b82f6; color: white; }
         
-        /* Headers - Blanc sur accueil */
+        /* Headers - Blanc sur accueil (fond bleu) */
         .accueil-page h1, .accueil-page h2, .accueil-page h3 {
             color: white !important;
         }
         
-        .accueil-page p:not(.card p), .accueil-page label, .accueil-page span:not(.card span) {
+        .accueil-page p:not(.card p):not(.info-box p), 
+        .accueil-page label:not(.card label), 
+        .accueil-page span:not(.card span):not(.badge) {
             color: white !important;
         }
         
-        /* Headers - Noir sur autres pages */
-        .other-page h1, .other-page h2, .other-page h3 {
-            color: #1e40af !important;
+        /* Texte dans les cards - toujours noir sur blanc */
+        .card h2, .card h3, .card h4 {
+            color: #1e3a8a !important;
         }
         
-        .other-page > p, .other-page > label, .other-page > span {
-            color: #374151 !important;
+        .card p, .card span:not(.badge) {
+            color: #1e3a8a !important;
+        }
+        
+        /* Headers - Blanc sur autres pages (fond bleu) */
+        .other-page h1, .other-page h2, .other-page h3 {
+            color: white !important;
+        }
+        
+        .other-page > p:not(.card p):not(.info-box p), 
+        .other-page > label:not(.card label), 
+        .other-page > span:not(.card span):not(.badge),
+        .other-page [data-testid="stMarkdownContainer"] > p {
+            color: white !important;
+        }
+        
+        /* Info boxes - noir sur blanc */
+        .info-box h3, .info-box h4, .info-box p, .info-box strong {
+            color: #1e3a8a !important;
+        }
+        
+        .success-box h3, .success-box h4, .success-box p, .success-box strong {
+            color: #065f46 !important;
+        }
+        
+        .warning-box h3, .warning-box h4, .warning-box p, .warning-box strong {
+            color: #92400e !important;
         }
         
         /* Inputs */
@@ -352,13 +856,22 @@ def load_css():
         .stTabs [data-baseweb="tab"] {
             background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px 10px 0 0;
-            color: white;
+            color: white !important;
             font-weight: 500;
         }
         
         .stTabs [aria-selected="true"] {
             background: white;
-            color: #1e40af !important;
+            color: #1e3a8a !important;
+        }
+        
+        .stTabs [data-baseweb="tab-panel"] {
+            color: white !important;
+        }
+        
+        .stTabs [data-baseweb="tab-panel"] h3,
+        .stTabs [data-baseweb="tab-panel"] h4 {
+            color: white !important;
         }
         
         /* Expander */
@@ -366,11 +879,21 @@ def load_css():
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 10px;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            color: #1e40af !important;
+            color: #1e3a8a !important;
         }
         
         .streamlit-expanderHeader:hover {
-            border-color: white;
+            border-color: #1e3a8a;
+        }
+        
+        .streamlit-expanderContent {
+            background-color: white;
+        }
+        
+        .streamlit-expanderContent p, 
+        .streamlit-expanderContent span,
+        .streamlit-expanderContent strong {
+            color: #1e3a8a !important;
         }
         
         /* DataFrames */
