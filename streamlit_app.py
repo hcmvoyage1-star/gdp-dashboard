@@ -605,64 +605,107 @@ def page_accueil():
 
 def page_destinations():
     """Page destinations avec recherche optimisée"""
-    st.markdown("# 🌍 Nos Destinations de Rêve")
+    st.markdown("# 🌍 Nos Voyages Organisés")
     
-    # Filtres
-    col1, col2, col3 = st.columns([2, 1, 1])
+    # Filtres simplifiés
+    col1, col2 = st.columns([3, 1])
     with col1:
-        search = st.text_input("🔍 Rechercher", "", placeholder="Paris, Tokyo, Dubaï...")
+        search = st.text_input("🔍 Rechercher", "", placeholder="Istanbul, Antalya, Hammamet...")
     with col2:
-        categorie = st.selectbox("📍 Continent", ["Toutes", "Europe", "Asie", "Afrique", "Amérique", "Océanie"])
-    with col3:
-        tri = st.selectbox("💰 Trier", ["Prix ↑", "Prix ↓", "Nom A-Z", "Nom Z-A"])
+        tri = st.selectbox("💰 Trier", ["Nom A-Z", "Nom Z-A"])
     
-    # Récupération des destinations
-    destinations = get_destinations()
+    # Destinations fixes
+    destinations = [
+        {
+            "nom": "Istanbul",
+            "pays": "Turquie",
+            "description": "La ville des deux continents, entre Orient et Occident. Mosquées majestueuses, bazars colorés et Bosphore enchanteur.",
+            "duree": "5 jours / 4 nuits",
+            "categorie": "Asie",
+            "actif": True
+        },
+        {
+            "nom": "Antalya",
+            "pays": "Turquie",
+            "description": "Perle de la Riviera turque. Plages paradisiaques, sites antiques et eaux cristallines de la Méditerranée.",
+            "duree": "7 jours / 6 nuits",
+            "categorie": "Asie",
+            "actif": True
+        },
+        {
+            "nom": "Hammamet",
+            "pays": "Tunisie",
+            "description": "Station balnéaire méditerranéenne. Plages dorées, médina authentique et art de vivre tunisien.",
+            "duree": "6 jours / 5 nuits",
+            "categorie": "Afrique",
+            "actif": True
+        },
+        {
+            "nom": "Sharm El Sheikh",
+            "pays": "Égypte",
+            "description": "Paradis de la Mer Rouge. Plongée exceptionnelle, récifs coralliens et luxe en bord de mer.",
+            "duree": "7 jours / 6 nuits",
+            "categorie": "Afrique",
+            "actif": True
+        },
+        {
+            "nom": "Malaisie",
+            "pays": "Malaisie",
+            "description": "Mélange fascinant de cultures. Kuala Lumpur moderne, plages de Langkawi et jungle tropicale.",
+            "duree": "10 jours / 9 nuits",
+            "categorie": "Asie",
+            "actif": True
+        },
+        {
+            "nom": "Maldives",
+            "pays": "Maldives",
+            "description": "Le paradis sur terre. Atolls turquoise, bungalows sur pilotis et fonds marins spectaculaires.",
+            "duree": "8 jours / 7 nuits",
+            "categorie": "Asie",
+            "actif": True
+        }
+    ]
     
-    # Destinations de démonstration
-    if not destinations:
-        st.info("📌 Données de démonstration")
-        destinations = [
-            {"nom": "Paris", "pays": "France", "description": "La ville lumière avec ses monuments emblématiques", "prix": 799, "categorie": "Europe", "duree": "5 jours", "actif": True},
-            {"nom": "Tokyo", "pays": "Japon", "description": "Tradition et modernité fusionnent", "prix": 1299, "categorie": "Asie", "duree": "6 jours", "actif": True},
-            {"nom": "Dubaï", "pays": "EAU", "description": "Luxe et désert, une destination unique", "prix": 899, "categorie": "Asie", "duree": "5 jours", "actif": True},
-            {"nom": "Rome", "pays": "Italie", "description": "Histoire antique et cuisine divine", "prix": 699, "categorie": "Europe", "duree": "4 jours", "actif": True},
-            {"nom": "New York", "pays": "USA", "description": "La ville qui ne dort jamais", "prix": 1499, "categorie": "Amérique", "duree": "7 jours", "actif": True},
-            {"nom": "Marrakech", "pays": "Maroc", "description": "Magie des souks et des riads", "prix": 499, "categorie": "Afrique", "duree": "4 jours", "actif": True},
-        ]
-    
-    # Filtrage optimisé
+    # Filtrage
     filtered = destinations
     
     if search:
         search_lower = search.lower()
         filtered = [d for d in filtered if search_lower in d['nom'].lower() or search_lower in d.get('pays', '').lower()]
     
-    if categorie != "Toutes":
-        filtered = [d for d in filtered if d.get('categorie') == categorie]
-    
     # Tri
-    if tri == "Prix ↑":
-        filtered = sorted(filtered, key=lambda x: x.get('prix', 0))
-    elif tri == "Prix ↓":
-        filtered = sorted(filtered, key=lambda x: x.get('prix', 0), reverse=True)
-    elif tri == "Nom A-Z":
+    if tri == "Nom A-Z":
         filtered = sorted(filtered, key=lambda x: x.get('nom', ''))
     else:
         filtered = sorted(filtered, key=lambda x: x.get('nom', ''), reverse=True)
     
     # Affichage
-    st.markdown(f"### ✈️ {len(filtered)} destination(s) trouvée(s)")
+    st.markdown(f"### ✈️ {len(filtered)} voyage(s) organisé(s)")
     
     if not filtered:
         st.warning("Aucune destination ne correspond à vos critères")
         return
     
     # Grille
-    cols = st.columns(3)
+    cols = st.columns(2)
     for idx, dest in enumerate(filtered):
-        with cols[idx % 3]:
-            display_destination_card(dest, idx)
+        with cols[idx % 2]:
+            st.markdown(f"""
+                <div class="card" style="min-height: 280px;">
+                    <h2 style="color: #1e40af; margin-bottom: 10px;">📍 {dest['nom']}</h2>
+                    <h4 style="color: #4b5563; margin: 5px 0;">{dest['pays']}</h4>
+                    <p style="color: #4b5563; margin: 15px 0; min-height: 80px; line-height: 1.6;">{dest['description']}</p>
+                    <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); padding: 12px; border-radius: 10px; margin-top: 15px;">
+                        <p style="margin: 0; color: #1e40af; font-weight: 600;">⏱️ {dest.get('duree', '5 jours')}</p>
+                        <p style="margin: 5px 0 0 0; color: #2563eb; font-size: 0.9em;">Voyage tout compris</p>
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button(f"✈️ Réserver {dest['nom']}", key=f"btn_{idx}", use_container_width=True):
+                st.session_state.destination_selectionnee = dest['nom']
+                st.session_state.page = "reservation"
+                st.rerun()
 
 def page_reservation():
     """Page de réservation optimisée"""
@@ -1039,109 +1082,188 @@ def page_admin():
         st.rerun()
 
 def page_visas():
-    """Page d'informations sur les visas"""
-    st.markdown("# 📋 Services Visa")
+    """Page d'informations sur les visas et rendez-vous"""
+    st.markdown("# 📋 Services Visa & Rendez-vous")
     
     st.markdown("""
         <div class="info-box">
             <h3 style="color: #1e40af;">🌍 Obtenez votre visa facilement</h3>
             <p style="font-size: 1.1em; color: #374151;">
             HCM Voyages vous accompagne dans toutes vos démarches de visa. 
-            Notre équipe d'experts prend en charge votre dossier de A à Z.
+            Prenez rendez-vous selon votre besoin : Normal, Express ou à Domicile.
             </p>
         </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("### 🌍 Services Visa Populaires")
+    st.markdown("### 🌍 Nos Services Visa par Pays")
     
     visas_info = [
-        ("🇺🇸", "USA", "B1/B2, ESTA", "3-6 semaines", "160 USD"),
-        ("🇬🇧", "Royaume-Uni", "Standard Visitor", "3 semaines", "£100"),
-        ("🇪🇺", "Schengen", "26 pays européens", "15-45 jours", "80€"),
-        ("🇨🇦", "Canada", "Visiteur, AVE", "2-4 semaines", "100 CAD"),
-        ("🇦🇺", "Australie", "ETA, eVisitor", "1-2 semaines", "20 AUD"),
-        ("🇦🇪", "Émirats", "Tourisme", "5-7 jours", "250 AED"),
+        {
+            "flag": "🇺🇸",
+            "pays": "USA",
+            "types": ["📅 Normal", "⚡ Express"],
+            "description": "B1/B2, ESTA - Délai Normal: 4-8 semaines / Express: 1-2 semaines"
+        },
+        {
+            "flag": "🇫🇷",
+            "pays": "France",
+            "types": ["📅 Normal", "🏠 À Domicile"],
+            "description": "Court séjour Schengen - Délai: 15-45 jours / Service à domicile disponible"
+        },
+        {
+            "flag": "🇪🇸",
+            "pays": "Espagne",
+            "types": ["📅 Normal", "🏠 À Domicile"],
+            "description": "Schengen touristique - Délai: 15-30 jours / Prise RDV à votre domicile"
+        }
     ]
     
-    col1, col2, col3 = st.columns(3)
-    for i, (flag, pays, types, delai, tarif) in enumerate(visas_info):
-        col = [col1, col2, col3][i % 3]
-        with col:
-            st.markdown(f"""
-                <div class="card" style="min-height: 200px;">
-                    <div style="font-size: 3em; margin-bottom: 10px;">{flag}</div>
-                    <h3 style="color: #1e40af; margin: 10px 0;">Visa {pays}</h3>
-                    <p style="margin: 5px 0; font-size: 0.9em; color: #374151;"><strong>Types:</strong> {types}</p>
-                    <p style="margin: 5px 0; font-size: 0.9em; color: #374151;"><strong>Délai:</strong> {delai}</p>
-                    <p style="margin: 10px 0 0 0; color: #dc2626; font-weight: bold; font-size: 1.2em;">{tarif}</p>
+    for visa in visas_info:
+        st.markdown(f"""
+            <div class="card" style="margin: 20px 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 3em; margin-right: 20px;">{visa['flag']}</div>
+                    <div>
+                        <h2 style="color: #1e40af; margin: 0;">Visa {visa['pays']}</h2>
+                        <p style="color: #4b5563; margin: 5px 0 0 0;">{visa['description']}</p>
+                    </div>
                 </div>
-            """, unsafe_allow_html=True)
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    {"".join([f'<span class="badge badge-info">{t}</span>' for t in visa['types']])}
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
     
     st.markdown("<br><br>", unsafe_allow_html=True)
     
+    # CTA
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        if st.button("📋 Faire une demande de visa", use_container_width=True, type="primary"):
+        if st.button("📅 Prendre un rendez-vous", use_container_width=True, type="primary"):
             st.session_state.page = "demande-visa"
             st.rerun()
 
 def page_demande_visa():
-    """Page de demande de visa"""
-    st.markdown("# 📋 Demande de Visa")
+    """Page de demande de rendez-vous visa"""
+    st.markdown("# 📅 Demande de Rendez-vous Visa")
     
     st.markdown("""
         <div class="hero-section" style="height: 250px;">
             <div class="hero-overlay">
-                <div style="font-size: 3em; margin-bottom: 10px;">📋</div>
-                <h1 class="hero-title" style="font-size: 2.5em;">Demande de Visa</h1>
-                <p class="hero-subtitle">Obtenez votre visa rapidement</p>
+                <div style="font-size: 3em; margin-bottom: 10px;">📅</div>
+                <h1 class="hero-title" style="font-size: 2.5em;">Prenez Rendez-vous</h1>
+                <p class="hero-subtitle">Choisissez le service adapté à vos besoins</p>
             </div>
         </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    with st.form("visa_form", clear_on_submit=True):
+    with st.form("rdv_visa_form", clear_on_submit=True):
+        st.markdown("### 👤 Informations Personnelles")
         col1, col2 = st.columns(2)
         
         with col1:
-            nom = st.text_input("Nom complet *")
-            email = st.text_input("Email *")
-            telephone = st.text_input("Téléphone *")
-            numero_passeport = st.text_input("Numéro de passeport *")
+            nom = st.text_input("Nom complet *", placeholder="Votre nom")
+            email = st.text_input("Email *", placeholder="votre@email.com")
+            telephone = st.text_input("Téléphone *", placeholder="+213 XXX XXX XXX")
         
         with col2:
+            numero_passeport = st.text_input("Numéro de passeport *", placeholder="Ex: 123456789")
+            date_naissance = st.date_input("Date de naissance *", min_value=datetime(1920, 1, 1).date(), max_value=datetime.now().date())
+            profession = st.text_input("Profession", placeholder="Votre profession")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("### 📋 Détails du Rendez-vous")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
             pays_destination = st.selectbox("Pays de destination *", [
-                "-- Sélectionnez --", "États-Unis", "Royaume-Uni", "France", 
-                "Allemagne", "Canada", "Australie", "Émirats", "Turquie"
+                "-- Sélectionnez --", 
+                "🇺🇸 États-Unis (USA)", 
+                "🇫🇷 France", 
+                "🇪🇸 Espagne"
             ])
+            
             type_visa = st.selectbox("Type de visa *", [
                 "Tourisme", "Affaires", "Visite familiale", "Études", "Travail"
             ])
-            date_depart = st.date_input("Date de départ prévue *", min_value=datetime.now().date())
-            urgence = st.selectbox("Traitement *", [
-                "Normal (15-30 jours)", "Urgent (7-15 jours)", "Express (3-7 jours)"
-            ])
         
-        message = st.text_area("Informations complémentaires", height=100)
+        with col2:
+            # Type de service selon le pays
+            if "USA" in pays_destination:
+                type_service = st.selectbox("Type de service *", [
+                    "📅 Normal (4-8 semaines)",
+                    "⚡ Express (1-2 semaines)"
+                ])
+            elif "France" in pays_destination or "Espagne" in pays_destination:
+                type_service = st.selectbox("Type de service *", [
+                    "📅 Normal (15-45 jours)",
+                    "🏠 À Domicile (rendez-vous chez vous)"
+                ])
+            else:
+                type_service = st.selectbox("Type de service *", [
+                    "📅 Normal"
+                ])
+            
+            date_rdv_souhaitee = st.date_input(
+                "Date de rendez-vous souhaitée *",
+                value=datetime.now().date() + timedelta(days=7),
+                min_value=datetime.now().date() + timedelta(days=3)
+            )
         
-        submitted = st.form_submit_button("📨 Envoyer ma demande", use_container_width=True)
+        # Adresse pour service à domicile
+        if "🏠" in type_service:
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("### 🏠 Adresse pour rendez-vous à domicile")
+            adresse = st.text_area("Adresse complète *", height=100, placeholder="Rue, ville, code postal...")
+        else:
+            adresse = ""
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        message = st.text_area("Informations complémentaires", height=100, placeholder="Précisez vos besoins particuliers...")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        submitted = st.form_submit_button("📅 Confirmer mon rendez-vous", use_container_width=True)
         
         if submitted:
-            if not all([nom, email, telephone, numero_passeport]) or pays_destination == "-- Sélectionnez --":
-                st.error("❌ Veuillez remplir tous les champs obligatoires")
-            elif not validate_email(email) or not validate_phone(telephone):
-                st.error("❌ Email ou téléphone invalide")
+            errors = []
+            
+            if not all([nom, email, telephone, numero_passeport]):
+                errors.append("Veuillez remplir tous les champs obligatoires")
+            elif not validate_email(email):
+                errors.append("Email invalide")
+            elif not validate_phone(telephone):
+                errors.append("Téléphone invalide")
+            elif pays_destination == "-- Sélectionnez --":
+                errors.append("Veuillez sélectionner un pays")
+            elif "🏠" in type_service and not adresse:
+                errors.append("L'adresse est obligatoire pour le service à domicile")
+            
+            if errors:
+                for error in errors:
+                    st.error(f"❌ {error}")
             else:
-                st.success("✅ Demande de visa envoyée avec succès!")
-                st.markdown("""
+                # Extraire le type de service propre
+                service_type = "Express" if "⚡" in type_service else ("À Domicile" if "🏠" in type_service else "Normal")
+                pays_clean = pays_destination.split(" ")[1] if " " in pays_destination else pays_destination
+                
+                st.success("✅ Demande de rendez-vous envoyée avec succès!")
+                st.markdown(f"""
                     <div class="info-box success-box">
-                        <h4>🎉 Demande enregistrée !</h4>
-                        <p>Nous avons bien reçu votre demande de visa pour <strong>{}</strong></p>
-                        <p>Notre équipe vous contactera sous 24h pour la suite du processus</p>
+                        <h4>🎉 Rendez-vous enregistré !</h4>
+                        <p><strong>Pays:</strong> {pays_clean}</p>
+                        <p><strong>Type de visa:</strong> {type_visa}</p>
+                        <p><strong>Service:</strong> {service_type}</p>
+                        <p><strong>Date souhaitée:</strong> {date_rdv_souhaitee.strftime('%d/%m/%Y')}</p>
+                        {"<p><strong>Adresse:</strong> " + adresse + "</p>" if adresse else ""}
+                        <hr>
+                        <p>📧 Une confirmation vous sera envoyée à <strong>{email}</strong></p>
+                        <p>📞 Notre équipe vous contactera sous 48h pour confirmer votre rendez-vous</p>
                     </div>
-                """.format(pays_destination), unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
                 st.balloons()
 
 def page_discover_algeria():
@@ -1247,10 +1369,10 @@ def main():
         # Menu de navigation
         pages = [
             ("🏠", "Accueil", "accueil"),
-            ("🌍", "Destinations", "destinations"),
+            ("🌍", "Voyages Organisés", "destinations"),
             ("📝", "Réservation", "reservation"),
-            ("📋", "Visas", "visas"),
-            ("📋", "Demande Visa", "demande-visa"),
+            ("📋", "Visa & RDV", "visas"),
+            ("📅", "Prendre RDV", "demande-visa"),
             ("🇩🇿", "Discover Algeria", "discover-algeria"),
             ("📞", "Contact", "contact"),
             ("⚙️", "Admin", "admin"),
