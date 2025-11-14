@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import re
 from typing import Optional, Dict, List, Tuple
 import hashlib
+import time
 
 # Configuration de la page
 st.set_page_config(
@@ -139,6 +140,54 @@ def load_css():
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
         }
         
+        /* Carousel */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8em;
+            animation: slideIn 0.5s ease-out;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.9), rgba(37, 99, 235, 0.9));
+        }
+        
+        .carousel-content {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+        
+        .carousel-title {
+            font-size: 0.4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .carousel-description {
+            font-size: 0.2em;
+            font-weight: 300;
+            margin-top: 15px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -164,6 +213,14 @@ def load_css():
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             border-color: white;
+        }
+        
+        .card h2, .card h3, .card h4 {
+            color: #1e40af !important;
+        }
+        
+        .card p, .card span {
+            color: #374151 !important;
         }
         
         .price-tag {
@@ -219,16 +276,26 @@ def load_css():
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
         
+        .info-box h3, .info-box h4, .info-box p {
+            color: #1e40af !important;
+        }
+        
         .success-box {
             background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
             border-left-color: #10b981;
-            color: #065f46;
+        }
+        
+        .success-box h3, .success-box h4, .success-box p {
+            color: #065f46 !important;
         }
         
         .warning-box {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-left-color: #f59e0b;
-            color: #92400e;
+        }
+        
+        .warning-box h3, .warning-box h4, .warning-box p {
+            color: #92400e !important;
         }
         
         /* Badge */
@@ -246,14 +313,22 @@ def load_css():
         .badge-danger { background: #dc2626; color: white; }
         .badge-info { background: #3b82f6; color: white; }
         
-        /* Headers */
-        h1, h2, h3 {
-            color: white;
+        /* Headers - Blanc sur accueil */
+        .accueil-page h1, .accueil-page h2, .accueil-page h3 {
+            color: white !important;
         }
         
-        /* Text */
-        p, label, span {
-            color: white;
+        .accueil-page p, .accueil-page label, .accueil-page span {
+            color: white !important;
+        }
+        
+        /* Headers - Noir sur autres pages */
+        .other-page h1, .other-page h2, .other-page h3 {
+            color: #1e40af !important;
+        }
+        
+        .other-page p, .other-page label, .other-page span {
+            color: #374151 !important;
         }
         
         /* Inputs */
@@ -492,9 +567,87 @@ def display_destination_card(dest: Dict, idx: int):
         st.session_state.page = "reservation"
         st.rerun()
 
+# ====== CAROUSEL ======
+def display_carousel():
+    """Affiche un carrousel de destinations avec émojis"""
+    carousel_data = [
+        {
+            "emoji": "🗼",
+            "title": "Paris, France",
+            "description": "La Ville Lumière vous attend avec ses monuments emblématiques"
+        },
+        {
+            "emoji": "🕌",
+            "title": "Istanbul, Turquie",
+            "description": "Entre Orient et Occident, découvrez une ville fascinante"
+        },
+        {
+            "emoji": "🏝️",
+            "title": "Maldives",
+            "description": "Paradis tropical aux eaux cristallines"
+        },
+        {
+            "emoji": "🏛️",
+            "title": "Rome, Italie",
+            "description": "L'histoire antique prend vie dans la Ville Éternelle"
+        },
+        {
+            "emoji": "🌴",
+            "title": "Dubaï, EAU",
+            "description": "Luxe et modernité dans le désert arabique"
+        }
+    ]
+    
+    # Initialiser l'index du carousel
+    if 'carousel_index' not in st.session_state:
+        st.session_state.carousel_index = 0
+    
+    # Container pour le carousel
+    carousel_container = st.empty()
+    
+    # Afficher la slide actuelle
+    current_slide = carousel_data[st.session_state.carousel_index]
+    
+    carousel_container.markdown(f"""
+        <div class="carousel-container">
+            <div class="carousel-slide">
+                <div class="carousel-content">
+                    <div style="font-size: 1.5em; margin-bottom: 20px;">{current_slide['emoji']}</div>
+                    <div class="carousel-title">{current_slide['title']}</div>
+                    <div class="carousel-description">{current_slide['description']}</div>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Boutons de navigation
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col1:
+        if st.button("◀ Précédent", use_container_width=True):
+            st.session_state.carousel_index = (st.session_state.carousel_index - 1) % len(carousel_data)
+            st.rerun()
+    
+    with col2:
+        # Indicateurs de position
+        indicators = ""
+        for i in range(len(carousel_data)):
+            if i == st.session_state.carousel_index:
+                indicators += "⬤ "
+            else:
+                indicators += "○ "
+        st.markdown(f"<div style='text-align: center; color: white; font-size: 1.5em;'>{indicators}</div>", unsafe_allow_html=True)
+    
+    with col3:
+        if st.button("Suivant ▶", use_container_width=True):
+            st.session_state.carousel_index = (st.session_state.carousel_index + 1) % len(carousel_data)
+            st.rerun()
+
 # ====== PAGES ======
 def page_accueil():
-    """Page d'accueil optimisée"""
+    """Page d'accueil optimisée avec texte blanc"""
+    
+    # Wrapper pour la page d'accueil
+    st.markdown('<div class="accueil-page">', unsafe_allow_html=True)
     
     # Hero Section
     st.markdown('<div class="hero-section"><div class="hero-overlay">', unsafe_allow_html=True)
@@ -504,6 +657,10 @@ def page_accueil():
             <p class="hero-subtitle">L'évasion sur mesure, explorez, rêvez, partez</p>
         </div></div>
     """, unsafe_allow_html=True)
+    
+    # Carousel de photos
+    st.markdown("### 🌍 Découvrez Nos Destinations Phares")
+    display_carousel()
     
     # Statistiques
     st.markdown("### 🎯 Pourquoi nous choisir ?")
@@ -602,9 +759,12 @@ def page_accueil():
         if st.button("🌍 Découvrir nos destinations", use_container_width=True, type="primary"):
             st.session_state.page = "destinations"
             st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def page_destinations():
     """Page destinations avec recherche optimisée"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
     st.markdown("# 🌍 Nos Voyages Organisés")
     
     # Filtres simplifiés
@@ -684,6 +844,7 @@ def page_destinations():
     
     if not filtered:
         st.warning("Aucune destination ne correspond à vos critères")
+        st.markdown('</div>', unsafe_allow_html=True)
         return
     
     # Grille
@@ -706,9 +867,12 @@ def page_destinations():
                 st.session_state.destination_selectionnee = dest['nom']
                 st.session_state.page = "reservation"
                 st.rerun()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def page_reservation():
     """Page de réservation optimisée"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
     st.markdown("# 📝 Réserver Votre Voyage")
     
     tab1, tab2 = st.tabs(["✈️ Réservation Voyage", "💰 Demande de Devis"])
@@ -884,9 +1048,12 @@ def page_reservation():
                         </div>
                     """, unsafe_allow_html=True)
                     st.balloons()
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def page_contact():
     """Page de contact"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
     st.markdown("# 📞 Contactez-Nous")
     
     col1, col2 = st.columns([1, 1])
@@ -919,9 +1086,12 @@ def page_contact():
                         st.balloons()
                     else:
                         st.error(msg)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def page_admin():
     """Dashboard administrateur sécurisé"""
+    st.markdown('<div class="other-page">', unsafe_allow_html=True)
     
     # Authentification
     if 'admin_logged' not in st.session_state:
@@ -949,6 +1119,7 @@ def page_admin():
                         st.rerun()
                     else:
                         st.error("❌ Identifiants incorrects")
+        st.markdown('</div>', unsafe_allow_html=True)
         return
     
     # Dashboard
@@ -1004,428 +1175,4 @@ def page_admin():
                         st.markdown(f"**👥 Personnes:** {res.get('nb_personnes')}")
                     
                     with col3:
-                        st.markdown(f"**📝 Message:**")
-                        st.info(res.get('message', 'Aucun message'))
-                    
-                    st.markdown("---")
-                    col_act1, col_act2, col_act3 = st.columns(3)
-                    
-                    with col_act1:
-                        if st.button("✅ Confirmer", key=f"conf_{res.get('id')}", use_container_width=True):
-                            if update_reservation_status(res.get('id'), 'confirme'):
-                                st.success("Réservation confirmée")
-                                st.rerun()
-                    
-                    with col_act2:
-                        if st.button("⏳ En attente", key=f"pend_{res.get('id')}", use_container_width=True):
-                            if update_reservation_status(res.get('id'), 'en_attente'):
-                                st.success("Statut mis à jour")
-                                st.rerun()
-                    
-                    with col_act3:
-                        if st.button("❌ Annuler", key=f"canc_{res.get('id')}", use_container_width=True):
-                            if update_reservation_status(res.get('id'), 'annule'):
-                                st.success("Réservation annulée")
-                                st.rerun()
-        else:
-            st.info("📭 Aucune réservation")
-    
-    with tab2:
-        st.markdown("### Messages de Contact")
-        contacts = get_contacts()
-        
-        if contacts:
-            for contact in contacts:
-                is_read = contact.get('lu', False)
-                icon = "📧" if is_read else "✉️"
-                
-                with st.expander(f"{icon} {contact.get('sujet', 'Sans sujet')} - {contact.get('nom', 'Anonyme')}", expanded=not is_read):
-                    col1, col2 = st.columns([2, 1])
-                    
-                    with col1:
-                        st.markdown(f"**📧 Email:** {contact.get('email')}")
-                        st.markdown(f"**📅 Date:** {format_date(contact.get('date_creation', ''))}")
-                        st.markdown(f"**💬 Message:**")
-                        st.info(contact.get('message', 'Pas de message'))
-                    
-                    with col2:
-                        if not is_read:
-                            if st.button("✅ Marquer comme lu", key=f"read_{contact.get('id')}", use_container_width=True):
-                                if mark_contact_as_read(contact.get('id')):
-                                    st.success("Marqué comme lu")
-                                    st.rerun()
-        else:
-            st.info("📭 Aucun message")
-    
-    with tab3:
-        st.markdown("### Destinations Actives")
-        destinations = get_destinations()
-        
-        if destinations:
-            df_dest = pd.DataFrame(destinations)
-            columns_to_show = ['nom', 'pays', 'prix', 'categorie', 'duree']
-            available_cols = [col for col in columns_to_show if col in df_dest.columns]
-            
-            if available_cols:
-                st.dataframe(df_dest[available_cols], use_container_width=True, hide_index=True)
-            else:
-                st.dataframe(df_dest, use_container_width=True, hide_index=True)
-            
-            st.success(f"✅ {len(destinations)} destination(s) active(s)")
-        else:
-            st.info("🌍 Aucune destination configurée")
-    
-    # Déconnexion
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    if st.button("🚪 Déconnexion", use_container_width=True):
-        st.session_state.admin_logged = False
-        st.rerun()
-
-def page_visas():
-    """Page d'informations sur les visas et rendez-vous"""
-    st.markdown("# 📋 Services Visa & Rendez-vous")
-    
-    st.markdown("""
-        <div class="info-box">
-            <h3 style="color: #1e40af;">🌍 Obtenez votre visa facilement</h3>
-            <p style="font-size: 1.1em; color: #374151;">
-            HCM Voyages vous accompagne dans toutes vos démarches de visa. 
-            Prenez rendez-vous selon votre besoin : Normal, Express ou à Domicile.
-            </p>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("### 🌍 Nos Services Visa par Pays")
-    
-    visas_info = [
-        {
-            "flag": "🇺🇸",
-            "pays": "USA",
-            "types": ["📅 Normal", "⚡ Express"],
-            "description": "B1/B2, ESTA - Délai Normal: 4-8 semaines / Express: 1-2 semaines"
-        },
-        {
-            "flag": "🇫🇷",
-            "pays": "France",
-            "types": ["📅 Normal", "🏠 À Domicile"],
-            "description": "Court séjour Schengen - Délai: 15-45 jours / Service à domicile disponible"
-        },
-        {
-            "flag": "🇪🇸",
-            "pays": "Espagne",
-            "types": ["📅 Normal", "🏠 À Domicile"],
-            "description": "Schengen touristique - Délai: 15-30 jours / Prise RDV à votre domicile"
-        }
-    ]
-    
-    for visa in visas_info:
-        st.markdown(f"""
-            <div class="card" style="margin: 20px 0;">
-                <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                    <div style="font-size: 3em; margin-right: 20px;">{visa['flag']}</div>
-                    <div>
-                        <h2 style="color: #1e40af; margin: 0;">Visa {visa['pays']}</h2>
-                        <p style="color: #4b5563; margin: 5px 0 0 0;">{visa['description']}</p>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    {"".join([f'<span class="badge badge-info">{t}</span>' for t in visa['types']])}
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    
-    # CTA
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("📅 Prendre un rendez-vous", use_container_width=True, type="primary"):
-            st.session_state.page = "demande-visa"
-            st.rerun()
-
-def page_demande_visa():
-    """Page de demande de rendez-vous visa"""
-    st.markdown("# 📅 Demande de Rendez-vous Visa")
-    
-    st.markdown("""
-        <div class="hero-section" style="height: 250px;">
-            <div class="hero-overlay">
-                <div style="font-size: 3em; margin-bottom: 10px;">📅</div>
-                <h1 class="hero-title" style="font-size: 2.5em;">Prenez Rendez-vous</h1>
-                <p class="hero-subtitle">Choisissez le service adapté à vos besoins</p>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    with st.form("rdv_visa_form", clear_on_submit=True):
-        st.markdown("### 👤 Informations Personnelles")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            nom = st.text_input("Nom complet *", placeholder="Votre nom")
-            email = st.text_input("Email *", placeholder="votre@email.com")
-            telephone = st.text_input("Téléphone *", placeholder="+213 XXX XXX XXX")
-        
-        with col2:
-            numero_passeport = st.text_input("Numéro de passeport *", placeholder="Ex: 123456789")
-            date_naissance = st.date_input("Date de naissance *", min_value=datetime(1920, 1, 1).date(), max_value=datetime.now().date())
-            profession = st.text_input("Profession", placeholder="Votre profession")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown("### 📋 Détails du Rendez-vous")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            pays_destination = st.selectbox("Pays de destination *", [
-                "-- Sélectionnez --", 
-                "🇺🇸 États-Unis (USA)", 
-                "🇫🇷 France", 
-                "🇪🇸 Espagne"
-            ])
-            
-            type_visa = st.selectbox("Type de visa *", [
-                "Tourisme", "Affaires", "Visite familiale", "Études", "Travail"
-            ])
-        
-        with col2:
-            # Type de service selon le pays
-            if "USA" in pays_destination:
-                type_service = st.selectbox("Type de service *", [
-                    "📅 Normal (4-8 semaines)",
-                    "⚡ Express (1-2 semaines)"
-                ])
-            elif "France" in pays_destination or "Espagne" in pays_destination:
-                type_service = st.selectbox("Type de service *", [
-                    "📅 Normal (15-45 jours)",
-                    "🏠 À Domicile (rendez-vous chez vous)"
-                ])
-            else:
-                type_service = st.selectbox("Type de service *", [
-                    "📅 Normal"
-                ])
-            
-            date_rdv_souhaitee = st.date_input(
-                "Date de rendez-vous souhaitée *",
-                value=datetime.now().date() + timedelta(days=7),
-                min_value=datetime.now().date() + timedelta(days=3)
-            )
-        
-        # Adresse pour service à domicile
-        if "🏠" in type_service:
-            st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown("### 🏠 Adresse pour rendez-vous à domicile")
-            adresse = st.text_area("Adresse complète *", height=100, placeholder="Rue, ville, code postal...")
-        else:
-            adresse = ""
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        message = st.text_area("Informations complémentaires", height=100, placeholder="Précisez vos besoins particuliers...")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        submitted = st.form_submit_button("📅 Confirmer mon rendez-vous", use_container_width=True)
-        
-        if submitted:
-            errors = []
-            
-            if not all([nom, email, telephone, numero_passeport]):
-                errors.append("Veuillez remplir tous les champs obligatoires")
-            elif not validate_email(email):
-                errors.append("Email invalide")
-            elif not validate_phone(telephone):
-                errors.append("Téléphone invalide")
-            elif pays_destination == "-- Sélectionnez --":
-                errors.append("Veuillez sélectionner un pays")
-            elif "🏠" in type_service and not adresse:
-                errors.append("L'adresse est obligatoire pour le service à domicile")
-            
-            if errors:
-                for error in errors:
-                    st.error(f"❌ {error}")
-            else:
-                # Extraire le type de service propre
-                service_type = "Express" if "⚡" in type_service else ("À Domicile" if "🏠" in type_service else "Normal")
-                pays_clean = pays_destination.split(" ")[1] if " " in pays_destination else pays_destination
-                
-                st.success("✅ Demande de rendez-vous envoyée avec succès!")
-                st.markdown(f"""
-                    <div class="info-box success-box">
-                        <h4>🎉 Rendez-vous enregistré !</h4>
-                        <p><strong>Pays:</strong> {pays_clean}</p>
-                        <p><strong>Type de visa:</strong> {type_visa}</p>
-                        <p><strong>Service:</strong> {service_type}</p>
-                        <p><strong>Date souhaitée:</strong> {date_rdv_souhaitee.strftime('%d/%m/%Y')}</p>
-                        {"<p><strong>Adresse:</strong> " + adresse + "</p>" if adresse else ""}
-                        <hr>
-                        <p>📧 Une confirmation vous sera envoyée à <strong>{email}</strong></p>
-                        <p>📞 Notre équipe vous contactera sous 48h pour confirmer votre rendez-vous</p>
-                    </div>
-                """, unsafe_allow_html=True)
-                st.balloons()
-
-def page_discover_algeria():
-    """Page Discover Algeria"""
-    st.markdown("""
-        <div class="hero-section" style="height: 300px;">
-            <div class="hero-overlay">
-                <div style="font-size: 3em; margin-bottom: 10px;">🇩🇿</div>
-                <h1 class="hero-title">Discover Algeria</h1>
-                <p class="hero-subtitle">Explorez la beauté du Maghreb</p>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    tab1, tab2 = st.tabs(["🏠 Présentation", "🗺️ Destinations"])
-    
-    with tab1:
-        st.markdown("""
-            <div class="info-box">
-                <h3 style="color: #1e40af;">🇩🇿 Bienvenue en Algérie</h3>
-                <p style="font-size: 1.1em; line-height: 1.8; color: #374151;">
-                L'Algérie, perle du Maghreb, vous invite à découvrir ses trésors. 
-                Du Sahara majestueux aux plages méditerranéennes, en passant par les villes historiques,
-                l'Algérie offre une diversité exceptionnelle.
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("### ✨ Pourquoi visiter l'Algérie ?")
-        
-        col1, col2 = st.columns(2)
-        
-        highlights = [
-            ("🏜️", "Le Sahara", "Le plus grand désert du monde"),
-            ("🏛️", "Patrimoine UNESCO", "Sites historiques exceptionnels"),
-            ("🏖️", "Côtes méditerranéennes", "Plages magnifiques"),
-            ("🍲", "Gastronomie riche", "Saveurs authentiques"),
-            ("🎭", "Culture vivante", "Traditions millénaires"),
-            ("🤝", "Hospitalité", "Accueil chaleureux"),
-        ]
-        
-        for i, (icon, titre, desc) in enumerate(highlights):
-            col = col1 if i < 3 else col2
-            with col:
-                st.markdown(f"""
-                    <div class="card" style="margin: 10px 0;">
-                        <div style="font-size: 2em; float: left; margin-right: 15px;">{icon}</div>
-                        <div>
-                            <strong style="color: #1e40af;">{titre}</strong><br>
-                            <span style="color: #4b5563; font-size: 0.9em;">{desc}</span>
-                        </div>
-                    </div>
-                """, unsafe_allow_html=True)
-    
-    with tab2:
-        st.markdown("### 🗺️ Destinations Phares")
-        
-        destinations_dz = [
-            {"nom": "Alger", "description": "La capitale avec sa Casbah UNESCO", "prix": 450},
-            {"nom": "Sahara", "description": "Le plus grand désert du monde", "prix": 890},
-            {"nom": "Constantine", "description": "Ville des ponts suspendus", "prix": 520},
-            {"nom": "Oran", "description": "Perle de la Méditerranée", "prix": 480},
-            {"nom": "Tlemcen", "description": "Ville d'art et d'histoire", "prix": 510},
-            {"nom": "Annaba", "description": "Hippone l'antique", "prix": 470},
-        ]
-        
-        col1, col2, col3 = st.columns(3)
-        for idx, dest in enumerate(destinations_dz):
-            col = [col1, col2, col3][idx % 3]
-            with col:
-                st.markdown(f"""
-                    <div class="card">
-                        <h3>🇩🇿 {dest['nom']}</h3>
-                        <p style="min-height: 50px; color: #4b5563;">{dest['description']}</p>
-                        <div class="price-tag">{format_currency(dest['prix'])}</div>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                if st.button(f"✈️ Réserver {dest['nom']}", key=f"dz_{idx}", use_container_width=True):
-                    st.session_state.destination_selectionnee = dest['nom']
-                    st.session_state.page = "reservation"
-                    st.rerun()
-
-# ====== NAVIGATION PRINCIPALE ======
-def main():
-    """Fonction principale avec navigation optimisée"""
-    
-    # Chargement du CSS
-    load_css()
-    
-    # Initialisation de la session
-    if 'page' not in st.session_state:
-        st.session_state.page = "accueil"
-    
-    # Sidebar
-    with st.sidebar:
-        display_logo(size="120px")
-        st.markdown('<div style="text-align: center;"><h2>HCM VOYAGES</h2></div>', unsafe_allow_html=True)
-        st.markdown("---")
-        
-        # Menu de navigation
-        pages = [
-            ("🏠", "Accueil", "accueil"),
-            ("🌍", "Voyages Organisés", "destinations"),
-            ("📝", "Réservation", "reservation"),
-            ("📋", "Visa & RDV", "visas"),
-            ("📅", "Prendre RDV", "demande-visa"),
-            ("🇩🇿", "Discover Algeria", "discover-algeria"),
-            ("📞", "Contact", "contact"),
-            ("⚙️", "Admin", "admin"),
-        ]
-        
-        for icon, label, page_id in pages:
-            # Mettre en évidence la page active
-            button_type = "primary" if st.session_state.page == page_id else "secondary"
-            if st.button(f"{icon} {label}", use_container_width=True, key=f"nav_{page_id}"):
-                st.session_state.page = page_id
-                st.rerun()
-        
-        st.markdown("---")
-        
-        # Afficher les statistiques dans la sidebar pour l'admin
-        if st.session_state.get('admin_logged', False):
-            stats = get_statistics()
-            st.markdown(f"""
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin: 10px 0;">
-                    <p style="margin: 5px 0; font-size: 0.9em;">📋 Réservations: <strong>{stats['total_reservations']}</strong></p>
-                    <p style="margin: 5px 0; font-size: 0.9em;">⏳ En attente: <strong>{stats['reservations_en_attente']}</strong></p>
-                    <p style="margin: 5px 0; font-size: 0.9em;">📧 Messages: <strong>{stats['messages_non_lus']}</strong></p>
-                </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("---")
-        st.markdown("""
-            <div style="text-align: center; font-size: 0.8em; color: white;">
-                © 2024 HCM Voyages<br>
-                Tous droits réservés
-            </div>
-        """, unsafe_allow_html=True)
-    
-    # Routage des pages
-    routes = {
-        "accueil": page_accueil,
-        "destinations": page_destinations,
-        "reservation": page_reservation,
-        "visas": page_visas,
-        "demande-visa": page_demande_visa,
-        "discover-algeria": page_discover_algeria,
-        "contact": page_contact,
-        "admin": page_admin,
-    }
-    
-    # Exécuter la page correspondante
-    current_page = st.session_state.page
-    if current_page in routes:
-        routes[current_page]()
-    else:
-        st.error("❌ Page introuvable")
-        st.session_state.page = "accueil"
-        st.rerun()
-
-if __name__ == "__main__":
-    main()
+                        st.markdown(f"**📝 Message:**
