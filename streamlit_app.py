@@ -93,7 +93,7 @@ def load_css():
         }
         
         .stApp { 
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            background: white;
         }
         
         /* Hero Section */
@@ -104,8 +104,8 @@ def load_css():
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.2);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         }
         
         .hero-overlay {
@@ -154,49 +154,50 @@ def load_css():
             background: white;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.1);
             margin: 15px 0;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 2px solid #e5e7eb;
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
-            border-color: #667eea;
+            box-shadow: 0 15px 35px rgba(37, 99, 235, 0.2);
+            border-color: #2563eb;
         }
         
         .price-tag {
-            color: #ff6b6b;
+            color: #dc2626;
             font-size: 24px;
             font-weight: 700;
             margin-top: 15px;
             display: inline-block;
             padding: 10px 20px;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
             border-radius: 12px;
         }
         
         /* Buttons */
         .stButton>button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: white;
             border-radius: 25px;
             padding: 12px 30px;
             border: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         
         .stButton>button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
         }
         
         /* Sidebar */
         [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
         }
         
         [data-testid="stSidebar"] * {
@@ -205,23 +206,23 @@ def load_css():
         
         /* Info boxes */
         .info-box {
-            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             padding: 20px;
             border-radius: 12px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #2563eb;
             margin: 20px 0;
         }
         
         .success-box {
-            background: #d4edda;
-            border-left-color: #28a745;
-            color: #155724;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left-color: #10b981;
+            color: #065f46;
         }
         
         .warning-box {
-            background: #fff3cd;
-            border-left-color: #ffc107;
-            color: #856404;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left-color: #f59e0b;
+            color: #92400e;
         }
         
         /* Badge */
@@ -234,16 +235,68 @@ def load_css():
             margin: 0 5px;
         }
         
-        .badge-success { background: #28a745; color: white; }
-        .badge-warning { background: #ffc107; color: #212529; }
-        .badge-danger { background: #dc3545; color: white; }
-        .badge-info { background: #17a2b8; color: white; }
+        .badge-success { background: #10b981; color: white; }
+        .badge-warning { background: #f59e0b; color: white; }
+        .badge-danger { background: #dc2626; color: white; }
+        .badge-info { background: #3b82f6; color: white; }
+        
+        /* Headers */
+        h1, h2, h3 {
+            color: #1e40af;
+        }
+        
+        /* Inputs */
+        .stTextInput input, .stTextArea textarea, .stSelectbox select {
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .stTextInput input:focus, .stTextArea textarea:focus, .stSelectbox select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        /* Tabs */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            background-color: #f3f4f6;
+            border-radius: 10px 10px 0 0;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+        }
+        
+        /* Expander */
+        .streamlit-expanderHeader {
+            background-color: #f3f4f6;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+        }
+        
+        .streamlit-expanderHeader:hover {
+            border-color: #2563eb;
+        }
+        
+        /* DataFrames */
+        .dataframe {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
         
         /* Loading */
         .loading {
             text-align: center;
             padding: 40px;
-            color: #667eea;
+            color: #2563eb;
             font-size: 1.2em;
         }
         </style>
@@ -375,8 +428,8 @@ def display_stat_card(icon: str, number: str, label: str):
     st.markdown(f"""
         <div class="card" style="text-align: center;">
             <div style="font-size: 2.5em; margin-bottom: 10px;">{icon}</div>
-            <h2 style="color: #667eea; margin: 5px 0;">{number}</h2>
-            <p style="margin: 5px 0 0 0; color: #666;">{label}</p>
+            <h2 style="color: #2563eb; margin: 5px 0;">{number}</h2>
+            <p style="margin: 5px 0 0 0; color: #6b7280;">{label}</p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -444,8 +497,8 @@ def page_accueil():
             st.markdown(f"""
                 <div class="card" style="min-height: 180px;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">{icon}</div>
-                    <h3 style="color: #667eea; margin: 10px 0;">{titre}</h3>
-                    <p style="color: #666; font-size: 0.9em;">{desc}</p>
+                    <h3 style="color: #2563eb; margin: 10px 0;">{titre}</h3>
+                    <p style="color: #6b7280; font-size: 0.9em;">{desc}</p>
                 </div>
             """, unsafe_allow_html=True)
     
@@ -541,12 +594,21 @@ def page_reservation():
                     value=st.session_state.get('destination_selectionnee', ''),
                     placeholder="Ex: Paris"
                 )
-                date_depart = st.date_input("Date de départ *", min_value=datetime.now().date())
-                date_retour = st.date_input("Date de retour *", min_value=datetime.now().date() + timedelta(days=1))
+                date_depart = st.date_input(
+                    "Date de départ *", 
+                    value=datetime.now().date(),
+                    min_value=datetime.now().date()
+                )
+                date_retour = st.date_input(
+                    "Date de retour *", 
+                    value=datetime.now().date() + timedelta(days=7),
+                    min_value=datetime.now().date() + timedelta(days=1)
+                )
                 nb_personnes = st.number_input("Nombre de personnes *", min_value=1, max_value=20, value=1)
             
             message = st.text_area("Message / Demandes spéciales", height=120)
             
+            st.markdown("<br>", unsafe_allow_html=True)
             submitted = st.form_submit_button("✈️ Envoyer la demande", use_container_width=True)
             
             if submitted:
@@ -628,8 +690,16 @@ def page_reservation():
                     "-- Sélectionnez --", "Paris", "Istanbul", "Dubaï", "Londres", 
                     "Rome", "Barcelone", "Marrakech", "Le Caire", "New York", "Tokyo"
                 ])
-                devis_date_depart = st.date_input("Date de départ *", min_value=datetime.now().date())
-                devis_date_retour = st.date_input("Date de retour *", min_value=datetime.now().date() + timedelta(days=1))
+                devis_date_depart = st.date_input(
+                    "Date de départ *", 
+                    value=datetime.now().date(),
+                    min_value=datetime.now().date()
+                )
+                devis_date_retour = st.date_input(
+                    "Date de retour *", 
+                    value=datetime.now().date() + timedelta(days=7),
+                    min_value=datetime.now().date() + timedelta(days=1)
+                )
             
             col1, col2 = st.columns(2)
             with col1:
@@ -688,7 +758,7 @@ def page_contact():
     with col1:
         st.markdown("""
             <div class="card">
-                <h3 style="color: #667eea;">📍 Notre Agence</h3>
+                <h3 style="color: #2563eb;">📍 Notre Agence</h3>
                 <p><strong>🏢 Adresse:</strong><br>Aïn Benian, Alger 16061, Algérie</p>
                 <p><strong>📞 Téléphone:</strong><br>+213 XXX XXX XXX</p>
                 <p><strong>📧 Email:</strong><br>contact@hcmvoyages.dz</p>
@@ -881,7 +951,7 @@ def page_visas():
     
     st.markdown("""
         <div class="info-box">
-            <h3 style="color: #667eea;">🌍 Obtenez votre visa facilement</h3>
+            <h3 style="color: #2563eb;">🌍 Obtenez votre visa facilement</h3>
             <p style="font-size: 1.1em;">
             HCM Voyages vous accompagne dans toutes vos démarches de visa. 
             Notre équipe d'experts prend en charge votre dossier de A à Z.
@@ -908,10 +978,10 @@ def page_visas():
             st.markdown(f"""
                 <div class="card" style="min-height: 200px;">
                     <div style="font-size: 3em; margin-bottom: 10px;">{flag}</div>
-                    <h3 style="color: #667eea; margin: 10px 0;">Visa {pays}</h3>
+                    <h3 style="color: #2563eb; margin: 10px 0;">Visa {pays}</h3>
                     <p style="margin: 5px 0; font-size: 0.9em;"><strong>Types:</strong> {types}</p>
                     <p style="margin: 5px 0; font-size: 0.9em;"><strong>Délai:</strong> {delai}</p>
-                    <p style="margin: 10px 0 0 0; color: #ff6b6b; font-weight: bold; font-size: 1.2em;">{tarif}</p>
+                    <p style="margin: 10px 0 0 0; color: #dc2626; font-weight: bold; font-size: 1.2em;">{tarif}</p>
                 </div>
             """, unsafe_allow_html=True)
     
@@ -1029,8 +1099,8 @@ def page_discover_algeria():
                     <div class="card" style="margin: 10px 0;">
                         <div style="font-size: 2em; float: left; margin-right: 15px;">{icon}</div>
                         <div>
-                            <strong style="color: #067d45;">{titre}</strong><br>
-                            <span style="color: #666; font-size: 0.9em;">{desc}</span>
+                            <strong style="color: #2563eb;">{titre}</strong><br>
+                            <span style="color: #6b7280; font-size: 0.9em;">{desc}</span>
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
