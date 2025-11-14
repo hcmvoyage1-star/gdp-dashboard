@@ -505,8 +505,7 @@ def page_reservation():
                 
                 )
                 
-                nb_personnes = st.number_input("Nombre de personnes *", min_value=1, max_value=20, value=1)
-                nb_de jours = st.number_input("Nombre de jours *", min_value=2, max_value=20, value=2)
+                nb_personnes = st.number_input("Nombre de personnes *", min_value=1, max_value=20, value=1
             
             st.markdown("<br>", unsafe_allow_html=True)
             message = st.text_area(
