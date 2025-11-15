@@ -82,10 +82,8 @@ def display_logo(size: str = "100%"):
         st.image("log.png", width=None, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception:
-        st.markdown(
-            f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>',
-            unsafe_allow_html=True
-        )
+        st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>',
+            unsafe_allow_html=True )
 
 # ====== IMAGE ACCUEIL ======
 def display_home_image():
