@@ -76,22 +76,24 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
 
 
 # ====== LOGO ======
-def display_logo(size: str = "100%"):
+def display_logo(size: int = 200):  # taille en pixels
     try:
-        st.markdown(f'<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
-        st.image("log.png", width=None, use_container_width=True)
+        st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
+        st.image("log.png", width=size)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception:
-        st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>',
-            unsafe_allow_html=True )
-
+        st.markdown(
+            '<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>',
+            unsafe_allow_html=True
+        )
 
 # ====== IMAGE ACCUEIL ======
-def display_home_image():
+def display_home_image(width: int = 800):  # largeur en pixels
     try:
-        st.image("heros.png", use_container_width=True)
+        st.image("heros.png", width=width)
     except Exception as e:
         st.error(f"Impossible de charger l'image : {e}")
+
 
 
 # ====== CSS ======
