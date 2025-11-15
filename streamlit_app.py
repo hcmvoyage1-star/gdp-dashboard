@@ -76,23 +76,71 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
 
 
 # ====== LOGO ======
-def display_logo(size: int = 200):  # taille en pixels
+def display_logo(size: int = 200):
+    """
+    Affiche le logo de l'application.
+    size : largeur du logo en pixels
+    """
     try:
         st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
         st.image("log.png", width=size)
         st.markdown('</div>', unsafe_allow_html=True)
-    except Exception:
-        st.markdown(
-            '<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>',
-            unsafe_allow_html=True
-        )
-
-# ====== IMAGE ACCUEIL ======
-def display_home_image(width: int = 800):  # largeur en pixels
-    try:
-        st.image("heros.png", width=width)
     except Exception as e:
-        st.error(f"Impossible de charger l'image : {e}")
+        st.error(f"Impossible de charger le logo : {e}")
+
+
+# ====== IMAGE D'ACCUEIL ======
+def display_home_image(width: int = 800, height: int = None):
+    """
+    Affiche l'image d'accueil (heros.png).
+    width : largeur en pixels
+    height : hauteur en pixels (optionnel)
+    """
+    try:
+        st.image("heros.png", width=width, height=height)
+    except Exception as e:
+        st.error(f"Impossible de charger l'image d'accueil : {e}")
+
+
+# ====== PAGE ACCUEIL ======
+def page_accueil():
+    st.markdown('<div class="hero-section">', unsafe_allow_html=True)
+    
+    # Image d'accueil
+    display_home_image(width=1200)
+    
+    # Overlay avec logo et texte
+    st.markdown("""
+        <div class="hero-overlay" style="position:absolute; top:0; width:100%; height:100%;
+                                           display:flex; justify-content:center; align-items:center;">
+            <div style="text-align:center; color:white;">
+    """, unsafe_allow_html=True)
+    
+    display_logo(size=200)
+    
+    st.markdown("""
+                <h1 class="hero-title">HCM VOYAGES</h1>
+                <p class="hero-subtitle">L'évasion sur mesure, explorez, rêvez, partez</p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Statistiques ou cartes
+    st.markdown("### 🎯 Pourquoi nous choisir ?")
+    col1, col2, col3, col4 = st.columns(4)
+    stats = [("🌍", "50+", "Destinations"), ("😊", "1000+", "Clients"),
+             ("📅", "10+", "Années"), ("🤝", "25+", "Partenaires")]
+    for col, (icon, num, label) in zip([col1, col2, col3, col4], stats):
+        with col:
+            st.markdown(f"""
+                <div class="card" style="text-align: center;">
+                    <div style="font-size: 3em;">{icon}</div>
+                    <h2 style="color: #667eea;">{num}</h2>
+                    <p>{label}</p>
+                </div>
+            """, unsafe_allow_html=True)
+
 
 
 
