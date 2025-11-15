@@ -246,74 +246,319 @@ def page_destinations():
 def page_reservation():
     st.markdown("# 📝 Réservation & Devis")
     
-    tab1, tab2 = st.tabs(["✈️ Réservation", "💰 Demande de Devis"])
+    tab1, tab2 = st.tabs(["✈️ Réservation Voyage", "💰 Demande de Devis"])
     
     with tab1:
+        st.markdown("### Formulaire de Réservation")
         with st.form("reservation_form", clear_on_submit=True):
+            st.markdown("#### 👤 Informations Personnelles")
             col1, col2 = st.columns(2)
-            with col1:
-                nom = st.text_input("Nom complet *")
-                email = st.text_input("Email *")
-                telephone = st.text_input("Téléphone *")
-            with col2:
-                destination = st.text_input("Destination *", value=st.session_state.get('destination_selectionnee', ''))
-                date_depart = st.date_input("Date départ *", min_value=datetime.now().date())
-                date_retour = st.date_input("Date retour *", min_value=datetime.now().date() + timedelta(days=1))
-                nb_personnes = st.number_input("Personnes", min_value=1, value=1)
             
-            message = st.text_area("Message", height=100)
-            submitted = st.form_submit_button("✈️ Envoyer", use_container_width=True)
+            with col1:
+                nom = st.text_input("Nom complet *", placeholder="Ex: Ahmed Benali")
+                email = st.text_input("Email *", placeholder="exemple@email.com")
+                telephone = st.text_input("Téléphone *", placeholder="+213 XXX XXX XXX")
+            
+            with col2:
+                destination = st.text_input("Destination *", 
+                                           value=st.session_state.get('destination_selectionnee', ''),
+                                           placeholder="Ex: Paris, Istanbul...")
+                date_depart = st.date_input("Date de départ *", 
+                                            min_value=datetime.now().date())
+                date_retour = st.date_input("Date de retour *", 
+                                            min_value=datetime.now().date() + timedelta(days=1))
+                nb_personnes = st.number_input("Nombre de personnes", min_value=1, max_value=20, value=1)
+            
+            # Calcul automatique de la durée
+            if date_depart and date_retour:
+                if date_retour > date_depart:
+                    duree_sejour = (date_retour - date_depart).days
+                    st.info(f"📅 Durée du séjour : **{duree_sejour} jour(s)**")
+                else:
+                    st.warning("⚠️ La date de retour doit être après la date de départ")
+            
+            message = st.text_area("Message / Demandes spéciales", height=150)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            submitted = st.form_submit_button("✈️ Envoyer la demande de réservation", use_container_width=True)
             
             if submitted:
-                if all([nom, email, telephone, destination]) and date_retour > date_depart:
+                errors = []
+                
+                # Validations
+                if not nom or len(nom) < 3:
+                    errors.append("Le nom doit contenir au moins 3 caractères")
+                
+                email_valid, email_msg = validate_email(email)
+                if not email_valid:
+                    errors.append(email_msg)
+                
+                phone_valid, phone_msg = validate_phone(telephone)
+                if not phone_valid:
+                    errors.append(phone_msg)
+                
+                if not destination:
+                    errors.append("Destination requise")
+                
+                if date_retour <= date_depart:
+                    errors.append("La date de retour doit être après la date de départ")
+                
+                if errors:
+                    for error in errors:
+                        st.error(f"❌ {error}")
+                else:
                     duree = (date_retour - date_depart).days
-                    data = {"nom": nom, "email": email, "telephone": telephone, "destination": destination,
-                           "date_depart": date_depart, "date_retour": date_retour, "nb_personnes": nb_personnes,
-                           "duree_sejour": duree, "message": message}
+                    
+                    data = {
+                        "nom": nom,
+                        "email": email,
+                        "telephone": telephone,
+                        "destination": destination,
+                        "date_depart": date_depart,
+                        "date_retour": date_retour,
+                        "nb_personnes": nb_personnes,
+                        "duree_sejour": duree,
+                        "message": message
+                    }
+                    
                     success, msg = add_reservation(data)
+                    
                     if success:
                         st.success(msg)
+                        st.markdown(f"""
+                            <div class="info-box" style="background: #d4edda; border-left-color: #28a745;">
+                                <h4 style="color: #155724;">📧 Confirmation envoyée</h4>
+                                <p style="color: #155724;">
+                                Un email de confirmation vous a été envoyé à <strong>{email}</strong>
+                                </p>
+                                <hr style="border-color: #c3e6cb;">
+                                <h5 style="color: #155724;">📋 Résumé de votre réservation :</h5>
+                                <ul style="color: #155724;">
+                                    <li><strong>Destination :</strong> {destination}</li>
+                                    <li><strong>Dates :</strong> du {date_depart.strftime('%d/%m/%Y')} au {date_retour.strftime('%d/%m/%Y')} ({duree} jours)</li>
+                                    <li><strong>Voyageurs :</strong> {nb_personnes} personne(s)</li>
+                                </ul>
+                                <p style="color: #155724; margin-top: 15px;">
+                                Notre équipe vous contactera dans les 24 heures pour finaliser votre réservation.
+                                </p>
+                            </div>
+                        """, unsafe_allow_html=True)
                         st.balloons()
                     else:
                         st.error(msg)
-                else:
-                    st.error("❌ Vérifiez les champs")
     
     with tab2:
         st.markdown("### 💰 Demande de Devis Personnalisé")
+        st.markdown("""
+            <div class="info-box">
+                <p style="font-size: 1.05em;">
+                Recevez un devis détaillé et personnalisé pour votre voyage. 
+                Indiquez vos dates, destination et préférences, et notre équipe vous répondra sous 24h.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
         with st.form("devis_form", clear_on_submit=True):
+            st.markdown("#### 👤 Vos Coordonnées")
             col1, col2 = st.columns(2)
+            
             with col1:
-                d_nom = st.text_input("Nom *", key="d_nom")
-                d_email = st.text_input("Email *", key="d_email")
-                d_tel = st.text_input("Téléphone *", key="d_tel")
+                devis_nom = st.text_input("Nom complet *", placeholder="Votre nom et prénom", key="devis_nom")
+                devis_email = st.text_input("Email *", placeholder="votre@email.com", key="devis_email")
+                devis_telephone = st.text_input("Téléphone *", placeholder="+213 XXX XXX XXX", key="devis_tel")
+            
             with col2:
-                d_dest = st.selectbox("Destination *", ["Paris", "Istanbul", "Dubaï", "Autre"], key="d_dest")
-                d_dep = st.date_input("Date départ *", min_value=datetime.now().date(), key="d_dep")
-                d_ret = st.date_input("Date retour *", min_value=datetime.now().date() + timedelta(days=1), key="d_ret")
+                devis_ville_depart = st.text_input("Ville de départ *", placeholder="Ex: Alger", key="devis_ville_depart")
+                devis_nb_adultes = st.number_input("Nombre d'adultes *", min_value=1, max_value=20, value=1, key="devis_adultes")
+                devis_nb_enfants = st.number_input("Nombre d'enfants (0-12 ans)", min_value=0, max_value=20, value=0, key="devis_enfants")
             
-            d_adultes = st.number_input("Adultes", min_value=1, value=1, key="d_adultes")
-            d_enfants = st.number_input("Enfants", min_value=0, value=0, key="d_enfants")
-            d_budget = st.select_slider("Budget", ["500-1000€", "1000-2000€", "2000-3000€", "3000€+"], key="d_budget")
-            d_msg = st.text_area("Commentaires", key="d_msg")
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("#### 🌍 Destination et Dates")
             
-            submitted_devis = st.form_submit_button("📨 Recevoir mon devis", use_container_width=True)
+            col3, col4, col5 = st.columns(3)
+            
+            with col3:
+                devis_destination = st.selectbox("Destination *", [
+                    "-- Sélectionnez --",
+                    "Paris, France",
+                    "Istanbul, Turquie", 
+                    "Dubaï, EAU",
+                    "Londres, UK",
+                    "Rome, Italie",
+                    "Barcelone, Espagne",
+                    "Marrakech, Maroc",
+                    "Le Caire, Égypte",
+                    "New York, USA",
+                    "Tokyo, Japon",
+                    "Bali, Indonésie",
+                    "Maldives",
+                    "Phuket, Thaïlande",
+                    "Sydney, Australie",
+                    "Autre destination (préciser en commentaire)"
+                ], key="devis_dest")
+            
+            with col4:
+                devis_date_depart = st.date_input("Date de départ *", 
+                                                   min_value=datetime.now().date(),
+                                                   key="devis_date_dep")
+            
+            with col5:
+                devis_date_retour = st.date_input("Date de retour *", 
+                                                   min_value=datetime.now().date() + timedelta(days=1),
+                                                   key="devis_date_ret")
+            
+            # Calcul automatique de la durée
+            if devis_date_depart and devis_date_retour:
+                if devis_date_retour > devis_date_depart:
+                    duree_sejour = (devis_date_retour - devis_date_depart).days
+                    st.info(f"📅 Durée du séjour : **{duree_sejour} jour(s)**")
+                else:
+                    st.warning("⚠️ La date de retour doit être après la date de départ")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("#### 🏨 Préférences de Voyage")
+            
+            col6, col7 = st.columns(2)
+            
+            with col6:
+                devis_type_hebergement = st.selectbox("Type d'hébergement *", [
+                    "Hôtel 3 étoiles",
+                    "Hôtel 4 étoiles",
+                    "Hôtel 5 étoiles",
+                    "Resort tout inclus",
+                    "Appartement/Location",
+                    "Auberge de jeunesse",
+                    "Pas de préférence"
+                ], key="devis_hebergement")
+                
+                devis_formule = st.selectbox("Formule repas", [
+                    "Petit-déjeuner seulement",
+                    "Demi-pension (petit-déj + dîner)",
+                    "Pension complète (3 repas)",
+                    "Tout inclus",
+                    "Sans repas"
+                ], key="devis_formule")
+            
+            with col7:
+                devis_type_vol = st.selectbox("Type de vol", [
+                    "Économique",
+                    "Économique Premium",
+                    "Affaires",
+                    "Première classe",
+                    "Vol direct uniquement",
+                    "Pas de préférence"
+                ], key="devis_vol")
+                
+                devis_assurance = st.checkbox("Inclure assurance annulation", key="devis_assurance")
+                devis_transfert = st.checkbox("Inclure transferts aéroport/hôtel", key="devis_transfert")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("#### 💬 Informations Complémentaires")
+            
+            devis_activites = st.multiselect("Activités souhaitées", [
+                "Visites culturelles",
+                "Excursions guidées",
+                "Activités nautiques",
+                "Randonnée/Nature",
+                "Shopping",
+                "Gastronomie/Restaurants",
+                "Spa/Bien-être",
+                "Vie nocturne",
+                "Parcs d'attractions"
+            ], key="devis_activites")
+            
+            devis_budget = st.select_slider("Budget approximatif par personne", [
+                "Moins de 500€",
+                "500€ - 1000€",
+                "1000€ - 2000€",
+                "2000€ - 3000€",
+                "Plus de 3000€",
+                "Pas de budget défini"
+            ], key="devis_budget")
+            
+            devis_commentaire = st.text_area(
+                "Commentaires / Demandes spéciales",
+                placeholder="Ajoutez toute information utile : anniversaire, lune de miel, mobilité réduite, régime alimentaire spécial...",
+                height=120,
+                key="devis_comment"
+            )
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Bouton de soumission
+            col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+            with col_btn2:
+                submitted_devis = st.form_submit_button("📨 Recevoir mon devis gratuit", use_container_width=True)
             
             if submitted_devis:
-                if all([d_nom, d_email, d_tel, d_dest]) and d_ret > d_dep:
-                    duree = (d_ret - d_dep).days
-                    data = {"nom": d_nom, "email": d_email, "telephone": d_tel, "destination": d_dest,
-                           "date_depart": str(d_dep), "date_retour": str(d_ret), "duree_sejour": duree,
-                           "nb_adultes": d_adultes, "nb_enfants": d_enfants, "budget_approximatif": d_budget,
-                           "commentaires": d_msg, "statut": "en_attente"}
-                    success, msg = add_devis(data)
+                # Validation
+                if not all([devis_nom, devis_email, devis_telephone, devis_destination, 
+                           devis_date_depart, devis_date_retour, devis_ville_depart]):
+                    st.error("❌ Veuillez remplir tous les champs obligatoires (*)")
+                elif devis_destination == "-- Sélectionnez --":
+                    st.error("❌ Veuillez sélectionner une destination")
+                elif devis_date_retour <= devis_date_depart:
+                    st.error("❌ La date de retour doit être après la date de départ")
+                else:
+                    # Calcul de la durée
+                    duree = (devis_date_retour - devis_date_depart).days
+                    nb_total_personnes = devis_nb_adultes + devis_nb_enfants
+                    
+                    # Préparation des données
+                    devis_data = {
+                        "nom": devis_nom,
+                        "email": devis_email,
+                        "telephone": devis_telephone,
+                        "ville_depart": devis_ville_depart,
+                        "destination": devis_destination,
+                        "date_depart": str(devis_date_depart),
+                        "date_retour": str(devis_date_retour),
+                        "duree_sejour": duree,
+                        "nb_adultes": devis_nb_adultes,
+                        "nb_enfants": devis_nb_enfants,
+                        "nb_total_personnes": nb_total_personnes,
+                        "type_hebergement": devis_type_hebergement,
+                        "formule_repas": devis_formule,
+                        "type_vol": devis_type_vol,
+                        "assurance_annulation": devis_assurance,
+                        "transferts": devis_transfert,
+                        "activites": ", ".join(devis_activites) if devis_activites else "Aucune",
+                        "budget_approximatif": devis_budget,
+                        "commentaires": devis_commentaire,
+                        "statut": "en_attente"
+                    }
+                    
+                    # Envoi vers Supabase
+                    success, msg = add_devis(devis_data)
+                    
                     if success:
                         st.success(msg)
+                        st.markdown(f"""
+                            <div class="info-box" style="background: #d4edda; border-left-color: #28a745;">
+                                <h4 style="color: #155724;">📧 Demande de devis enregistrée</h4>
+                                <p style="color: #155724;">
+                                Un email de confirmation a été envoyé à <strong>{devis_email}</strong>
+                                </p>
+                                <hr style="border-color: #c3e6cb;">
+                                <h5 style="color: #155724;">📋 Résumé de votre demande :</h5>
+                                <ul style="color: #155724;">
+                                    <li><strong>Destination :</strong> {devis_destination}</li>
+                                    <li><strong>Dates :</strong> du {devis_date_depart.strftime('%d/%m/%Y')} au {devis_date_retour.strftime('%d/%m/%Y')} ({duree} jours)</li>
+                                    <li><strong>Voyageurs :</strong> {devis_nb_adultes} adulte(s) {f"+ {devis_nb_enfants} enfant(s)" if devis_nb_enfants > 0 else ""}</li>
+                                    <li><strong>Budget :</strong> {devis_budget}</li>
+                                </ul>
+                                <p style="color: #155724; margin-top: 15px;">
+                                <strong>⏱️ Délai de réponse :</strong> Vous recevrez votre devis détaillé sous 24 heures ouvrables.
+                                </p>
+                                <p style="color: #155724;">
+                                <strong>📞 Questions ?</strong> Contactez-nous au +213 XXX XXX XXX
+                                </p>
+                            </div>
+                        """, unsafe_allow_html=True)
                         st.balloons()
                     else:
                         st.error(msg)
-                else:
-                    st.error("❌ Vérifiez les champs")
 
 def page_demande_visa():
     st.markdown("# 📋 Demande de Visa")
