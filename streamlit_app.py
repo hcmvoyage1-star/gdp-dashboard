@@ -74,7 +74,6 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
     text = re.sub(r'[<>]', '', text)
     return text[:max_length]
 
-
 from PIL import Image
 import streamlit as st
 
@@ -103,6 +102,49 @@ def display_home_image(width: int = None):
         st.image(img, width=width)
     except Exception as e:
         st.error(f"Impossible de charger l'image : {e}")
+
+
+# ====== PAGE ACCUEIL ======
+def page_accueil():
+    st.markdown('<div class="hero-section">', unsafe_allow_html=True)
+    
+    # Image d'accueil
+    display_home_image(width=None)  # prend toute la largeur disponible
+    
+    # Overlay avec logo et titre
+    st.markdown("""
+        <div class="hero-overlay" style="position: relative; margin-top: -200px; padding: 40px; text-align: center;">
+    """, unsafe_allow_html=True)
+    
+    # Logo
+    display_logo(width=200)  # logo centré
+    
+    # Titre et sous-titre
+    st.markdown("""
+        <h1 class="hero-title" style="color: white; font-size: 3em; margin: 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+            HCM VOYAGES
+        </h1>
+        <p class="hero-subtitle" style="color: white; font-size: 1.5em; text-shadow: 1px 1px 2px rgba(0,0,0,0.4);">
+            L'évasion sur mesure, explorez, rêvez, partez
+        </p>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Section pourquoi nous choisir
+    st.markdown("### 🎯 Pourquoi nous choisir ?")
+    col1, col2, col3, col4 = st.columns(4)
+    stats = [("🌍", "50+", "Destinations"), ("😊", "1000+", "Clients"), ("📅", "10+", "Années"), ("🤝", "25+", "Partenaires")]
+    for col, (icon, num, label) in zip([col1, col2, col3, col4], stats):
+        with col:
+            st.markdown(f"""
+                <div class="card" style="text-align: center; padding: 15px; border-radius: 15px; box-shadow: 0px 5px 15px rgba(0,0,0,0.05);">
+                    <div style="font-size: 2.5em;">{icon}</div>
+                    <h2 style="color: #667eea;">{num}</h2>
+                    <p>{label}</p>
+                </div>
+            """, unsafe_allow_html=True)
+
 
 
 
