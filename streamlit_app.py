@@ -32,13 +32,8 @@ import re
 from typing import Optional, Dict, List, Tuple
 import hashlib
 
-# Configuration de la page
-st.set_page_config(
-    page_title="HCM Voyages - L'évasion sur mesure",
-    page_icon="✈️",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+
+
 
 # ====== CONFIGURATION SUPABASE ======
 SUPABASE_URL = "https://oilamfxxqjopuopgskfc.supabase.co"
