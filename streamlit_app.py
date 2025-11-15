@@ -1,3 +1,4 @@
+"""
 HCM VOYAGES - Application Streamlit avec Contraste Optimisé
 """
 import streamlit as st
