@@ -88,14 +88,14 @@ def display_logo(size: str = "150px"):
 st.markdown("""
     <style>
 
-    /* === PALETTE 1 — Blanc cassé premium === */
+    /* === PALETTE BLANC PREMIUM === */
     :root {
-        --background: #F2EFE7;
+        --background: #FFFFFF;
         --text-main: #2C2C2C;
         --primary: #3A5BA0;
         --primary-light: #597BC8;
-        --accent-gold: #D4AF37;
-        --card-bg: #FFFFFF;
+        --accent: #764ba2;
+        --card-bg: #F9F9F9;
     }
 
     body, .stApp {
@@ -112,24 +112,24 @@ st.markdown("""
         border-radius: 20px;
         overflow: hidden;
         margin-bottom: 40px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.1);
     }
 
     .hero-overlay {
         position: absolute; top: 0; width: 100%; height: 100%;
-        background: linear-gradient(135deg, rgba(58,91,160,0.85), rgba(212,175,55,0.75));
+        background: linear-gradient(135deg, rgba(58,91,160,0.7), rgba(118,75,162,0.7));
         display: flex; justify-content: center; align-items: center;
         padding: 40px;
     }
 
     .hero-title {
         color: white; font-size: 4em; font-weight: 700; margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.35);
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.25);
     }
 
     .hero-subtitle {
         color: white; font-size: 1.7em; font-weight: 300; margin: 20px 0;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
 
     /* --- CARDS --- */
@@ -139,13 +139,13 @@ st.markdown("""
         border-radius: 20px;
         margin: 15px 0;
         border: 1px solid rgba(0,0,0,0.05);
-        box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
+        box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
         transition: 0.3s ease;
     }
 
     .card:hover {
         transform: translateY(-5px);
-        box-shadow: 0px 14px 35px rgba(58,91,160,0.25);
+        box-shadow: 0px 14px 35px rgba(58,91,160,0.1);
         border-color: var(--primary-light);
     }
 
@@ -158,18 +158,19 @@ st.markdown("""
         border: none;
         font-weight: 600;
         transition: 0.2s ease;
-        box-shadow: 0 5px 15px rgba(58,91,160,0.3);
+        box-shadow: 0 5px 15px rgba(58,91,160,0.2);
     }
 
     .stButton>button:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(58,91,160,0.45);
+        box-shadow: 0 10px 25px rgba(58,91,160,0.35);
     }
 
-    /* --- SIDEBAR PREMIUM --- */
+    /* --- SIDEBAR --- */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #F2EFE7, #D4C8A8);
+        background: #FFFFFF;
         color: var(--text-main) !important;
+        border-right: 1px solid rgba(0,0,0,0.05);
     }
 
     [data-testid="stSidebar"] * {
@@ -179,7 +180,7 @@ st.markdown("""
 
     /* --- BOITES D’INFO --- */
     .info-box {
-        background: rgba(58,91,160,0.10);
+        background: rgba(58,91,160,0.08);
         padding: 20px;
         border-radius: 12px;
         border-left: 4px solid var(--primary);
@@ -188,7 +189,6 @@ st.markdown("""
 
     </style>
 """, unsafe_allow_html=True)
-
 
 # ====== FONCTIONS SUPABASE ======
 def add_reservation(data: Dict) -> Tuple[bool, str]:
