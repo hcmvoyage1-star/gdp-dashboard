@@ -75,13 +75,13 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
     return text[:max_length]
 
 # ====== LOGO ======
-def display_logo(size: str = "150px"):
+def display_logo(size: str = "100%"):
     try:
         st.markdown(f'<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
-        st.image("log.png", width=int(size.replace("px", "")))
+        st.image("log.png", width=None, use_column_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
     except:
-        st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: {size};">✈️</div>', 
+        st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>', 
                    unsafe_allow_html=True)
 
 # ====== CSS ======
