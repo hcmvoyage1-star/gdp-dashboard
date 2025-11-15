@@ -75,27 +75,34 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
     return text[:max_length]
 
 
+from PIL import Image
+import streamlit as st
+
 # ====== LOGO ======
-def display_logo(size=200):
+def display_logo(width: int = 300):
     """
-    Affiche le logo de l'application.
-    size : int (pixels) ou str ('100%' pour full width, ou '200px')
+    Affiche le logo centré.
+    width : largeur en pixels
     """
     try:
-        # Convertir si c'est une string en int
-        if isinstance(size, str):
-            if size.endswith("px"):
-                size = int(size.replace("px", ""))
-            elif size.endswith("%"):
-                size = None  # largeur auto / full width
-            else:
-                size = int(size)  # ex: "200"
-        
         st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
-        st.image("log.png", width=size)
+        st.image("log.png", width=width)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
+
+
+# ====== IMAGE ACCUEIL ======
+def display_home_image(width: int = None):
+    """
+    Affiche l'image d'accueil.
+    width : largeur en pixels. None = largeur automatique
+    """
+    try:
+        img = Image.open("heros.png")
+        st.image(img, width=width)
+    except Exception as e:
+        st.error(f"Impossible de charger l'image : {e}")
 
 
 
