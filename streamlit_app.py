@@ -87,45 +87,108 @@ def display_logo(size: str = "150px"):
 # ====== CSS ======
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-    * { font-family: 'Poppins', sans-serif; }
-    .stApp { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-    
-    .hero-section {
-        position: relative; width: 100%; height: 500px; border-radius: 20px;
-        overflow: hidden; margin-bottom: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+
+    /* === PALETTE 1 — Blanc cassé premium === */
+    :root {
+        --background: #F2EFE7;
+        --text-main: #2C2C2C;
+        --primary: #3A5BA0;
+        --primary-light: #597BC8;
+        --accent-gold: #D4AF37;
+        --card-bg: #FFFFFF;
     }
+
+    body, .stApp {
+        background-color: var(--background) !important;
+        color: var(--text-main) !important;
+        font-family: "Poppins", sans-serif;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero-section {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 40px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
     .hero-overlay {
         position: absolute; top: 0; width: 100%; height: 100%;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
-        display: flex; justify-content: center; align-items: center; padding: 40px;
+        background: linear-gradient(135deg, rgba(58,91,160,0.85), rgba(212,175,55,0.75));
+        display: flex; justify-content: center; align-items: center;
+        padding: 40px;
     }
-    .hero-title { color: white; font-size: 4em; font-weight: 700; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-    .hero-subtitle { color: white; font-size: 1.8em; font-weight: 300; margin: 20px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-    
+
+    .hero-title {
+        color: white; font-size: 4em; font-weight: 700; margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.35);
+    }
+
+    .hero-subtitle {
+        color: white; font-size: 1.7em; font-weight: 300; margin: 20px 0;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* --- CARDS --- */
     .card {
-        background: white; padding: 25px; border-radius: 20px; 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 15px 0;
-        transition: all 0.3s ease; border: 2px solid transparent;
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 20px;
+        margin: 15px 0;
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0px 8px 20px rgba(0,0,0,0.08);
+        transition: 0.3s ease;
     }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3); border-color: #667eea; }
-    
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 14px 35px rgba(58,91,160,0.25);
+        border-color: var(--primary-light);
+    }
+
+    /* --- BOUTONS --- */
     .stButton>button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
-        border-radius: 30px; padding: 12px 35px; border: none; font-weight: 600;
-        transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        color: white !important;
+        border-radius: 30px;
+        padding: 12px 35px;
+        border: none;
+        font-weight: 600;
+        transition: 0.2s ease;
+        box-shadow: 0 5px 15px rgba(58,91,160,0.3);
     }
-    .stButton>button:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5); }
-    
-    [data-testid="stSidebar"] { background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); }
-    [data-testid="stSidebar"] * { color: white !important; }
-    
+
+    .stButton>button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(58,91,160,0.45);
+    }
+
+    /* --- SIDEBAR PREMIUM --- */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #F2EFE7, #D4C8A8);
+        color: var(--text-main) !important;
+    }
+
+    [data-testid="stSidebar"] * {
+        color: var(--text-main) !important;
+        font-weight: 500;
+    }
+
+    /* --- BOITES D’INFO --- */
     .info-box {
-        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-        padding: 20px; border-radius: 15px; border-left: 5px solid #667eea; margin: 20px 0;
+        background: rgba(58,91,160,0.10);
+        padding: 20px;
+        border-radius: 12px;
+        border-left: 4px solid var(--primary);
+        margin: 20px 0;
     }
+
     </style>
 """, unsafe_allow_html=True)
+
 
 # ====== FONCTIONS SUPABASE ======
 def add_reservation(data: Dict) -> Tuple[bool, str]:
