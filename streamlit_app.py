@@ -100,7 +100,7 @@ def display_home_image(width: int = None):
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                         height: 400px; border-radius: 20px; display: flex; 
                         align-items: center; justify-content: center;">
-                <div style="font-size: 5em; color: white;">🌍✈️🏝️</div>
+                <div style="font-size: 5em; color: white;">🌍🏝️</div>
             </div>
         """, unsafe_allow_html=True)
 
