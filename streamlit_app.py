@@ -1150,4 +1150,4 @@ def page_reservation():
                     """, unsafe_allow_html=True)
                     st.balloons()
     
-    st.markdown('</div>', unsafe_allow_html=True
+    st.markdown('</div>', unsafe_allow_html=True)
