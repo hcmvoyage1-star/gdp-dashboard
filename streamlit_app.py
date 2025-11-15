@@ -422,11 +422,6 @@ def page_accueil():
     st.markdown("""
         <div class="hero-overlay">
             <div style="text-align: center;">
-    """, unsafe_allow_html=True)
-    
-    display_logo(size="180px")
-    
-    st.markdown("""
                 <h1 class="hero-title" style="color: #1e40af;">HCM VOYAGES</h1>
                 <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
             </div>
