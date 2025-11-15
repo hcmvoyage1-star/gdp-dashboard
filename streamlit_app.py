@@ -77,18 +77,23 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
 from PIL import Image
 import streamlit as st
 
-# ====== LOGO ======
-def display_logo(width: int = 300):
+def display_logo(width: Optional[int] = None, size: Optional[str] = None):
     """
     Affiche le logo centré.
-    width : largeur en pixels
+    width : largeur en pixels (entier)
+    size : largeur en pixels sous forme de string, ex: "120px"
     """
     try:
+        final_width = width
+        if size:
+            # convertit "120px" en entier 120
+            final_width = int(re.sub(r'\D', '', size))
         st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
-        st.image("log.png", width=width)
+        st.image("log.png", width=final_width)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
+
 
 
 # ====== IMAGE ACCUEIL ======
