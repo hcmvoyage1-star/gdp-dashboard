@@ -1441,9 +1441,10 @@ def page_demande_visa():
                 ])
             else:
                 type_service = st.selectbox("Type de service *", [
-                    "📅 Normal"
-                     "⚡ Express (1-2 semaines)"
-                ])
+                    "📅 Normal"])
+                   , [" ⚡ Express ])
+                
+                
             
             date_rdv_souhaitee = st.date_input(
                 "Date de rendez-vous souhaitée *",
