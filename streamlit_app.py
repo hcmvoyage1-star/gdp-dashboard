@@ -84,11 +84,13 @@ def display_logo(width: int = None, size: str = None):
                 final_width = int(re.sub(r'\D', '', size))
             elif isinstance(size, int):
                 final_width = size
+        if not final_width:
+            final_width = 200
         st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
-        st.image("log.png", width=final_width if final_width else 100)
+        st.image("log.png", width=final_width)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
-        st.markdown('<div style="text-align: center; font-size: 4em;">✈️</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align: center;"><p style="color: red;">Logo introuvable</p></div>', unsafe_allow_html=True)
 
 def display_home_image(width: int = None):
     """Affiche l'image d'accueil"""
@@ -417,21 +419,30 @@ def get_contacts() -> List[Dict]:
 # ====== PAGES ======
 def page_accueil():
     # Hero section avec image centrée
-    col_left, col_center, col_right = st.columns([0.5, 6, 0.5])
+    st.markdown('<div class="hero-section">', unsafe_allow_html=True)
     
-    with col_center:
-        st.markdown('<div class="hero-section">', unsafe_allow_html=True)
-        display_home_image()
-        
+    # Affichage de l'image hero
+    try:
+        st.image("heros.png", use_container_width=True)
+    except Exception as e:
+        st.error(f"⚠️ Impossible de charger l'image heros.png : {e}")
         st.markdown("""
-            <div class="hero-overlay">
-                <div style="text-align: center;">
-                    <h1 class="hero-title" style="color: #1e40af;">HCM VOYAGES</h1>
-                    <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
-                </div>
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); 
+                        height: 600px; border-radius: 20px; display: flex; 
+                        align-items: center; justify-content: center;">
+                <div style="font-size: 5em; color: white;">🌍🏝️</div>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("""
+        <div class="hero-overlay">
+            <div style="text-align: center;">
+                <h1 class="hero-title" style="color: #1e40af;">HCM VOYAGES</h1>
+                <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -1656,7 +1667,7 @@ def main():
         st.session_state.page = "accueil"
     
     with st.sidebar:
-        display_logo(size="100px")
+        display_logo(size="200px")
         st.markdown("---")
         
         st.markdown("### 🧭 Navigation")
