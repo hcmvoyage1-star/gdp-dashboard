@@ -2,6 +2,27 @@
 HCM VOYAGES - Application Streamlit avec Contraste Optimisé
 Amélioration de l'accessibilité et de la lisibilité
 """
+import streamlit as st
+import sys
+import traceback
+
+# Test de santé au démarrage
+try:
+    st.set_page_config(
+        page_title="HCM Voyages",
+        page_icon="✈️",
+        layout="wide"
+    )
+    
+    # Message de debug visible
+    st.success("✅ Application chargée avec succès !")
+    st.info("🔧 Mode debug actif")
+    
+except Exception as e:
+    st.error(f"❌ Erreur critique : {e}")
+    st.code(traceback.format_exc())
+    sys.exit(1)
+
 
 import streamlit as st
 from supabase import create_client, Client
