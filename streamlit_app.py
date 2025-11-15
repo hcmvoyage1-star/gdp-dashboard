@@ -165,9 +165,9 @@ def display_logo(size: str = "300px"):
             </div>
         """, unsafe_allow_html=True)
 
-# ====== CSS OPTIMISÉ ======
+# ====== CSS OPTIMISÉ - THÈME BLANC AVEC BLEU ======
 def load_css():
-    """Charge le CSS optimisé"""
+    """Charge le CSS avec fond blanc et éléments bleus"""
     st.markdown("""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
@@ -177,8 +177,9 @@ def load_css():
             box-sizing: border-box;
         }
         
+        /* Fond blanc pour toute l'application */
         .stApp { 
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: #ffffff !important;
         }
         
         /* Responsive Mobile First */
@@ -202,114 +203,317 @@ def load_css():
             }
         }
         
+        /* Titres en bleu */
+        h1, h2, h3, h4, h5, h6 {
+            color: #3b82f6 !important;
+            font-weight: 600;
+        }
+        
+        /* Texte normal en noir/gris foncé */
+        p, span, label, div {
+            color: #1f2937 !important;
+        }
+        
         /* Hero Section */
         .hero-section {
             width: 100%;
             padding: 60px 20px;
             border-radius: 20px;
             margin-bottom: 40px;
-            background: white;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
             text-align: center;
+            border: 2px solid #3b82f6;
         }
         
         .hero-title {
-            color: #0f172a;
+            color: #1e40af !important;
             font-size: 3em;
             font-weight: 700;
             margin: 20px 0 10px 0;
         }
         
         .hero-subtitle {
-            color: #1e293b;
+            color: #3b82f6 !important;
             font-size: 1.3em;
             font-weight: 400;
             margin: 10px 0;
         }
         
-        /* Cards */
+        /* Cards avec fond blanc et bordure bleue */
         .card {
-            background: white;
+            background: #ffffff;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
             margin: 15px 0;
             transition: all 0.3s ease;
+            border: 2px solid #bfdbfe;
         }
         
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
         }
         
-        .card h2, .card h3, .card h4, .card p, .card span:not(.badge) {
-            color: #0f172a !important;
+        .card h2, .card h3, .card h4 {
+            color: #3b82f6 !important;
         }
         
-        /* Buttons */
+        .card p, .card span:not(.badge) {
+            color: #1f2937 !important;
+        }
+        
+        /* Boutons bleus */
         .stButton>button {
-            background: #3b82f6;
+            background: #3b82f6 !important;
             color: #ffffff !important;
             border-radius: 25px;
             padding: 12px 30px;
-            border: none;
+            border: 2px solid #3b82f6;
             font-weight: 600;
             transition: all 0.3s ease;
             width: 100%;
         }
         
         .stButton>button:hover {
-            background: #2563eb;
+            background: #2563eb !important;
+            border-color: #2563eb;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
         
-        /* Inputs */
-        .stTextInput input, .stTextArea textarea, .stSelectbox select {
+        .stButton>button[kind="primary"] {
+            background: #1e40af !important;
+            border-color: #1e40af;
+        }
+        
+        .stButton>button[kind="secondary"] {
+            background: #ffffff !important;
+            color: #3b82f6 !important;
+            border: 2px solid #3b82f6;
+        }
+        
+        .stButton>button[kind="secondary"]:hover {
+            background: #eff6ff !important;
+            color: #2563eb !important;
+        }
+        
+        /* Inputs avec bordure bleue */
+        .stTextInput input, .stTextArea textarea, .stSelectbox select, .stNumberInput input, .stDateInput input {
             border-radius: 10px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid #bfdbfe;
             background: #ffffff;
-            color: #0f172a;
+            color: #1f2937;
+            transition: all 0.3s ease;
         }
         
-        .stTextInput input:focus, .stTextArea textarea:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        .stTextInput input:focus, .stTextArea textarea:focus, .stSelectbox select:focus, .stNumberInput input:focus {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
+        
+        /* Labels en bleu */
+        label {
+            color: #3b82f6 !important;
+            font-weight: 600;
         }
         
         /* Info boxes */
         .info-box {
-            background: white;
+            background: #eff6ff;
             padding: 20px;
             border-radius: 12px;
             border-left: 4px solid #3b82f6;
             margin: 20px 0;
         }
         
+        .info-box h3, .info-box h4 {
+            color: #1e40af !important;
+        }
+        
+        .info-box p, .info-box strong {
+            color: #1f2937 !important;
+        }
+        
         .success-box {
-            background: #d1fae5;
+            background: #f0fdf4;
             border-left-color: #10b981;
         }
         
+        .success-box h3, .success-box h4 {
+            color: #065f46 !important;
+        }
+        
         .error-box {
-            background: #fee2e2;
+            background: #fef2f2;
             border-left-color: #dc2626;
         }
         
-        /* Messages */
-        .stSuccess, .stError, .stWarning, .stInfo {
-            border-radius: 10px;
-            padding: 15px;
+        .error-box h3, .error-box h4 {
+            color: #991b1b !important;
         }
         
-        /* Sidebar */
+        /* Messages */
+        .stSuccess {
+            background: #f0fdf4;
+            color: #065f46;
+            border: 2px solid #10b981;
+            border-radius: 10px;
+        }
+        
+        .stError {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 2px solid #dc2626;
+            border-radius: 10px;
+        }
+        
+        .stWarning {
+            background: #fffbeb;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+            border-radius: 10px;
+        }
+        
+        .stInfo {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+        }
+        
+        /* Sidebar avec fond blanc et éléments bleus */
         [data-testid="stSidebar"] {
+            background: #ffffff !important;
+            border-right: 3px solid #bfdbfe;
+        }
+        
+        [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+            color: #3b82f6 !important;
+        }
+        
+        [data-testid="stSidebar"] p, [data-testid="stSidebar"] span {
+            color: #1f2937 !important;
+        }
+        
+        /* Séparateurs bleus */
+        hr {
+            border-color: #bfdbfe;
+        }
+        
+        /* Tabs avec style bleu */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px;
             background: #ffffff;
         }
         
-        /* Labels */
-        label {
-            color: #f1f5f9 !important;
-            font-weight: 500;
+        .stTabs [data-baseweb="tab"] {
+            background-color: #ffffff;
+            border: 2px solid #bfdbfe;
+            border-radius: 10px 10px 0 0;
+            color: #3b82f6 !important;
+            font-weight: 600;
+        }
+        
+        .stTabs [data-baseweb="tab"]:hover {
+            background-color: #eff6ff;
+        }
+        
+        .stTabs [aria-selected="true"] {
+            background: #3b82f6 !important;
+            color: #ffffff !important;
+            border-color: #3b82f6;
+        }
+        
+        /* Expander */
+        .streamlit-expanderHeader {
+            background-color: #eff6ff;
+            border-radius: 10px;
+            border: 2px solid #bfdbfe;
+            color: #3b82f6 !important;
+            font-weight: 600;
+        }
+        
+        .streamlit-expanderHeader:hover {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+        }
+        
+        .streamlit-expanderContent {
+            background-color: #ffffff;
+            border: 1px solid #bfdbfe;
+            border-top: none;
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+        
+        .badge-success { 
+            background: #10b981; 
+            color: white; 
+        }
+        
+        .badge-warning { 
+            background: #f59e0b; 
+            color: white; 
+        }
+        
+        .badge-danger { 
+            background: #dc2626; 
+            color: white; 
+        }
+        
+        .badge-info { 
+            background: #3b82f6; 
+            color: white; 
+        }
+        
+        /* Dataframe */
+        .dataframe {
+            border: 2px solid #bfdbfe;
+            border-radius: 10px;
+        }
+        
+        /* Select slider */
+        .stSlider [data-baseweb="slider"] {
+            background: #bfdbfe;
+        }
+        
+        .stSlider [data-baseweb="slider"] [role="slider"] {
+            background: #3b82f6;
+        }
+        
+        /* Prix avec style bleu */
+        .price-tag {
+            color: #1e40af;
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 15px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 12px;
+            border: 2px solid #3b82f6;
+        }
+        
+        /* Markdown links en bleu */
+        a {
+            color: #3b82f6 !important;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #2563eb !important;
+            text-decoration: underline;
         }
         </style>
     """, unsafe_allow_html=True)
