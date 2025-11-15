@@ -427,7 +427,7 @@ def page_accueil():
     display_logo(size="180px")
     
     st.markdown("""
-                <h1 class="hero-title">HCM VOYAGES</h1>
+                <h1 class="hero-title" style="color: #1e40af;">HCM VOYAGES</h1>
                 <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
             </div>
         </div>
