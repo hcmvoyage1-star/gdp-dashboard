@@ -171,7 +171,7 @@ def page_accueil():
             <div style="text-align:center; color:white;">
     """, unsafe_allow_html=True)
     
-    display_logo(size=200)
+    display_logo(size=500)
     
     st.markdown("""
                 <h1 class="hero-title">HCM VOYAGES</h1>
