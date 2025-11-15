@@ -74,18 +74,32 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
     text = re.sub(r'[<>]', '', text)
     return text[:max_length]
 
+
+Tu as un import streamlit as st à l’intérieur du except → impossible.
+
+La fonction display_home_image est sur une seule ligne mal indentée (def display_home_image():try:) → Python ne peut pas interpréter ça.
+
+Il y a un mélange d’espaces et de tabulations.
+
+✅ Version corrigée et indentée correctement
+python
+Copier le code
 # ====== LOGO ======
 def display_logo(size: str = "100%"):
     try:
         st.markdown(f'<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
         st.image("log.png", width=None, use_column_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
-    except:
-        st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>', 
-                   unsafe_allow_html=True)
-      import streamlit as st
-def display_home_image():try:
-        st.image("heros.png", use_column_width=True)
+    except Exception:
+        st.markdown(
+            f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>',
+            unsafe_allow_html=True
+        )
+
+# ====== IMAGE ACCUEIL ======
+def display_home_image():
+    try:
+        st.image("heros.png", use_container_width=True)
     except Exception as e:
         st.error(f"Impossible de charger l'image : {e}")
 
