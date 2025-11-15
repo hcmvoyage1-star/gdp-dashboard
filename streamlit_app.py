@@ -83,6 +83,11 @@ def display_logo(size: str = "100%"):
     except:
         st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>', 
                    unsafe_allow_html=True)
+        # ====== Image Accueil ======
+def display_home_image():
+    img = Image.open("heros.png")
+    st.image(img, use_column_width=True)  # l'image prend toute la largeur disponible
+
 
 # ====== CSS ======
 st.markdown("""
