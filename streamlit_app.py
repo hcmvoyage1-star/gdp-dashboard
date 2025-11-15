@@ -83,7 +83,7 @@ Il y a un mélange d’espaces et de tabulations.
 
 ✅ Version corrigée et indentée correctement
 python
-Copier le code
+
 # ====== LOGO ======
 def display_logo(size: str = "100%"):
     try:
