@@ -96,7 +96,10 @@ def display_home_image(width: int = None):
     """Affiche l'image d'accueil"""
     try:
         img = Image.open("heros.png")
-        st.image(img, width=width, use_container_width=(width is None))
+        if width:
+            st.image(img, width=width)
+        else:
+            st.image(img, use_column_width=True)
     except Exception as e:
         st.markdown("""
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -418,12 +421,20 @@ def get_contacts() -> List[Dict]:
 
 # ====== PAGES ======
 def page_accueil():
+    # Image plage en haut
+    try:
+        st.image("plage.png", use_column_width=True)
+    except Exception as e:
+        st.info("Image plage non trouvée")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     # Hero section avec image centrée
     st.markdown('<div class="hero-section">', unsafe_allow_html=True)
     
     # Affichage de l'image hero
     try:
-        st.image("heros.png", use_container_width=True)
+        st.image("heros.png", use_column_width=True)
     except Exception as e:
         st.error(f"⚠️ Impossible de charger l'image heros.png : {e}")
         st.markdown("""
