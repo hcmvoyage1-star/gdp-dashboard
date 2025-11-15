@@ -122,7 +122,7 @@ def page_accueil():
     """, unsafe_allow_html=True)
     
     # Logo
-    display_logo(width=200)  # logo centré
+    display_logo(width=100)  # logo centré
     
     # Titre et sous-titre
     st.markdown("""
