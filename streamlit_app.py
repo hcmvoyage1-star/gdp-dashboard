@@ -261,8 +261,7 @@ def get_contacts() -> List[Dict]:
 # ====== PAGES ======
 def page_accueil():
     st.markdown('<div class="hero-section">', unsafe_allow_html=True)
-    try:
-        st.image("heros.png", use_container_width=True)
+    try:  st.image("heros.png", use_container_width=True)
     except:
         pass
     st.markdown("""
