@@ -76,30 +76,27 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
 
 
 # ====== LOGO ======
-def display_logo(size: int = 200):
+def display_logo(size=200):
     """
     Affiche le logo de l'application.
-    size : largeur du logo en pixels
+    size : int (pixels) ou str ('100%' pour full width, ou '200px')
     """
     try:
+        # Convertir si c'est une string en int
+        if isinstance(size, str):
+            if size.endswith("px"):
+                size = int(size.replace("px", ""))
+            elif size.endswith("%"):
+                size = None  # largeur auto / full width
+            else:
+                size = int(size)  # ex: "200"
+        
         st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
         st.image("log.png", width=size)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
         st.error(f"Impossible de charger le logo : {e}")
 
-
-# ====== IMAGE D'ACCUEIL ======
-def display_home_image(width: int = 800, height: int = None):
-    """
-    Affiche l'image d'accueil (heros.png).
-    width : largeur en pixels
-    height : hauteur en pixels (optionnel)
-    """
-    try:
-        st.image("heros.png", width=width, height=height)
-    except Exception as e:
-        st.error(f"Impossible de charger l'image d'accueil : {e}")
 
 
 # ====== PAGE ACCUEIL ======
