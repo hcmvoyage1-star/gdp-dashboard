@@ -85,7 +85,7 @@ def display_logo(width: int = None, size: str = None):
             elif isinstance(size, int):
                 final_width = size
         st.markdown('<div style="text-align: center; margin: 20px 0;">', unsafe_allow_html=True)
-        st.image("log.png", width=final_width)
+        st.image("log.png", width=final_width if final_width else 100)
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
         st.markdown('<div style="text-align: center; font-size: 4em;">✈️</div>', unsafe_allow_html=True)
@@ -416,18 +416,22 @@ def get_contacts() -> List[Dict]:
 
 # ====== PAGES ======
 def page_accueil():
-    st.markdown('<div class="hero-section">', unsafe_allow_html=True)
-    display_home_image()
+    # Hero section avec image centrée
+    col_left, col_center, col_right = st.columns([0.5, 6, 0.5])
     
-    st.markdown("""
-        <div class="hero-overlay">
-            <div style="text-align: center;">
-                <h1 class="hero-title" style="color: #1e40af;">HCM VOYAGES</h1>
-                <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
+    with col_center:
+        st.markdown('<div class="hero-section">', unsafe_allow_html=True)
+        display_home_image()
+        
+        st.markdown("""
+            <div class="hero-overlay">
+                <div style="text-align: center;">
+                    <h1 class="hero-title" style="color: #1e40af;">HCM VOYAGES</h1>
+                    <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
+                </div>
             </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -1652,7 +1656,7 @@ def main():
         st.session_state.page = "accueil"
     
     with st.sidebar:
-        display_logo(size="120px")
+        display_logo(size="100px")
         st.markdown("---")
         
         st.markdown("### 🧭 Navigation")
