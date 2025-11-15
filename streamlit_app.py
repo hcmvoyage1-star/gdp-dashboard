@@ -77,7 +77,7 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
 from PIL import Image
 import streamlit as st
 
-def display_logo(width: Optional[int] = None, size: Optional[str] = None):
+def display_logo(width: 200):
     """
     Affiche le logo centré.
     width : largeur en pixels (entier)
