@@ -136,7 +136,7 @@ st.markdown("""
     .hero-section {
         position: relative;
         width: 100%;
-        height: 500px;
+        height: 600px;
         border-radius: 25px;
         overflow: hidden;
         margin-bottom: 40px;
@@ -149,7 +149,7 @@ st.markdown("""
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, rgba(102,126,234,0.85), rgba(118,75,162,0.85));
+        background: linear-gradient(135deg, rgba(59,130,246,0.3), rgba(147,51,234,0.3));
         display: flex;
         justify-content: center;
         align-items: center;
@@ -157,20 +157,20 @@ st.markdown("""
     }
 
     .hero-title {
-        color: white;
-        font-size: 4.5em;
-        font-weight: 700;
+        color: #1e40af;
+        font-size: 5em;
+        font-weight: 800;
         margin: 0;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-        letter-spacing: 2px;
+        text-shadow: 2px 2px 8px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5);
+        letter-spacing: 3px;
     }
 
     .hero-subtitle {
-        color: white;
-        font-size: 1.8em;
-        font-weight: 300;
+        color: #60a5fa;
+        font-size: 2em;
+        font-weight: 400;
         margin: 20px 0 0 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        text-shadow: 1px 1px 4px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
     }
 
     /* === CARDS === */
