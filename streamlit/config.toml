@@ -1,24 +1,6 @@
-[supabase]
-url = "https://oilamfxxqjopuopgskfc.supabase.co"
-key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbGFtZnh4cWpvcHVvcGdza2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMwNDY4NTYsImV4cCI6MjA3ODYyMjg1Nn0.PzIJjkIAKQ8dzNcTA4t6PSaCoAWG6kWZQxEibG5gUwE"
-
-[admin]
-username = "admin"
-password_hash = "admin123"
 [theme]
 primaryColor = "#667eea"
 backgroundColor = "#f5f7fa"
 secondaryBackgroundColor = "#ffffff"
 textColor = "#1e293b"
 font = "sans serif"
-
-[server]
-port = 8501
-enableCORS = false
-enableXsrfProtection = true
-maxUploadSize = 200
-
-[browser]
-gatherUsageStats = false
-serverAddress = "localhost"
-serverPort = 8501
