@@ -29,11 +29,6 @@ st.set_page_config(
 )
 
 
-
-SUPABASE_URL="https://oilamfxxqjopuopgskfc.supabase.co"
-SUPABASE_KEY= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pbGFtZnh4cWpvcHVvcGdza2ZjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzA0Njg1NiwiZXhwIjoyMDc4NjIyODU2fQ.qylNpJ8ceebrD1q9QZ6CnYf0z2rxmcfjZfdXdqdaobc"
-
-
 username = "admin"
 password_hash = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
 
