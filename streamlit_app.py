@@ -259,9 +259,11 @@ def get_contacts() -> List[Dict]:
 # ====== PAGES ======
 def page_accueil():
     st.markdown('<div class="hero-section">', unsafe_allow_html=True)
-    try:  st.image("heros.png", use_container_width=True)
-    except:
-        pass
+    try:
+        st.image("heros.png", use_container_width=True)
+    except Exception as e:
+        st.error(f"Impossible de charger l'image : {e}")
+
     st.markdown("""
         <div class="hero-overlay">
             <div style="text-align: center;">
