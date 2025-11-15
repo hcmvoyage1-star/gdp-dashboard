@@ -1441,8 +1441,8 @@ def page_demande_visa():
                 ])
             else:
                 type_service = st.selectbox("Type de service *", [
-                    "📅 Normal"])
-                   , [" ⚡ Express ])
+                    "📅 Normal"," ⚡ Express"])
+                  
                 
                 
             
