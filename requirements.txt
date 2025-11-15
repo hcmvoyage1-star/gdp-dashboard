@@ -1,31 +1,26 @@
 # =====================================================
 # HCM VOYAGES - Dépendances Python
 # Fichier: requirements.txt
+# Compatible Streamlit Cloud
 # =====================================================
 
 # Framework principal
-streamlit==1.31.0
+streamlit>=1.28.0
 
 # Base de données Supabase
-supabase==2.3.4
-postgrest==0.16.2
+supabase>=2.0.0
 
 # Manipulation de données
-pandas==2.1.4
-numpy==1.26.3
+pandas>=2.0.0
 
 # Visualisation
-plotly==5.18.0
+plotly>=5.17.0
 
 # Images
-Pillow==10.2.0
+Pillow>=10.0.0
 
 # Excel export
-openpyxl==3.1.2
+openpyxl>=3.1.0
 
 # Utilitaires
-python-dateutil==2.8.2
-toml==0.10.2
-
-# Optionnel mais recommandé
-requests==2.31.0
+python-dateutil>=2.8.0
