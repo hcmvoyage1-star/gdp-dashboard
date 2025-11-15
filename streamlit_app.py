@@ -428,7 +428,7 @@ def page_accueil():
     
     st.markdown("""
                 <h1 class="hero-title">HCM VOYAGES</h1>
-                <p class="hero-subtitle">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
+                <p class="hero-subtitle" style="color: #60a5fa;">L'évasion sur mesure • Explorez • Rêvez • Partez</p>
             </div>
         </div>
     </div>
