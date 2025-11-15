@@ -74,9 +74,6 @@ def sanitize_input(text: str, max_length: int = 500) -> str:
     text = re.sub(r'[<>]', '', text)
     return text[:max_length]
 
-
-Tu as un import streamlit as st à l’intérieur du except → impossible.
-
 La fonction display_home_image est sur une seule ligne mal indentée (def display_home_image():try:) → Python ne peut pas interpréter ça.
 
 Il y a un mélange d’espaces et de tabulations.
