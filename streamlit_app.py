@@ -84,9 +84,7 @@ def display_logo(size: str = "100%"):
         st.markdown(f'<div style="text-align: center; margin: 20px 0; font-size: 5em;">✈️</div>', 
                    unsafe_allow_html=True)
       import streamlit as st
-
-def display_home_image():
-    try:
+def display_home_image():try:
         st.image("heros.png", use_column_width=True)
     except Exception as e:
         st.error(f"Impossible de charger l'image : {e}")
